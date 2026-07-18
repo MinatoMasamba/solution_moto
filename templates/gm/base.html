@@ -35,8 +35,9 @@
 <body>
   {% block content %}{% endblock %}
 
-  <script src="{% static 'js/network-utils.js' %}"></script>
-  <script src="{% static 'js/gm-dashboard.js' %}"></script>
+  {# ?v=N : à incrémenter quand ces scripts changent, pour invalider le cache navigateur. #}
+  <script src="{% static 'js/network-utils.js' %}?v=2"></script>
+  <script src="{% static 'js/gm-dashboard.js' %}?v=2"></script>
   {% block page_js %}{% endblock %}
 </body>
 </html>

@@ -25,8 +25,8 @@
   /* Le thème clair est piloté par l'attribut <html data-gm-theme="light">, posé dès
      le <head> : les variables s'appliquent à TOUT le document au premier paint,
      donc plus aucune section transparente ne laisse voir un fond sombre. */
-  :root[data-gm-theme="light"]{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
-  :root[data-gm-theme="light"] header{background:rgba(255,255,255,.9)!important}
+  :root[data-gm-theme="light"],.gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
+  :root[data-gm-theme="light"] header,.gm-root.gm-light header{background:rgba(255,255,255,.9)!important}
   @media(max-width:860px){.gm-hero{grid-template-columns:1fr!important}.gm-cols3{grid-template-columns:1fr!important}.gm-navlinks{display:none!important}.gm-hero-art{display:none!important}.gm-part{grid-template-columns:1fr!important}}
 </style>
 {% endblock %}
@@ -49,9 +49,19 @@
     <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
       <div class="gm-themebtn" data-gm-theme-toggle style="display:flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--color-neutral-700);border-radius:20px;font-size:12px;color:var(--color-neutral-300)"><i class="ph-fill ph-moon gm-thi"></i><span class="gm-thl">Sombre</span></div>
       {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="" style="font-size:13px;padding:8px 15px">
+    {% if user.role == "operator" or user.is_staff %}
+    <a class="btn btn-primary" href="{% url 'portal:direction_dashboard' %}" style="font-size:13px;padding:8px 15px">
         Passer à l'app
     </a>
+    {% elif user.role == "fleet_manager" %}
+    <a class="btn btn-primary" href="{% url 'portal:gerance_dashboard' %}" style="font-size:13px;padding:8px 15px">
+        Passer à l'app
+    </a>
+    {% else %}
+    <a class="btn btn-secondary" href="{% url 'portal:logout' %}" style="font-size:13px;padding:8px 15px">
+        Se déconnecter
+    </a>
+    {% endif %}
 {% else %}
     <a class="btn btn-secondary" href="{% url 'chauffeur:chauffeur_login' %}" style="font-size:13px;padding:8px 15px">
         Se connecter
