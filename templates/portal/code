@@ -1,0 +1,8 @@
+Auth (connexion/redirections), gating par rôle (un motard ne peut pas ouvrir /direction/), et tous les endpoints renvoient des données réelles (l'opérateur voit 3 courses / 12 700 FC, le gérant voit sa flotte, les inscriptions créent bien les bons rôles). Comptes de test créés :
+
+DG : +243810000001 / operateur123
+Gérant : +243810000002 / gerant1234
+Motard : +243810000003 / motard1234
+Lance python manage.py runserver et ouvre / puis /direction/connexion/.
+
+Deux points de transparence : l'inscription motard ne collecte plus les documents à l'inscription (conforme à ton choix « tout remplacer »), et les formulaires « rapport/support/contact » affichent une confirmation sans stockage (pas de modèle dédié, pour éviter une migration).

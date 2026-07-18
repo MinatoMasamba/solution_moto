@@ -1,0 +1,20 @@
+from django.urls import path
+
+from . import views_web
+
+app_name = "chauffeur"
+
+urlpatterns = [
+    path("connexion/", views_web.ChauffeurLoginView.as_view(), name="chauffeur_login"),
+    path("inscription/", views_web.ChauffeurRegistrationView.as_view(), name="chauffeur_registration"),
+    path(
+        "mot-de-passe/demande/",
+        views_web.chauffeur_password_reset_request,
+        name="chauffeur_password_reset_request",
+    ),
+    path(
+        "mot-de-passe/confirmation/",
+        views_web.chauffeur_password_reset_confirm,
+        name="chauffeur_password_reset_confirm",
+    ),
+]

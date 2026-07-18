@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}GO-MBOKA{% endblock %}</title>
+
+  {# Design-system + icons, vendored locally (no external CDN). #}
+  <link rel="stylesheet" href="{% static 'vendor/nocturne/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/phosphor/regular.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/phosphor/bold.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/phosphor/fill.css' %}">
+
+  <style>
+    html, body { margin: 0; height: 100%; background: var(--color-bg); }
+    .gm-nav { cursor: pointer; }
+  </style>
+
+  <script>
+    // Restaure la préférence de thème avant le premier paint (anti-flash).
+    // Un paramètre ?theme=light|dark force et mémorise le thème (utile pour tester/partager).
+    (function () {
+      try {
+        var q = new URLSearchParams(window.location.search).get('theme');
+        if (q === 'light' || q === 'dark') { localStorage.setItem('gm-theme', q); }
+        window.__gmTheme = localStorage.getItem('gm-theme') || 'dark';
+      } catch (e) { window.__gmTheme = 'dark'; }
+      // Applique le thème sur <html> AVANT le premier paint (aucun flash, aucun état mixte).
+      document.documentElement.setAttribute('data-gm-theme', window.__gmTheme);
+    })();
+  </script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  <script src="{% static 'js/network-utils.js' %}"></script>
+  <script src="{% static 'js/gm-dashboard.js' %}"></script>
+  {% block page_js %}{% endblock %}
+</body>
+</html>

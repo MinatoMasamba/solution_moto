@@ -1,0 +1,65 @@
+{% extends "gm/base.html" %}
+
+{% block title %}Connexion — Direction Générale · GO-MBOKA{% endblock %}
+
+{% block head_extra %}
+<style>
+  a{color:var(--color-accent);text-decoration:none}
+  a:hover{color:var(--color-accent-300)}
+  .gm-eye{cursor:pointer;transition:color .15s}
+  .gm-eye:hover{color:var(--color-accent-200)!important}
+  .gm-root.gm-light .gm-form{--color-surface:#ffffff;--color-bg:#f4f5f8;--color-text:#1c1e2a;--color-neutral-300:#3a3e52;--color-neutral-400:#5a5f75;--color-neutral-500:#767c92;--color-neutral-600:#787e94;--color-neutral-700:#6b7185;--color-neutral-800:#e2e4ec;--color-neutral-900:#eef0f5;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-700:#cec7ee;--color-accent-900:#eae7f8;background:var(--color-surface)!important;color:var(--color-text)}
+  .gm-themebtn{cursor:pointer;transition:border-color .15s}.gm-themebtn:hover{border-color:var(--color-accent)!important}
+  @media(max-width:760px){.gm-brand{display:none!important}.gm-form{width:100%!important;padding:64px 22px 32px!important;border-left:none!important}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="gm-root" style="min-height:100vh;display:flex;font-family:var(--font-body)">
+  <div class="gm-themebtn" data-gm-theme-toggle style="position:fixed;top:18px;right:18px;z-index:30;display:flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--color-neutral-700);border-radius:20px;background:rgba(20,22,36,.6);font-size:12px;color:var(--color-neutral-300)"><i class="ph-fill ph-moon gm-thi"></i><span class="gm-thl">Sombre</span></div>
+  <!-- BRAND PANEL -->
+  <div class="gm-brand" style="flex:1;position:relative;overflow:hidden;background:radial-gradient(ellipse 90% 70% at 25% 15%,#241f45,#12141f);display:flex;flex-direction:column;justify-content:space-between;padding:48px 52px">
+    <svg viewBox="0 0 400 300" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.5"><g stroke="#3a3560" stroke-width="1.4" fill="none"><path d="M40,20 L150,120 L260,110 L320,240"></path><path d="M0,90 L400,120"></path><path d="M180,0 L200,300"></path><path d="M310,10 L290,150 L380,270"></path></g><g fill="#4a4570"><circle cx="150" cy="120" r="3"></circle><circle cx="200" cy="180" r="3"></circle><circle cx="290" cy="150" r="3"></circle></g></svg>
+    <div style="position:relative;display:flex;align-items:center;gap:13px">
+      <div style="width:46px;height:46px;border-radius:13px;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(145,132,217,.45)"><i class="ph-fill ph-motorcycle" style="font-size:25px;color:#fff"></i></div>
+      <div><div style="font-weight:700;font-size:19px;color:var(--color-text);letter-spacing:-.01em">GO-MBOKA</div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-500)">Direction Générale</div></div>
+    </div>
+    <div style="position:relative;max-width:420px">
+      <h1 style="font-size:30px;font-weight:600;color:var(--color-text);line-height:1.2;margin:0 0 14px;letter-spacing:-.02em">Console de pilotage du réseau moto de Kinshasa</h1>
+      <p style="font-size:14px;color:var(--color-neutral-400);line-height:1.6;margin:0">Accès réservé à la Direction Générale. Supervision des motards, gérants, commissions et paiements sur l'ensemble du réseau.</p>
+    </div>
+    <div style="position:relative;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-neutral-500)"><i class="ph-fill ph-shield-check" style="color:#8fceac"></i>Connexion chiffrée · accès direction uniquement</div>
+  </div>
+
+  <!-- FORM PANEL -->
+  <div class="gm-form" style="width:480px;flex-shrink:0;background:var(--color-surface);border-left:1px solid var(--color-neutral-800);display:flex;flex-direction:column;justify-content:center;padding:48px 56px">
+    <div style="display:inline-flex;align-items:center;gap:7px;align-self:flex-start;padding:5px 12px;border:1px solid var(--color-accent-700);background:var(--color-accent-900);border-radius:20px;margin-bottom:22px"><i class="ph-fill ph-crown-simple" style="color:var(--color-accent-200);font-size:14px"></i><span style="font-size:11.5px;font-weight:600;color:var(--color-accent-200);letter-spacing:.04em">ESPACE DIRECTEUR GÉNÉRAL</span></div>
+    <h2 style="font-size:23px;font-weight:600;color:var(--color-text);margin:0 0 6px;letter-spacing:-.01em">Connexion</h2>
+    <p style="font-size:13px;color:var(--color-neutral-500);margin:0 0 28px">Le compte Directeur Général est pré-enregistré — aucune création possible ici.</p>
+
+    {% if messages %}
+    <div style="margin-bottom:18px">
+      {% for message in messages %}
+      <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;border:1px solid rgba(207,127,127,.35);background:rgba(207,127,127,.1);border-radius:11px;font-size:12.5px;color:#d98a8a;margin-bottom:8px"><i class="ph-fill ph-warning-circle"></i>{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'portal:direction_login' %}">
+      {% csrf_token %}
+      <div class="field" style="margin-bottom:16px"><label>Identifiant / e-mail</label><input class="input" type="text" name="identifier" required placeholder="dg@go-mboka.cd"></div>
+      <div class="field" style="margin-bottom:12px"><label>Mot de passe</label>
+        <div style="position:relative"><input id="gm-pw" class="input" type="password" name="password" required placeholder="Votre mot de passe" style="padding-right:40px"><i class="ph ph-eye gm-eye" data-gm-pw-toggle="gm-pw" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--color-neutral-500);font-size:17px"></i></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--color-neutral-400);cursor:pointer"><input type="checkbox" name="remember" style="accent-color:var(--color-accent-500);width:15px;height:15px">Se souvenir de moi</label>
+        <a href="#" style="font-size:12.5px">Mot de passe oublié ?</a>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" style="font-size:14px;padding:11px"><i class="ph ph-sign-in"></i>Se connecter</button>
+    </form>
+
+    <div style="display:flex;align-items:center;gap:10px;margin:22px 0"><span style="flex:1;height:1px;background:var(--color-neutral-800)"></span><span style="font-size:11px;color:var(--color-neutral-600)">accès sécurisé</span><span style="flex:1;height:1px;background:var(--color-neutral-800)"></span></div>
+    <div style="display:flex;align-items:flex-start;gap:9px;padding:12px 14px;border:1px solid var(--color-neutral-800);border-radius:11px;background:var(--color-bg)"><i class="ph-fill ph-info" style="color:var(--color-accent-300);font-size:16px;margin-top:1px"></i><div style="font-size:11.5px;color:var(--color-neutral-500);line-height:1.5">Les gérants et les motards disposent de leur propre console de connexion. Cet espace est strictement réservé à la direction.</div></div>
+  </div>
+</div>
+{% endblock %}

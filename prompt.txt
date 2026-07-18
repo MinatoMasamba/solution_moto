@@ -1,0 +1,225 @@
+# GO-MBOKA — Blueprint de projet opérationnel
+
+**Plateforme numérique de gestion de motards (taxi-motos) — Kinshasa, RDC**
+
+---
+
+## 1. Vision du projet
+
+Go-Mboka est une plateforme digitale pensée pour organiser, structurer et professionnaliser la mobilité moto à Kinshasa. L’objectif est de créer un écosystème qui relie quatre acteurs principaux :
+- les clients à la recherche d’un trajet rapide et fiable,
+- les motards souhaitant obtenir plus de visibilité et de commandes,
+- les propriétaires de motos qui veulent externaliser la gestion de leur flotte,
+- et les opérateurs de la plateforme qui supervisent l’activité et les paiements.
+
+Contrairement à un simple service de VTC-moto, Go-Mboka vise un modèle économique multi-piliers, plus robuste et plus adapté au contexte congolais.
+
+---
+
+## 2. Problème résolu
+
+Le marché de la moto-taxi à Kinshasa souffre de plusieurs problèmes :
+- manque de coordination entre clients et motards,
+- faible visibilité et peu de professionnalisation des conducteurs,
+- difficulté pour les propriétaires de motos de superviser leurs motards,
+- absence de mécanisme fiable de paiement et de suivi de l’activité.
+
+Go-Mboka répond à ces frictions par une plateforme numérique centralisant la mise en relation, le suivi GPS, la gestion des motos et la collecte des paiements.
+
+---
+
+## 3. Les trois piliers du business model
+
+### Pilier 1 — Abonnement du motard pour accéder aux clients
+- Le motard paie un abonnement mensuel à Go-Mboka pour être visible et disponible sur la plateforme.
+- L’abonnement sert de droit d’accès au flux de demandes de courses.
+- Le prix de la course reste négocié directement entre le motard et le client.
+- Le rôle de l’application peut évoluer selon les décisions commerciales : simple outil de mise en relation, ou interface avec prix indicatif réglable par le motard.
+
+### Pilier 2 — Gérance de motos pour propriétaires
+- Un propriétaire de motos confie sa flotte à Go-Mboka pour la gestion quotidienne.
+- Go-Mboka recrute, supervise et organise l’activité des motards affectés à cette flotte.
+- Go-Mboka prélève une commission sur les revenus générés avant de reverser au propriétaire.
+- Le modèle doit être clair sur les responsabilités d’entretien, d’assurance et de discipline.
+
+### Pilier 3 — Allocation de motos aux motards sans moto propre
+- Go-Mboka met à disposition des motos à des motards qui n’en possèdent pas.
+- Le motard reverse un montant périodique à Go-Mboka, tandis que le reste des revenus lui reste.
+- Ce modèle est proche d’une location-gérance informelle, avec une logique adaptée au contexte local.
+- Les règles exactes de versement, de pénalité et de maintenance doivent être formalisées.
+
+---
+
+## 4. Objectif du lancement
+
+Le lancement initial ne doit pas viser un produit “parfait”, mais un service fonctionnel et crédible sur 55 jours, avec les fonctionnalités suffisantes pour valider l’usage réel.
+
+### MVP cible à J+55
+- inscription client et motard,
+- création de profil et vérification basique,
+- demande de course et acceptation,
+- suivi GPS temps réel minimal,
+- paiement mobile money,
+- interface d’administration simple,
+- notifications push/SMS,
+- système de notation simple.
+
+### Hors scope du MVP initial
+- analytics avancés,
+- optimisation de prix automatisée,
+- gestion complète des flottes multi-propriétaires,
+- modules complexes d’audit ou de fiscalité,
+- intégration avancée de plusieurs opérateurs de paiement dès le départ.
+
+---
+
+## 5. Contraintes du projet
+
+| Contrainte | Détail |
+|---|---|
+| Délai | 55 jours pour un lancement fonctionnel |
+| Équipe | Développement interne, équipe réduite |
+| Plateformes | Mobile + web dès le début |
+| Paiement | Mobile money (Airtel Money, M-Pesa, Orange Money, ou agrégateur local) |
+| Géolocalisation | GPS temps réel obligatoire |
+| Priorité technique | Architecture solide et extensible, sans sur-conception inutile |
+
+> Point de vigilance : le délai est très court pour un système combinant géolocalisation temps réel, paiements mobile money et deux interfaces de produit. Il faut donc privilégier un MVP strict, puis construire une base technique prête à évoluer.
+
+---
+
+## 6. Architecture technique proposée
+
+### 6.1 Vue générale
+
+```text
+[App Mobile Client]   [App Mobile Motard]   [App Web Admin/Client]
+          \                   |                     /
+           \                  |                    /
+                    [Backend API / Gateway]
+                              |
+        -------------------------------------------------
+        |            |            |            |        |
+   [Users]      [Rides]      [Payments]   [Fleet]   [Geoloc]
+        |            |            |            |        |
+        -------------------------------------------------
+                              |
+                       [PostgreSQL + Redis]
+                              |
+                   [Push Notifications / SMS]
+```
+
+### 6.2 Stack recommandée
+
+**Backend**
+- Django + Django REST Framework pour une livraison rapide et une structure claire.
+- Django Channels pour le temps réel (GPS et notifications).
+- Celery + Redis pour tâches asynchrones (commissions, rappel, paiements, notifications).
+- Organisation modulaire en apps Django : users, rides, payments, fleet, geoloc.
+
+**Base de données**
+- PostgreSQL pour les données transactionnelles.
+- Redis pour le cache et la gestion des positions récentes en temps réel.
+
+**Applications mobiles**
+- Flutter pour un développement rapide sur Android et iOS avec une seule base de code.
+
+**Application web**
+- Next.js ou React pour le portail client et l’interface d’administration.
+
+**Paiements**
+- Intégration via agrégateur local ou API directe selon disponibilité en RDC.
+- Séparer le module paiement du reste du système pour faciliter les changements d’agrégateur.
+
+**Infrastructure**
+- Docker dès le départ.
+- GitHub Actions pour CI/CD simple.
+- Hébergement cloud (AWS, GCP ou Azure) avec possibilité de scaling futur.
+
+**Notifications**
+- Firebase Cloud Messaging pour push notifications.
+- SMS de secours quand la connectivité est insuffisante.
+
+---
+
+## 7. Propositions de phasage (55 jours)
+
+| Phase | Contenu | Durée indicative |
+|---|---|---|
+| Phase 0 | Spécifications, maquettes, choix techniques, intégration mobile money | 5 à 7 jours |
+| Phase 1 — MVP | Inscription client/motard, courses, GPS basique, paiement mobile money, back-office minimal | 30 à 35 jours |
+| Phase 2 | Module gérance de flotte, module allocation de motos, tableau de bord propriétaire | après le lancement |
+| Phase 3 | Optimisations, analytics, sécurité renforcée, scaling infrastructure | après le lancement |
+
+---
+
+## 8. Plan de livraison opérationnel (sur 55 jours)
+
+### Semaine 1–2 : cadrage et design
+- validation du concept et du business model,
+- définition du périmètre MVP,
+- maquettes de base pour mobile et web,
+- définition des principales entités métier.
+
+### Semaine 3–4 : foundation technique
+- setup du backend Django,
+- mise en place des modèles utilisateurs et rôles,
+- base de données et auth,
+- premiers endpoints API.
+
+### Semaine 5–6 : expérience utilisateur centrale
+- demande de course,
+- acceptation d’une course,
+- roulette / statut de course,
+- notifications de base,
+- géolocalisation temps réel simple.
+
+### Semaine 7 : paiements et administration
+- intégration mobile money,
+- suivi des paiements,
+- back-office minimal,
+- gestion des profils et des statuts.
+
+### Semaine 8 : stabilisation et lancement
+- tests fonctionnels,
+- correction de bugs critiques,
+- préparation du déploiement,
+- soft launch et observation.
+
+---
+
+## 9. Indicateurs de succès
+
+- taux de création de compte,
+- taux de conversion course demandée → course acceptée,
+- temps moyen jusqu’à l’acceptation d’une course,
+- taux de succès de paiement,
+- disponibilité du service GPS,
+- nombre de sessions actives par jour.
+
+---
+
+## 10. Risques principaux et mitigations
+
+| Risque | Impact | Mitigation |
+|---|---|---|
+| intégration mobile money lente | blocage du flux de paiement | choisir un agrégateur simple et bien documenté |
+| GPS instable ou consommateur de batterie | mauvaise expérience utilisateur | limiter la fréquence de mise à jour, tester sur les appareils cibles |
+| délai trop court | scope trop large | définir un MVP strict et refuser les “nice-to-have” |
+| manque de clarté sur le modèle économique | ambiguïté fonctionnelle | valider rapidement les règles de commission et de versement |
+
+---
+
+## 11. Questions à trancher avant la finalisation
+
+1. Montant de l’abonnement mensuel du motard et politique en cas d’absence de paiement.
+2. Taux de commission pour la gérance de motos.
+3. Logique du versement pour l’allocation sans contrat : fixe, dégressif ou basé sur l’activité.
+4. Qui prend en charge maintenance, assurance et réparations.
+5. Taille réelle de l’équipe technique et ses compétences actuelles.
+6. Agrégateur de paiement mobile money déjà identifié.
+7. Zone géographique de lancement : tout Kinshasa ou communes pilotes.
+
+---
+
+*Document de travail — à faire évoluer au fil des décisions et des premiers retours utilisateurs.*

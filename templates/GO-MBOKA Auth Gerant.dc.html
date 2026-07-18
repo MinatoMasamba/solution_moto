@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/styles.css">
+<script src="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--color-bg)}
+  a{color:var(--color-accent);text-decoration:none}
+  a:hover{color:var(--color-accent-300)}
+  .gm-eye{cursor:pointer;transition:color .15s}
+  .gm-eye:hover{color:var(--color-accent-200)!important}
+  .gm-tab{cursor:pointer;transition:color .15s,background .15s}
+  ::-webkit-scrollbar{width:9px}::-webkit-scrollbar-thumb{background:var(--color-neutral-800);border-radius:8px}
+  .gm-root.gm-light .gm-form{--color-surface:#ffffff;--color-bg:#f4f5f8;--color-text:#1c1e2a;--color-neutral-300:#3a3e52;--color-neutral-400:#5a5f75;--color-neutral-500:#767c92;--color-neutral-600:#787e94;--color-neutral-700:#6b7185;--color-neutral-800:#e2e4ec;--color-neutral-900:#eef0f5;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-700:#cec7ee;--color-accent-900:#eae7f8;background:var(--color-surface)!important;color:var(--color-text)}
+  .gm-themebtn{cursor:pointer;transition:border-color .15s}.gm-themebtn:hover{border-color:var(--color-accent)!important}
+  @media(max-width:760px){.gm-brand{display:none!important}.gm-form{width:100%!important;padding:64px 22px 32px!important;border-left:none!important}}
+</style>
+</helmet>
+
+<div class="gm-root" style="min-height:100vh;display:flex;font-family:var(--font-body)">
+  <div class="gm-themebtn" onClick="{{ setTheme }}" style="position:fixed;top:18px;right:18px;z-index:30;display:flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--color-neutral-700);border-radius:20px;background:rgba(20,22,36,.6);font-size:12px;color:var(--color-neutral-300)"><i class="ph-fill ph-moon gm-thi"></i><span class="gm-thl">Sombre</span></div>
+  <!-- BRAND PANEL -->
+  <div class="gm-brand" style="flex:1;position:relative;overflow:hidden;background:radial-gradient(ellipse 90% 70% at 25% 15%,#211d40,#12141f);display:flex;flex-direction:column;justify-content:space-between;padding:48px 52px">
+    <svg viewBox="0 0 400 300" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;opacity:.5"><g stroke="#3a3560" stroke-width="1.4" fill="none"><path d="M40,20 L150,120 L260,110 L320,240"></path><path d="M0,90 L400,120"></path><path d="M180,0 L200,300"></path></g><g fill="#4a4570"><circle cx="150" cy="120" r="3"></circle><circle cx="200" cy="180" r="3"></circle></g></svg>
+    <div style="position:relative;display:flex;align-items:center;gap:13px">
+      <div style="width:46px;height:46px;border-radius:13px;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(145,132,217,.45)"><i class="ph-fill ph-motorcycle" style="font-size:25px;color:#fff"></i></div>
+      <div><div style="font-weight:700;font-size:19px;color:var(--color-text);letter-spacing:-.01em">GO-MBOKA</div><div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-500)">Espace gérant</div></div>
+    </div>
+    <div style="position:relative;max-width:420px">
+      <h1 style="font-size:30px;font-weight:600;color:var(--color-text);line-height:1.2;margin:0 0 14px;letter-spacing:-.02em">Gérez votre zone et vos motards</h1>
+      <p style="font-size:14px;color:var(--color-neutral-400);line-height:1.6;margin:0 0 22px">Inscrivez des motards, suivez leurs courses et leurs revenus, gérez les reversements aux propriétaires — depuis un seul tableau de bord.</p>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-neutral-300)"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i>Inscription et suivi de vos motards</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-neutral-300)"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i>Rendement et revenus par semaine</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-neutral-300)"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i>Reversements aux propriétaires</div>
+      </div>
+    </div>
+    <div style="position:relative;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-neutral-500)"><i class="ph-fill ph-shield-check" style="color:#8fceac"></i>Console dédiée aux gérants · connexion chiffrée</div>
+  </div>
+
+  <!-- FORM PANEL -->
+  <div class="gm-form" style="width:500px;flex-shrink:0;background:var(--color-surface);border-left:1px solid var(--color-neutral-800);display:flex;flex-direction:column;justify-content:center;padding:44px 56px;overflow-y:auto">
+    <div style="display:flex;gap:4px;padding:4px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:11px;margin-bottom:26px">
+      <span class="gm-tab" data-tab="login" onClick="{{ tab }}" style="flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;font-weight:600;color:var(--color-accent-200);background:var(--color-surface)">Se connecter</span>
+      <span class="gm-tab" data-tab="create" onClick="{{ tab }}" style="flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;font-weight:500;color:var(--color-neutral-400)">Créer un compte</span>
+    </div>
+
+    <!-- LOGIN -->
+    <div data-form="login">
+      <h2 style="font-size:22px;font-weight:600;color:var(--color-text);margin:0 0 6px;letter-spacing:-.01em">Connexion gérant</h2>
+      <p style="font-size:13px;color:var(--color-neutral-500);margin:0 0 26px">Accédez à votre tableau de bord de gérance.</p>
+      <div class="field" style="margin-bottom:16px"><label>E-mail ou téléphone</label><input class="input" type="text" placeholder="vous@exemple.cd"></div>
+      <div class="field" style="margin-bottom:12px"><label>Mot de passe</label>
+        <div style="position:relative"><input id="gm-pw1" class="input" type="password" placeholder="Votre mot de passe" style="padding-right:40px"><i class="ph ph-eye gm-eye" onClick="{{ toggle1 }}" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--color-neutral-500);font-size:17px"></i></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px"><label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--color-neutral-400);cursor:pointer"><input type="checkbox" style="accent-color:var(--color-accent-500);width:15px;height:15px">Rester connecté</label><a href="#" style="font-size:12.5px">Mot de passe oublié ?</a></div>
+      <button class="btn btn-primary btn-block" style="font-size:14px;padding:11px"><i class="ph ph-sign-in"></i>Se connecter</button>
+    </div>
+
+    <!-- CREATE -->
+    <div data-form="create" style="display:none">
+      <h2 style="font-size:22px;font-weight:600;color:var(--color-text);margin:0 0 6px;letter-spacing:-.01em">Créer un compte gérant</h2>
+      <p style="font-size:13px;color:var(--color-neutral-500);margin:0 0 22px">Votre demande sera validée par la Direction Générale avant activation.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div class="field"><label>Prénom</label><input class="input" type="text" placeholder="Nathalie"></div>
+        <div class="field"><label>Nom</label><input class="input" type="text" placeholder="Mbombo"></div>
+      </div>
+      <div class="field" style="margin-bottom:14px"><label>Téléphone</label><input class="input" type="text" placeholder="+243 8XX XXX XXX"></div>
+      <div class="field" style="margin-bottom:14px"><label>E-mail</label><input class="input" type="email" placeholder="vous@exemple.cd"></div>
+      <div class="field" style="margin-bottom:14px"><label>Zone souhaitée</label><select class="input"><option>Gombe</option><option>Lingwala</option><option>Limete</option><option>Masina</option><option>Ngaliema</option><option>Kalamu</option><option>Lemba</option><option>Ndjili</option></select></div>
+      <div class="field" style="margin-bottom:14px"><label>Mot de passe</label>
+        <div style="position:relative"><input id="gm-pw2" class="input" type="password" placeholder="Au moins 8 caractères" style="padding-right:40px"><i class="ph ph-eye gm-eye" onClick="{{ toggle2 }}" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--color-neutral-500);font-size:17px"></i></div>
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--color-neutral-400);cursor:pointer;margin-bottom:20px"><input type="checkbox" style="accent-color:var(--color-accent-500);width:15px;height:15px;margin-top:1px">J'accepte les conditions d'utilisation et la charte des gérants GO-MBOKA.</label>
+      <button class="btn btn-primary btn-block" style="font-size:14px;padding:11px"><i class="ph ph-user-plus"></i>Créer mon compte</button>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  toggle1 = () => { const i = document.getElementById('gm-pw1'); if (i) i.type = i.type === 'password' ? 'text' : 'password'; };
+  toggle2 = () => { const i = document.getElementById('gm-pw2'); if (i) i.type = i.type === 'password' ? 'text' : 'password'; };
+  tab = (e) => {
+    const t = e.currentTarget.getAttribute('data-tab');
+    document.querySelectorAll('[data-form]').forEach(f => {
+      f.style.display = f.getAttribute('data-form') === t ? '' : 'none';
+    });
+    document.querySelectorAll('.gm-tab').forEach(s => {
+      const on = s.getAttribute('data-tab') === t;
+      s.style.background = on ? 'var(--color-surface)' : 'transparent';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.fontWeight = on ? '600' : '500';
+    });
+  };
+  setTheme = () => {
+    const r = document.querySelector('.gm-root'); if (!r) return;
+    const light = r.classList.toggle('gm-light');
+    const ic = document.querySelector('.gm-thi'); const lb = document.querySelector('.gm-thl');
+    if (ic) ic.className = (light ? 'ph-fill ph-sun' : 'ph-fill ph-moon') + ' gm-thi';
+    if (lb) lb.textContent = light ? 'Clair' : 'Sombre';
+  };
+  renderVals() { return { toggle1: this.toggle1, toggle2: this.toggle2, tab: this.tab, setTheme: this.setTheme }; }
+}
+</script>
+</body>
+</html>
