@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.prod')
+# En WSGI (serveur), la prod est le défaut ; DJANGO_ENV=dev pour forcer le dev.
+os.environ.setdefault('DJANGO_ENV', 'prod')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = get_wsgi_application()
