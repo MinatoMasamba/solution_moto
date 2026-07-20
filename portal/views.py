@@ -493,3 +493,53 @@ class PasswordChangeView(APIView):
 
 def health_check(request):
     return JsonResponse({"status": "ok"})
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# PWA — manifeste + service worker (app client installable sur Android/iOS)
+# ══════════════════════════════════════════════════════════════════════════
+
+def web_manifest(request):
+    from django.http import JsonResponse as _JR
+    from django.templatetags.static import static as _static
+
+    manifest = {
+        "name": "GO-MBOKA",
+        "short_name": "GO-MBOKA",
+        "description": "Commandez une moto-taxi à Kinshasa.",
+        "lang": "fr",
+        "start_url": "/client/app/",
+        "scope": "/client/",
+        "display": "standalone",
+        "orientation": "portrait",
+        "background_color": "#0c0d15",
+        "theme_color": "#0c0d15",
+        "icons": [
+            {"src": _static("img/go-mboka-192.png"), "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+            {"src": _static("img/go-mboka-512.png"), "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+        ],
+    }
+    return _JR(manifest, content_type="application/manifest+json")
+
+
+# Service worker minimal : un handler `fetch` est requis pour l'installabilité.
+_SERVICE_WORKER_JS = """
+const CACHE = 'gm-mboka-v1';
+self.addEventListener('install', (e) => { self.skipWaiting(); });
+self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;                 // ne jamais mettre en cache les POST/PATCH/DELETE
+  if (req.url.indexOf('/api/') !== -1) return;      // données live : toujours le réseau
+  e.respondWith(fetch(req).catch(() => caches.match(req)));
+});
+"""
+
+
+def service_worker(request):
+    from django.http import HttpResponse as _HR
+
+    resp = _HR(_SERVICE_WORKER_JS, content_type="application/javascript")
+    resp["Service-Worker-Allowed"] = "/"
+    resp["Cache-Control"] = "no-cache"
+    return resp

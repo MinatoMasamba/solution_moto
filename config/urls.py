@@ -3,11 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from portal.views import health_check
+from portal.views import health_check, service_worker, web_manifest
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/health/", health_check, name="health-check"),
+    # PWA (app client installable) — servis à la racine pour le scope du SW.
+    path("manifest.webmanifest", web_manifest, name="web-manifest"),
+    path("sw.js", service_worker, name="service-worker"),
     path("api/v1/", include("apps.users.urls")),
     path("api/v1/", include("apps.rides.urls")),
     path("api/v1/", include("apps.payments.urls")),

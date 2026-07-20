@@ -366,7 +366,34 @@
     });
   }
 
+  // ── PWA : installation sur Android/iOS ────────────────────────────────
+  function wirePWA() {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch(function () {});
+    }
+    var deferred = null;
+    var banner = $("gm-cl-install");
+    var btn = $("gm-cl-install-btn");
+    window.addEventListener("beforeinstallprompt", function (ev) {
+      ev.preventDefault(); deferred = ev;
+      if (banner) banner.style.display = "flex";
+    });
+    window.addEventListener("appinstalled", function () {
+      if (banner) banner.style.display = "none";
+      toast("GO-MBOKA installé sur votre écran d'accueil.", "success");
+    });
+    if (btn) btn.addEventListener("click", function () {
+      if (deferred) {
+        deferred.prompt();
+        deferred.userChoice.finally(function () { deferred = null; if (banner) banner.style.display = "none"; });
+      } else {
+        toast("Menu du navigateur ⋮ → « Ajouter à l'écran d'accueil ».", "info");
+      }
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    wirePWA();
     wireNav();
     wireStars();
     wireTopup();
