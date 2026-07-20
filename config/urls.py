@@ -14,6 +14,7 @@ urlpatterns = [
     path("api/v1/", include("apps.fleet.urls")),
     path("api/v1/", include("apps.geoloc.urls")),
     path("chauffeur/", include("apps.users.urls_web")),
+    path("client/", include("apps.users.urls_client")),
     path("", include("portal.urls")),
 ]
 
