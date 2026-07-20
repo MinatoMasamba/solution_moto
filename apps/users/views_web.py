@@ -20,3 +20,14 @@ def client_dashboard_view(request):
     }
     
     return render(request, 'client_dashboard.html', context)
+
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+
+class ClientLoginView(LoginView):
+    template_name = 'portal/login.html'
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return reverse_lazy('chauffeur:client_dashboard')
