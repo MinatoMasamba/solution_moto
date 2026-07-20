@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/styles.css">
+<script src="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0c0d15">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GO-MBOKA">
+<link rel="apple-touch-icon" href="go-mboka-192.png">
+<style>
+  html,body{margin:0;background:#0c0d15;min-height:100%}
+  @keyframes gmPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes gmPing{0%{transform:scale(.5);opacity:.6}80%,100%{transform:scale(2.4);opacity:0}}
+  @keyframes gmSpin{to{transform:rotate(360deg)}}
+  @keyframes gmDot{0%{offset-distance:0%}100%{offset-distance:100%}}
+  .gm-tab{cursor:pointer}
+  .gm-cta{cursor:pointer;transition:transform .15s,filter .15s}.gm-cta:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .gm-seg{cursor:pointer;transition:background .15s,color .15s}
+  .gm-star{cursor:pointer;transition:transform .1s}.gm-star:hover{transform:scale(1.12)}
+  .gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;font-family:var(--font-body);background:radial-gradient(ellipse 70% 60% at 50% 0%,#1c1a30,#0c0d15)">
+  <div class="gm-root" style="width:390px;height:820px;max-height:calc(100vh - 40px);background:var(--color-bg);border:10px solid #23252f;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(0,0,0,.6);display:flex;flex-direction:column">
+    <!-- status bar -->
+    <div style="height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0"><span class="gm-clock" style="font-size:12px;font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace">08:42</span><div style="display:flex;gap:6px;align-items:center;color:var(--color-text)"><i class="ph-fill ph-cell-signal-full" style="font-size:13px"></i><i class="ph-fill ph-wifi-high" style="font-size:13px"></i><i class="ph-fill ph-battery-high" style="font-size:14px"></i></div></div>
+
+    <!-- HEADER -->
+    <div style="padding:8px 20px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">SM</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">{{ user_data.name }}</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Cliente · ★ 4,9</div></div>
+        <div class="gm-cta" data-goto="notifs" style="position:relative;width:38px;height:38px;border:1px solid var(--color-neutral-800);border-radius:11px;display:flex;align-items:center;justify-content:center"><i class="ph ph-bell" style="font-size:17px;color:var(--color-neutral-400)"></i><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#cf7f7f;border:1.5px solid var(--color-bg)"></span></div>
+      </div>
+    </div>
+
+    <!-- CONTENU -->
+    <div id="gm-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:0 20px 16px;position:relative">
+
+      <!-- ═══ ACCUEIL ═══ -->
+      <div data-panel="home">
+        <!-- installer l'app (PWA) -->
+      <div class="gm-install" style="display:none;align-items:center;gap:12px;background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-700);border-radius:16px;padding:13px 15px;margin-bottom:14px">
+        <span style="width:38px;height:38px;border-radius:11px;background:rgba(145,132,217,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-device-mobile-camera" style="color:var(--color-accent-300);font-size:19px"></i></span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Installer GO-MBOKA</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Ajoutez l'app à votre écran d'accueil</div></div>
+        <button class="btn btn-primary gm-cta gm-install-btn" onClick="{{ installApp }}" style="font-size:12px;padding:8px 12px;flex-shrink:0">Installer</button>
+      </div>
+
+      <!-- compte vide -> 1er dépôt = 2 courses gratuites -->
+        <div class="gm-emptybanner" style="display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,rgba(217,168,102,.18),var(--color-surface));border:1px solid rgba(217,168,102,.4);border-radius:16px;padding:14px 16px;margin-bottom:14px">
+          <span style="width:38px;height:38px;border-radius:11px;background:rgba(217,168,102,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-gift" style="color:#d9a866;font-size:19px"></i></span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Votre compte est vide</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Faites un 1<sup>er</sup> dépôt et recevez <b style="color:#d9a866">2 courses gratuites</b>.</div></div>
+          <button class="btn btn-primary gm-cta" data-goto="topup" style="font-size:12px;padding:8px 12px;flex-shrink:0">Déposer</button>
+        </div>
+
+        <!-- solde + courses gratuites -->
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+          <div class="gm-cta" data-goto="wallet" style="flex:1.5;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:15px 16px"><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:3px">Mon solde</div><div style="font-size:23px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">0 <span style="font-size:13px;color:var(--color-neutral-600);font-weight:500">FC</span></div><div style="font-size:11px;color:var(--color-accent-300);margin-top:2px">Recharger →</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:15px 16px"><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:3px">Courses offertes</div><div style="font-size:23px;font-weight:700;color:#8fceac;letter-spacing:-.02em">0</div><div style="font-size:11px;color:var(--color-neutral-500);margin-top:2px">gratuites</div></div>
+        </div>
+
+        <!-- Où allez-vous ? -->
+        <div class="gm-cta" data-goto="create" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:16px;padding:16px 18px;margin-bottom:16px">
+          <i class="ph-fill ph-magnifying-glass" style="color:var(--color-accent-300);font-size:20px"></i>
+          <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">Où allez-vous ?</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Commander une moto-taxi</div></div>
+          <i class="ph ph-arrow-right" style="color:var(--color-neutral-500);font-size:17px"></i>
+        </div>
+
+        <!-- lieux enregistrés (accès rapide) -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;font-weight:600;color:var(--color-text)">Mes lieux</span><span class="gm-cta" data-goto="places" style="font-size:11.5px;color:var(--color-accent-300)">Tout voir</span></div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+          <div class="gm-cta gm-quickplace" data-dest="Maison · 18 Av. Mobutu, Masina" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-house" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Maison</div><div style="font-size:11px;color:var(--color-neutral-500)">18 Av. Mobutu, Masina</div></div><i class="ph ph-arrow-up-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta gm-quickplace" data-dest="Bureau · Immeuble Botour, Gombe" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-briefcase" style="color:#8fceac;font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Bureau</div><div style="font-size:11px;color:var(--color-neutral-500)">Immeuble Botour, Gombe</div></div><i class="ph ph-arrow-up-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+        </div>
+
+        <!-- parrainage -->
+        <div class="gm-cta" data-goto="referral" style="display:flex;align-items:center;gap:13px;background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-700);border-radius:16px;padding:15px 17px">
+          <span style="width:40px;height:40px;border-radius:12px;background:rgba(145,132,217,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-users-three" style="color:var(--color-accent-300);font-size:20px"></i></span>
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Parrainez vos amis</div><div style="font-size:11.5px;color:var(--color-neutral-500)">3 courses gratuites par ami inscrit</div></div>
+          <i class="ph ph-caret-right" style="color:var(--color-neutral-500);font-size:16px"></i>
+        </div>
+      </div>
+
+      <!-- ═══ CRÉER UNE COURSE ═══ -->
+      <div data-panel="create" style="display:none">
+        <div class="gm-cta" data-goto="home" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Nouvelle course</div>
+
+        <!-- départ / destination -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:11px;padding-bottom:12px;border-bottom:1px solid var(--color-neutral-800)">
+            <i class="ph-fill ph-circle" style="color:#6fae90;font-size:12px"></i>
+            <div style="flex:1"><div style="font-size:10.5px;color:var(--color-neutral-500)">Départ</div><input class="input gm-flush" style="border:none;background:transparent;padding:2px 0;font-size:13.5px;font-weight:600;color:var(--color-text)" value="Position actuelle (GPS)"></div>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;color:#6fae90"><i class="ph-fill ph-crosshair"></i>auto</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:11px;padding-top:12px">
+            <i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:13px"></i>
+            <div style="flex:1"><div style="font-size:10.5px;color:var(--color-neutral-500)">Destination</div><input class="input gm-dest gm-flush" style="border:none;background:transparent;padding:2px 0;font-size:13.5px;font-weight:600;color:var(--color-text)" placeholder="Saisir une adresse…"></div>
+          </div>
+        </div>
+
+        <!-- choix du chauffeur -->
+        <div style="display:flex;gap:4px;padding:4px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:12px;margin-bottom:14px">
+          <span class="gm-seg gm-dmode" data-m="auto" onClick="{{ setDriverMode }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:12px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)"><i class="ph-fill ph-lightning"></i> Serveur choisit</span>
+          <span class="gm-seg gm-dmode" data-m="choose" onClick="{{ setDriverMode }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:12px;font-weight:500;color:var(--color-neutral-400)"><i class="ph ph-user-focus"></i> Choisir</span>
+        </div>
+
+        <!-- mode auto -->
+        <div data-dmode="auto" style="display:flex;align-items:center;gap:11px;background:rgba(145,132,217,.08);border:1px solid var(--color-accent-800);border-radius:14px;padding:13px 15px;margin-bottom:14px">
+          <i class="ph-fill ph-shuffle" style="color:var(--color-accent-300);font-size:18px"></i>
+          <div style="font-size:12px;color:var(--color-neutral-300);line-height:1.45">Le serveur assigne <b style="color:var(--color-text)">le chauffeur le plus proche</b> et le mieux noté automatiquement.</div>
+        </div>
+
+        <!-- mode choix -->
+        <div data-dmode="choose" style="display:none;margin-bottom:14px">
+          <div style="font-size:12px;color:var(--color-neutral-500);margin-bottom:9px">Chauffeurs disponibles à proximité</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div class="gm-cta gm-driverpick gm-on" data-driver="Gédéon K." onClick="{{ selectDriver }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-accent-400);border-radius:13px;padding:11px 13px"><span style="width:38px;height:38px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--color-neutral-100)">GK</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Gédéon K.</div><div style="font-size:11px;color:var(--color-neutral-500)"><i class="ph-fill ph-star" style="color:#d9a866;font-size:11px"></i> 4,7 · à 900 m · Bajaj rouge</div></div><i class="ph-fill ph-check-circle gm-pickmark" style="color:var(--color-accent-400);font-size:19px"></i></div>
+            <div class="gm-cta gm-driverpick" data-driver="Patrick M." onClick="{{ selectDriver }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:11px 13px"><span style="width:38px;height:38px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--color-neutral-100)">PM</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Patrick M.</div><div style="font-size:11px;color:var(--color-neutral-500)"><i class="ph-fill ph-star" style="color:#d9a866;font-size:11px"></i> 4,9 · à 1,4 km · TVS noir</div></div><i class="ph ph-circle gm-pickmark" style="color:var(--color-neutral-700);font-size:19px"></i></div>
+            <div class="gm-cta gm-driverpick" data-driver="Josué B." onClick="{{ selectDriver }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:11px 13px"><span style="width:38px;height:38px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--color-neutral-100)">JB</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Josué B.</div><div style="font-size:11px;color:var(--color-neutral-500)"><i class="ph-fill ph-star" style="color:#d9a866;font-size:11px"></i> 4,5 · à 2,1 km · Bajaj bleu</div></div><i class="ph ph-circle gm-pickmark" style="color:var(--color-neutral-700);font-size:19px"></i></div>
+          </div>
+        </div>
+
+        <!-- estimation -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:12px;color:var(--color-neutral-400)">Prix estimé</span><span style="font-size:20px;font-weight:700;color:var(--color-text)">3 500 FC</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="font-size:11.5px;color:var(--color-neutral-500)">Distance · durée</span><span style="font-size:12px;color:var(--color-neutral-300)">4,2 km · ~12 min</span></div>
+          <div style="display:flex;align-items:center;gap:9px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:11px;padding:10px 12px;margin-top:12px"><i class="ph-fill ph-wallet" style="color:var(--color-accent-300);font-size:16px"></i><span style="font-size:11.5px;color:var(--color-neutral-400);flex:1">Payé depuis votre solde plateforme</span></div>
+        </div>
+
+        <button class="btn btn-primary btn-block gm-cta" data-goto="searching" style="font-size:14px;padding:13px"><i class="ph-fill ph-paper-plane-tilt"></i>Demander la course</button>
+      </div>
+
+      <!-- ═══ RECHERCHE CHAUFFEUR ═══ -->
+      <div data-panel="searching" style="display:none">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 10px 30px">
+          <div style="position:relative;width:90px;height:90px;margin-bottom:24px">
+            <span style="position:absolute;inset:0;border-radius:50%;background:var(--color-accent-500);opacity:.25;animation:gmPing 1.8s infinite"></span>
+            <span style="position:absolute;inset:14px;border-radius:50%;background:var(--color-accent-500);opacity:.35;animation:gmPing 1.8s infinite .4s"></span>
+            <span style="position:absolute;inset:26px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-400),var(--color-accent-700));display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:#fff;font-size:20px"></i></span>
+          </div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text);margin-bottom:6px">Recherche d'un chauffeur…</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500);max-width:250px;line-height:1.5">Nous contactons les motards proches de votre position. Cela prend quelques secondes.</div>
+          <div style="display:inline-flex;align-items:center;gap:7px;margin-top:20px;padding:7px 14px;border:1px solid rgba(111,174,144,.3);border-radius:20px;background:rgba(111,174,144,.08)"><span style="width:8px;height:8px;border-radius:50%;background:#6fae90;animation:gmPulse 1.2s infinite"></span><span style="font-size:11.5px;color:#8fceac;font-weight:600">Position envoyée au serveur</span></div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" data-goto="create" style="font-size:13px;padding:11px;color:#d98a8a">Annuler la demande</button>
+      </div>
+
+      <!-- ═══ COURSE EN COURS (itinéraire) ═══ -->
+      <div data-panel="ontrip" style="display:none">
+        <div class="gm-cta" data-goto="home" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Course en cours</div>
+
+        <!-- carte : ITINÉRAIRE UNIQUEMENT -->
+        <div style="position:relative;height:270px;border:1px solid var(--color-neutral-800);border-radius:16px;overflow:hidden;background:radial-gradient(ellipse 80% 90% at 40% 30%,#1c2033,#12141f);margin-bottom:14px">
+          <svg viewBox="0 0 360 270" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">
+            <path d="M55,210 C110,180 130,120 180,120 C235,120 250,70 305,55" fill="none" stroke="var(--color-neutral-700)" stroke-width="9" stroke-linecap="round" opacity=".5"></path>
+            <path d="M55,210 C110,180 130,120 180,120 C235,120 250,70 305,55" fill="none" stroke="url(#gmGrad)" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 11"><animate attributeName="stroke-dashoffset" from="130" to="0" dur="3s" repeatCount="indefinite"></animate></path>
+            <defs><linearGradient id="gmGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6fae90"></stop><stop offset="1" stop-color="var(--color-accent-400)"></stop></linearGradient></defs>
+          </svg>
+          <!-- départ -->
+          <div style="position:absolute;left:55px;top:210px;transform:translate(-50%,-50%)"><span style="display:block;width:15px;height:15px;border-radius:50%;background:#6fae90;border:3px solid #fff;box-shadow:0 0 0 4px rgba(111,174,144,.3)"></span></div>
+          <!-- destination -->
+          <div style="position:absolute;left:305px;top:55px;transform:translate(-50%,-100%)"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))"></i></div>
+          <!-- chauffeur (position live) -->
+          <div style="position:absolute;left:180px;top:120px;transform:translate(-50%,-50%)"><span style="position:absolute;inset:-10px;border-radius:50%;background:var(--color-accent-500);opacity:.3;animation:gmPing 2s infinite"></span><span style="position:relative;display:flex;width:26px;height:26px;border-radius:50%;background:var(--color-accent-500);border:2px solid #fff;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:#fff;font-size:13px"></i></span></div>
+          <!-- infos overlay -->
+          <div style="position:absolute;left:14px;top:14px;background:rgba(20,22,36,.85);backdrop-filter:blur(8px);border:1px solid var(--color-neutral-800);border-radius:11px;padding:9px 13px"><div style="font-size:11px;color:var(--color-neutral-500)">Arrivée du chauffeur</div><div style="font-size:15px;font-weight:700;color:#fff">3 min · 900 m</div></div>
+          <div style="position:absolute;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:6px;background:rgba(20,22,36,.85);backdrop-filter:blur(8px);border:1px solid rgba(111,174,144,.3);border-radius:20px;padding:6px 11px"><span style="width:7px;height:7px;border-radius:50%;background:#6fae90;animation:gmPulse 1.2s infinite"></span><span style="font-size:10.5px;color:#8fceac;font-weight:600">Position live</span></div>
+        </div>
+
+        <!-- carte chauffeur -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:16px;padding:15px 16px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span style="width:46px;height:46px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--color-neutral-100)">GK</span>
+            <div style="flex:1"><div style="font-size:14.5px;font-weight:600;color:var(--color-text)">Gédéon Kabasele</div><div style="font-size:11.5px;color:var(--color-neutral-500)"><i class="ph-fill ph-star" style="color:#d9a866"></i> 4,7 · Bajaj Boxer rouge · <span style="font-family:ui-monospace,monospace">KN-3388</span></div></div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <a class="btn btn-secondary gm-cta" href="tel:+243800000000" style="flex:1;font-size:13px;padding:11px"><i class="ph-fill ph-phone"></i>Appeler</a>
+            <a class="btn btn-secondary gm-cta" href="sms:+243800000000" style="flex:1;font-size:13px;padding:11px"><i class="ph-fill ph-chat-circle"></i>Message</a>
+          </div>
+        </div>
+
+        <!-- trajet -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><i class="ph-fill ph-circle" style="color:#6fae90;font-size:10px"></i><span style="font-size:12.5px;color:var(--color-text)">Position actuelle, Kalamu</span></div>
+          <div style="width:1px;height:10px;background:var(--color-neutral-700);margin-left:4.5px"></div>
+          <div style="display:flex;align-items:center;gap:9px;margin-top:8px"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:11px"></i><span class="gm-triptext" style="font-size:12.5px;color:var(--color-text)">Marché Central, Gombe · 3 500 FC</span></div>
+        </div>
+
+        <button class="btn btn-primary btn-block gm-cta" data-goto="rate" style="font-size:14px;padding:12px"><i class="ph-fill ph-flag-checkered"></i>Je suis arrivé(e)</button>
+      </div>
+
+      <!-- ═══ NOTER LE CHAUFFEUR ═══ -->
+      <div data-panel="rate" style="display:none">
+        <div style="text-align:center;padding:14px 0 6px">
+          <div style="width:70px;height:70px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--color-neutral-100);margin:0 auto 12px">GK</div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">Course terminée</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500);margin-top:2px">Comment s'est passée votre course avec Gédéon ?</div>
+        </div>
+        <!-- étoiles -->
+        <div style="display:flex;justify-content:center;gap:10px;margin:20px 0 6px">
+          <i class="ph-fill ph-star gm-star" data-star="1" onClick="{{ setRating }}" style="font-size:38px;color:#d9a866"></i>
+          <i class="ph-fill ph-star gm-star" data-star="2" onClick="{{ setRating }}" style="font-size:38px;color:#d9a866"></i>
+          <i class="ph-fill ph-star gm-star" data-star="3" onClick="{{ setRating }}" style="font-size:38px;color:#d9a866"></i>
+          <i class="ph-fill ph-star gm-star" data-star="4" onClick="{{ setRating }}" style="font-size:38px;color:#d9a866"></i>
+          <i class="ph ph-star gm-star" data-star="5" onClick="{{ setRating }}" style="font-size:38px;color:var(--color-neutral-700)"></i>
+        </div>
+        <div class="gm-ratelabel" style="text-align:center;font-size:13px;font-weight:600;color:var(--color-accent-200);margin-bottom:20px">Très bien</div>
+        <div class="field" style="margin-bottom:14px"><label>Laisser un commentaire (facultatif)</label><textarea class="input" rows="3" placeholder="Conduite, ponctualité, courtoisie…"></textarea></div>
+        <!-- pourboire -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px 16px;margin-bottom:16px">
+          <div style="font-size:12.5px;font-weight:600;color:var(--color-text);margin-bottom:10px">Ajouter un pourboire ?</div>
+          <div style="display:flex;gap:8px">
+            <span class="gm-seg gm-tip" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">500 FC</span>
+            <span class="gm-seg gm-tip" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">1 000 FC</span>
+            <span class="gm-seg gm-tip" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">2 000 FC</span>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-block gm-cta" onClick="{{ finishRating }}" style="font-size:14px;padding:13px"><i class="ph-fill ph-paper-plane-tilt"></i>Envoyer mon avis</button>
+      </div>
+
+      <!-- ═══ MES LIEUX ═══ -->
+      <div data-panel="places" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ph-fill ph-map-pin-line" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Mes lieux enregistrés</span></div>
+        <p style="font-size:12px;color:var(--color-neutral-500);margin:0 0 16px">Commandez une course en un clic vers vos lieux favoris.</p>
+        <div class="gm-placelist" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:38px;height:38px;border-radius:11px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-house" style="color:var(--color-accent-300);font-size:17px"></i></span><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Maison</div><div style="font-size:11px;color:var(--color-neutral-500)">18 Av. Mobutu, Masina</div></div><button class="btn btn-secondary gm-cta gm-quickplace" data-dest="Maison · 18 Av. Mobutu, Masina" style="font-size:11.5px;padding:7px 12px">Y aller</button></div>
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:38px;height:38px;border-radius:11px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-briefcase" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Bureau</div><div style="font-size:11px;color:var(--color-neutral-500)">Immeuble Botour, Gombe</div></div><button class="btn btn-secondary gm-cta gm-quickplace" data-dest="Bureau · Immeuble Botour, Gombe" style="font-size:11.5px;padding:7px 12px">Y aller</button></div>
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:38px;height:38px;border-radius:11px;background:rgba(217,168,102,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-storefront" style="color:#d9a866;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Marché Central</div><div style="font-size:11px;color:var(--color-neutral-500)">Av. du Commerce, Gombe</div></div><button class="btn btn-secondary gm-cta gm-quickplace" data-dest="Marché Central · Av. du Commerce, Gombe" style="font-size:11.5px;padding:7px 12px">Y aller</button></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;background:rgba(145,132,217,.06);border:1px dashed var(--color-accent-700);border-radius:13px;padding:13px 15px"><i class="ph ph-info" style="color:var(--color-accent-300);font-size:16px"></i><span style="font-size:11.5px;color:var(--color-neutral-400);line-height:1.45">Astuce : à la fin d'une course, enregistrez la destination pour la retrouver ici.</span></div>
+      </div>
+
+      <!-- ═══ PORTEFEUILLE ═══ -->
+      <div data-panel="wallet" style="display:none">
+        <div style="background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:16px;padding:18px;margin-bottom:14px">
+          <div style="font-size:12px;color:var(--color-accent-200);margin-bottom:4px">Solde plateforme</div>
+          <div style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">0 <span style="font-size:16px;color:var(--color-neutral-500);font-weight:500">FC</span></div>
+          <button class="btn btn-primary btn-block gm-cta" data-goto="topup" style="font-size:13.5px;padding:11px;margin-top:14px"><i class="ph-fill ph-plus-circle"></i>Recharger via Mobile Money</button>
+        </div>
+
+        <!-- bonus 1er dépôt -->
+        <div style="display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,rgba(217,168,102,.15),var(--color-surface));border:1px solid rgba(217,168,102,.35);border-radius:14px;padding:13px 15px;margin-bottom:16px">
+          <i class="ph-fill ph-gift" style="color:#d9a866;font-size:20px"></i>
+          <div style="font-size:12px;color:var(--color-neutral-300);line-height:1.45">Premier dépôt = <b style="color:#d9a866">2 courses gratuites</b> créditées automatiquement.</div>
+        </div>
+
+        <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:10px">Transactions</div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 10px;background:var(--color-surface);border:1px dashed var(--color-neutral-800);border-radius:14px">
+          <i class="ph ph-receipt" style="color:var(--color-neutral-600);font-size:26px;margin-bottom:8px"></i>
+          <div style="font-size:12.5px;color:var(--color-neutral-500)">Aucune transaction pour le moment</div>
+          <div style="font-size:11px;color:var(--color-neutral-600);margin-top:2px">Vos recharges et courses apparaîtront ici.</div>
+        </div>
+      </div>
+
+      <!-- ═══ RECHARGER (Mobile Money) ═══ -->
+      <div data-panel="topup" style="display:none">
+        <div class="gm-cta" data-goto="wallet" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Recharger mon compte</div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px;line-height:1.5">Le Mobile Money sert à <b style="color:var(--color-text)">ravitailler votre solde</b> sur la plateforme. Vous payez ensuite vos courses depuis ce solde.</p>
+
+        <!-- montant -->
+        <div class="field" style="margin-bottom:12px"><label>Montant à déposer</label><input class="input" type="text" value="5 000 FC"></div>
+        <div style="display:flex;gap:8px;margin-bottom:18px">
+          <span class="gm-seg gm-amount" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">2 000</span>
+          <span class="gm-seg gm-amount gm-on" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900);border:1px solid var(--color-accent-700)">5 000</span>
+          <span class="gm-seg gm-amount" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">10 000</span>
+          <span class="gm-seg gm-amount" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">20 000</span>
+        </div>
+
+        <!-- opérateur -->
+        <div style="font-size:12.5px;font-weight:600;color:var(--color-text);margin-bottom:10px">Opérateur Mobile Money</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+          <div class="gm-cta gm-momo gm-on" data-momo="m-pesa" onClick="{{ selectMomo }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-accent-400);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(111,174,144,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">M-Pesa (Vodacom)</div><div style="font-size:11px;color:var(--color-neutral-500)">+243 81 •••• 788</div></div><i class="ph-fill ph-check-circle gm-momomark" style="color:var(--color-accent-400);font-size:19px"></i></div>
+          <div class="gm-cta gm-momo" data-momo="airtel" onClick="{{ selectMomo }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(207,127,127,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#d98a8a;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Airtel Money</div><div style="font-size:11px;color:var(--color-neutral-500)">Lier un numéro</div></div><i class="ph ph-circle gm-momomark" style="color:var(--color-neutral-700);font-size:19px"></i></div>
+          <div class="gm-cta gm-momo" data-momo="orange" onClick="{{ selectMomo }}" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(217,168,102,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#d9a866;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Orange Money</div><div style="font-size:11px;color:var(--color-neutral-500)">Lier un numéro</div></div><i class="ph ph-circle gm-momomark" style="color:var(--color-neutral-700);font-size:19px"></i></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,rgba(217,168,102,.15),var(--color-surface));border:1px solid rgba(217,168,102,.35);border-radius:14px;padding:13px 15px;margin-bottom:16px"><i class="ph-fill ph-gift" style="color:#d9a866;font-size:20px"></i><div style="font-size:12px;color:var(--color-neutral-300);line-height:1.45">Ce dépôt étant votre premier, vous recevrez <b style="color:#d9a866">2 courses gratuites</b>.</div></div>
+
+        <button class="btn btn-primary btn-block gm-cta" data-goto="wallet" style="font-size:14px;padding:13px"><i class="ph-fill ph-lock-key"></i>Confirmer le dépôt</button>
+        <p style="font-size:11px;color:var(--color-neutral-600);text-align:center;line-height:1.5;margin:12px 0 0">Vous recevrez une demande de confirmation sur votre téléphone Mobile Money.</p>
+      </div>
+
+      <!-- ═══ PARRAINAGE ═══ -->
+      <div data-panel="referral" style="display:none">
+        <div style="text-align:center;padding:6px 0 14px">
+          <span style="display:inline-flex;width:64px;height:64px;border-radius:18px;background:rgba(145,132,217,.16);align-items:center;justify-content:center;margin-bottom:12px"><i class="ph-fill ph-users-three" style="color:var(--color-accent-300);font-size:30px"></i></span>
+          <div style="font-size:18px;font-weight:700;color:var(--color-text)">Parrainez, gagnez des courses</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500);margin-top:4px;max-width:270px;margin-left:auto;margin-right:auto;line-height:1.5">Chaque ami qui s'inscrit avec votre code vous offre <b style="color:var(--color-accent-200)">3 courses gratuites</b>.</div>
+        </div>
+
+        <!-- code -->
+        <div style="background:var(--color-surface);border:1px dashed var(--color-accent-600);border-radius:16px;padding:16px;text-align:center;margin-bottom:14px">
+          <div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:6px">Votre code de parrainage</div>
+          <div style="font-size:26px;font-weight:800;letter-spacing:.14em;color:var(--color-accent-200);font-family:ui-monospace,monospace">SARAH24</div>
+        </div>
+
+        <!-- partager -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <button class="btn btn-primary gm-cta" style="font-size:13px;padding:12px"><i class="ph-fill ph-share-network"></i>Partager</button>
+          <button class="btn btn-secondary gm-cta" style="font-size:13px;padding:12px"><i class="ph-fill ph-copy"></i>Copier le lien</button>
+        </div>
+        <div style="display:flex;justify-content:center;gap:14px;margin-bottom:20px">
+          <span class="gm-cta" style="width:44px;height:44px;border-radius:12px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-whatsapp-logo" style="color:#6fae90;font-size:22px"></i></span>
+          <span class="gm-cta" style="width:44px;height:44px;border-radius:12px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-messenger-logo" style="color:var(--color-accent-300);font-size:22px"></i></span>
+          <span class="gm-cta" style="width:44px;height:44px;border-radius:12px;background:rgba(217,168,102,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-envelope-simple" style="color:#d9a866;font-size:22px"></i></span>
+          <span class="gm-cta" style="width:44px;height:44px;border-radius:12px;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-dots-three" style="color:var(--color-neutral-300);font-size:22px"></i></span>
+        </div>
+
+        <!-- progression -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px"><span style="font-size:12.5px;font-weight:600;color:var(--color-text)">Amis inscrits</span><span style="font-size:13px;font-weight:700;color:var(--color-accent-200)">2 / 5</span></div>
+          <div style="height:9px;border-radius:6px;background:var(--color-neutral-800);overflow:hidden;margin-bottom:8px"><div style="width:40%;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--color-accent-400),#6fae90)"></div></div>
+          <div style="font-size:11.5px;color:var(--color-neutral-500)">6 courses gratuites déjà gagnées 🎉</div>
+        </div>
+      </div>
+
+      <!-- ═══ NOTIFICATIONS ═══ -->
+      <div data-panel="notifs" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><i class="ph-fill ph-bell" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Notifications</span><span style="margin-left:auto;font-size:11.5px;color:var(--color-accent-300)">Tout marquer lu</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(217,168,102,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-gift" style="color:#d9a866;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Faites votre 1<sup>er</sup> dépôt</div><div style="font-size:11.5px;color:var(--color-neutral-500)">2 courses gratuites vous attendent</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">maintenant</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-users-three" style="color:var(--color-accent-300);font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Parrainage : +3 courses</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Votre amie Grâce s'est inscrite</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">hier</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Course terminée</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Kalamu → Gombe · 3 500 FC</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">hier</span></div>
+        </div>
+      </div>
+
+      <!-- ═══ PROFIL ═══ -->
+      <div data-panel="profil" style="display:none">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px">SM</div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">Sarah Mbala</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500)">Cliente · Kinshasa · depuis juin 2025</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 13px;border:1px solid rgba(217,168,102,.35);border-radius:20px"><i class="ph-fill ph-star" style="color:#d9a866;font-size:14px"></i><span style="font-size:12.5px;font-weight:600;color:#d9a866">4,9</span><span style="font-size:11.5px;color:var(--color-neutral-500)">· 47 courses</span></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div class="gm-cta" data-goto="compte" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-circle" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Modifier mon compte</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="momo" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-device-mobile" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Comptes Mobile Money</span><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:2px 9px;border-radius:20px">1 lié</span></div>
+          <div class="gm-cta" data-goto="referral" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-users-three" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Parrainage &amp; partage</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="motdepasse" style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-lock-key" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Changer le mot de passe</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-moon-stars" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Thème</span>
+            <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:9px"><span class="gm-seg gm-theme gm-on" data-theme="dark" onClick="{{ setTheme }}" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)"><i class="ph-fill ph-moon"></i></span><span class="gm-seg gm-theme" data-theme="light" onClick="{{ setTheme }}" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:500;color:var(--color-neutral-400)"><i class="ph-fill ph-sun"></i></span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-bell-ringing" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Recevoir des notifications</span><span class="gm-toggle gm-on" onClick="{{ toggleNotif }}" style="width:44px;height:24px;border-radius:20px;background:#6fae90;position:relative;flex-shrink:0;cursor:pointer"><span style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:right .18s,left .18s"></span></span></div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" style="font-size:13.5px;padding:11px;color:#d98a8a"><i class="ph ph-sign-out"></i>Se déconnecter</button>
+      </div>
+
+      <!-- ═══ COMPTES MOBILE MONEY ═══ -->
+      <div data-panel="momo" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ph-fill ph-device-mobile" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Comptes Mobile Money</span></div>
+        <p style="font-size:12px;color:var(--color-neutral-500);margin:0 0 16px;line-height:1.5">Reliez vos numéros pour recharger votre solde directement.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:38px;height:38px;border-radius:11px;background:rgba(111,174,144,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">M-Pesa (Vodacom)</div><div style="font-size:11px;color:var(--color-neutral-500)">+243 81 •••• 788</div></div><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 10px;border-radius:20px">Principal</span></div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" style="font-size:13.5px;padding:12px"><i class="ph ph-plus"></i>Ajouter un compte Mobile Money</button>
+      </div>
+
+      <!-- ═══ MODIFIER COMPTE ═══ -->
+      <div data-panel="compte" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="text-align:center;margin-bottom:18px"><div style="position:relative;width:80px;margin:0 auto"><div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:700;color:#fff">SM</div><span class="gm-cta" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--color-accent-600);border:2px solid var(--color-bg);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-camera" style="color:#fff;font-size:13px"></i></span></div></div>
+        <div class="field" style="margin-bottom:13px"><label>Prénom</label><input class="input" type="text" value="Sarah"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nom</label><input class="input" type="text" value="Mbala"></div>
+        <div class="field" style="margin-bottom:13px"><label>Téléphone</label><input class="input" type="text" value="+243 81 224 5788"></div>
+        <div class="field" style="margin-bottom:20px"><label>Commune</label><select class="input"><option>Gombe</option><option>Kalamu</option><option>Masina</option><option>Limete</option><option>Ndjili</option></select></div>
+        <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Enregistrer</button>
+      </div>
+
+      <!-- ═══ MOT DE PASSE ═══ -->
+      <div data-panel="motdepasse" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><i class="ph-fill ph-lock-key" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Changer le mot de passe</span></div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 20px">Au moins 8 caractères.</p>
+        <div class="field" style="margin-bottom:13px"><label>Mot de passe actuel</label><input class="input" type="password" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nouveau mot de passe</label><input class="input" type="password" placeholder="Au moins 8 caractères"></div>
+        <div class="field" style="margin-bottom:20px"><label>Confirmer</label><input class="input" type="password" placeholder="Retaper le mot de passe"></div>
+        <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Mettre à jour</button>
+      </div>
+
+    </div>
+
+    <!-- ═══ MODAL : ajouter le lieu ═══ -->
+    <div class="gm-modal" style="display:none;position:absolute;inset:0;z-index:20;background:rgba(8,9,16,.55);backdrop-filter:blur(3px);align-items:flex-end">
+      <div style="width:100%;background:var(--color-surface);border-top:1px solid var(--color-neutral-800);border-radius:24px 24px 0 0;padding:22px 22px 26px;box-shadow:0 -20px 50px rgba(0,0,0,.4)">
+        <div style="width:40px;height:4px;border-radius:3px;background:var(--color-neutral-800);margin:0 auto 18px"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="width:42px;height:42px;border-radius:12px;background:rgba(145,132,217,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-map-pin-plus" style="color:var(--color-accent-300);font-size:20px"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--color-text)">Ajouter ce lieu ?</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Marché Central, Gombe</div></div></div>
+        <p style="font-size:12px;color:var(--color-neutral-500);line-height:1.5;margin:6px 0 16px">Enregistrez cette destination pour la commander en un clic la prochaine fois. Les coordonnées GPS seront envoyées au serveur.</p>
+        <div class="field" style="margin-bottom:16px"><label>Nom du lieu</label><input class="input" type="text" value="Marché Central"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary gm-cta" onClick="{{ closeModal }}" style="flex:1;font-size:13px;padding:12px">Plus tard</button>
+          <button class="btn btn-primary gm-cta" onClick="{{ savePlace }}" style="flex:1.4;font-size:13px;padding:12px"><i class="ph-fill ph-bookmark-simple"></i>Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div style="flex-shrink:0;display:flex;border-top:1px solid var(--color-neutral-800);background:var(--color-surface);padding:9px 8px 16px">
+      <div class="gm-tab gm-navi" data-view="home" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-300)"><i class="ph-fill ph-house" style="font-size:21px"></i><span style="font-size:10px;font-weight:600">Accueil</span></div>
+      <div class="gm-tab gm-navi" data-view="places" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-map-pin-line" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Mes lieux</span></div>
+      <div class="gm-tab gm-navi" data-view="create" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-plus-circle" style="font-size:24px"></i><span style="font-size:10px;font-weight:500">Course</span></div>
+      <div class="gm-tab gm-navi" data-view="wallet" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-wallet" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Solde</span></div>
+      <div class="gm-tab gm-navi" data-view="profil" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-user" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Profil</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const t = () => { const c = document.querySelector('.gm-clock'); if (c) c.textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); };
+    t(); this._clk = setInterval(t, 20000);
+    // PWA : service worker + prompt d'installation
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+    window.addEventListener('beforeinstallprompt', (ev) => {
+      ev.preventDefault(); this._deferred = ev;
+      const b = document.querySelector('.gm-install'); if (b) b.style.display = 'flex';
+    });
+    window.addEventListener('appinstalled', () => { const b = document.querySelector('.gm-install'); if (b) b.style.display = 'none'; });
+    document.addEventListener('click', (e) => {
+      const g = e.target.closest && e.target.closest('[data-goto]');
+      if (g) { this._go(g.getAttribute('data-goto')); return; }
+      const q = e.target.closest && e.target.closest('.gm-quickplace');
+      if (q) { const d = q.getAttribute('data-dest'); this._prefill(d); this._go('create'); return; }
+      const a = e.target.closest && e.target.closest('.gm-amount');
+      if (a) this._pick('gm-amount', a);
+      const tp = e.target.closest && e.target.closest('.gm-tip');
+      if (tp) this._pick('gm-tip', tp);
+    });
+  }
+  componentWillUnmount() { clearInterval(this._clk); clearTimeout(this._srch); }
+  ICONS = { home:'ph-house', places:'ph-map-pin-line', create:'ph-plus-circle', wallet:'ph-wallet', profil:'ph-user' };
+  TABS = ['home','places','create','wallet','profil'];
+  _go = (v) => {
+    // searching -> auto-advance to ontrip
+    document.querySelectorAll('[data-panel]').forEach(p => { p.style.display = p.getAttribute('data-panel') === v ? '' : 'none'; });
+    // highlight matching tab (fallback to home when panel isn't a tab)
+    const tabKey = this.TABS.includes(v) ? v : (['create','searching','ontrip','rate'].includes(v) ? 'create' : (v==='wallet'||v==='topup' ? 'wallet' : (['profil','compte','motdepasse','momo','referral'].includes(v) ? 'profil' : 'home')));
+    document.querySelectorAll('.gm-navi').forEach(n => {
+      const key = n.getAttribute('data-view'); const on = key === tabKey;
+      n.style.color = on ? 'var(--color-accent-300)' : 'var(--color-neutral-500)';
+      const ic = n.querySelector('i'); const sz = key==='create' ? '24px' : '21px';
+      ic.className = (on ? 'ph-fill ' : 'ph ') + this.ICONS[key]; ic.style.fontSize = sz;
+    });
+    const sc = document.getElementById('gm-scroll'); if (sc) sc.scrollTop = 0;
+    clearTimeout(this._srch);
+    if (v === 'searching') this._srch = setTimeout(() => this._go('ontrip'), 2600);
+  };
+  nav = (e) => this._go(e.currentTarget.getAttribute('data-view'));
+  _prefill = (d) => { const el = document.querySelector('.gm-dest'); if (el && d) el.value = d.split(' · ').slice(1).join(' · ') || d; };
+  setDriverMode = (e) => {
+    const m = e.currentTarget.getAttribute('data-m');
+    document.querySelectorAll('[data-dmode]').forEach(el => { el.style.display = el.getAttribute('data-dmode')===m ? '' : 'none'; });
+    document.querySelectorAll('.gm-dmode').forEach(s => {
+      const on = s.getAttribute('data-m')===m;
+      s.style.background = on ? 'var(--color-accent-900)' : 'transparent';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.fontWeight = on ? '600' : '500';
+    });
+  };
+  selectDriver = (e) => {
+    const el = e.currentTarget;
+    document.querySelectorAll('.gm-driverpick').forEach(d => {
+      const on = d === el;
+      d.classList.toggle('gm-on', on);
+      d.style.borderColor = on ? 'var(--color-accent-400)' : 'var(--color-neutral-800)';
+      const m = d.querySelector('.gm-pickmark');
+      if (m) { m.className = (on ? 'ph-fill ph-check-circle' : 'ph ph-circle') + ' gm-pickmark'; m.style.color = on ? 'var(--color-accent-400)' : 'var(--color-neutral-700)'; }
+    });
+  };
+  selectMomo = (e) => {
+    const el = e.currentTarget;
+    document.querySelectorAll('.gm-momo').forEach(d => {
+      const on = d === el;
+      d.classList.toggle('gm-on', on);
+      d.style.borderColor = on ? 'var(--color-accent-400)' : 'var(--color-neutral-800)';
+      const m = d.querySelector('.gm-momomark');
+      if (m) { m.className = (on ? 'ph-fill ph-check-circle' : 'ph ph-circle') + ' gm-momomark'; m.style.color = on ? 'var(--color-accent-400)' : 'var(--color-neutral-700)'; }
+    });
+  };
+  _pick = (cls, el) => {
+    document.querySelectorAll('.' + cls).forEach(s => {
+      const on = s === el;
+      s.classList.toggle('gm-on', on);
+      s.style.background = on ? 'var(--color-accent-900)' : 'var(--color-bg)';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.borderColor = on ? 'var(--color-accent-700)' : 'var(--color-neutral-800)';
+    });
+  };
+  RATE_LABELS = { 1:'Décevant', 2:'Passable', 3:'Correct', 4:'Très bien', 5:'Excellent !' };
+  setRating = (e) => {
+    const n = parseInt(e.currentTarget.getAttribute('data-star'), 10);
+    document.querySelectorAll('.gm-star').forEach(s => {
+      const idx = parseInt(s.getAttribute('data-star'), 10);
+      const on = idx <= n;
+      s.className = (on ? 'ph-fill ph-star' : 'ph ph-star') + ' gm-star';
+      s.style.color = on ? '#d9a866' : 'var(--color-neutral-700)';
+    });
+    const lbl = document.querySelector('.gm-ratelabel'); if (lbl) lbl.textContent = this.RATE_LABELS[n];
+  };
+  // Stub d'appel serveur — remplacer l'URL par le vrai endpoint API
+  _api = async (endpoint, payload) => {
+    console.log('[GO-MBOKA][API →]', endpoint, payload);
+    try {
+      const res = await fetch('/api/' + endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      const data = await res.json(); console.log('[GO-MBOKA][API ←]', endpoint, data); return data;
+    } catch (e) { console.warn('[GO-MBOKA][API offline]', endpoint, '(sera renvoyé à la reconnexion)'); return { queued:true }; }
+  };
+  finishRating = () => {
+    const active = document.querySelector('.gm-star.ph-fill[data-star]');
+    const stars = [...document.querySelectorAll('.gm-star.ph-fill')].length;
+    const tipEl = document.querySelector('.gm-tip.gm-on');
+    const comment = (document.querySelector('[data-panel="rate"] textarea') || {}).value || '';
+    this._api('courses/noter', {
+      chauffeur:'Gédéon Kabasele', note:stars || 4,
+      pourboire: tipEl ? tipEl.textContent.trim() : null,
+      commentaire: comment, ts: Date.now()
+    });
+    const m = document.querySelector('.gm-modal'); if (m) m.style.display = 'flex';
+  };
+  closeModal = () => { const m = document.querySelector('.gm-modal'); if (m) m.style.display = 'none'; this._go('home'); };
+  savePlace = () => {
+    const nom = (document.querySelector('.gm-modal input') || {}).value || 'Nouveau lieu';
+    this._api('lieux/ajouter', {
+      nom, adresse:'Marché Central, Gombe',
+      coords:{ lat:-4.3217, lng:15.3125 }, ts: Date.now()
+    });
+    const m = document.querySelector('.gm-modal'); if (m) m.style.display = 'none'; this._go('places');
+  };
+  setTheme = (e) => {
+    const t = e.currentTarget.getAttribute('data-theme');
+    const r = document.querySelector('.gm-root'); if (r) r.classList.toggle('gm-light', t === 'light');
+    document.querySelectorAll('.gm-theme').forEach(s => {
+      const on = s.getAttribute('data-theme') === t;
+      s.classList.toggle('gm-on', on);
+      s.style.background = on ? 'var(--color-accent-900)' : 'transparent';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.fontWeight = on ? '600' : '500';
+    });
+  };
+  toggleNotif = (e) => {
+    const el = e.currentTarget; const on = !el.classList.contains('gm-on');
+    el.classList.toggle('gm-on', on);
+    el.style.background = on ? '#6fae90' : 'var(--color-neutral-700)';
+    const knob = el.querySelector('span');
+    if (knob) { knob.style.right = on ? '2px' : 'auto'; knob.style.left = on ? 'auto' : '2px'; knob.style.background = on ? '#fff' : 'var(--color-neutral-400)'; }
+  };
+  installApp = async () => {
+    if (this._deferred) { this._deferred.prompt(); try { await this._deferred.userChoice; } catch(_){} this._deferred = null; const b = document.querySelector('.gm-install'); if (b) b.style.display = 'none'; }
+    else { const btn = document.querySelector('.gm-install-btn'); if (btn) btn.textContent = 'Menu ⋮ → Ajouter à l\'écran'; }
+  };
+  renderVals() { return { installApp:this.installApp, nav:this.nav, setDriverMode:this.setDriverMode, selectDriver:this.selectDriver, selectMomo:this.selectMomo, setRating:this.setRating, finishRating:this.finishRating, closeModal:this.closeModal, savePlace:this.savePlace, setTheme:this.setTheme, toggleNotif:this.toggleNotif }; }
+}
+</script>
+</body>
+</html>
