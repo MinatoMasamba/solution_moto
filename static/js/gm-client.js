@@ -69,17 +69,63 @@
   // ── Résumé client ─────────────────────────────────────────────────────
   function loadSummary() {
     window.gmGetJSON("/api/v1/client/summary/").then(function (d) {
-      var ratingTxt = d.rating ? "★ " + String(d.rating).replace(".", ",") : "Cliente";
-      set("gm-cl-sub", (d.rating ? "Cliente · " + ratingTxt : "Cliente"));
-      set("gm-cl-profil-sub", "Cliente · " + (d.rides_count || 0) + " course(s)" + (d.rating ? " · " + ratingTxt : ""));
+      var ratingTxt = d.rating ? "★ " + String(d.rating).replace(".", ",") : "";
+      set("gm-cl-sub", d.rating ? "Cliente · " + ratingTxt : "Cliente");
+      // En-tête profil : "Cliente · Kinshasa · depuis juin 2025"
+      var sub = "Cliente";
+      if (d.member_since) sub += " · depuis " + d.member_since;
+      set("gm-cl-profil-sub", sub);
+      // Badge note · courses
+      var badge = $("gm-cl-profil-badge");
+      if (badge) {
+        if (d.rating || d.rides_count) {
+          badge.style.display = "inline-flex";
+          badge.innerHTML = '<i class="ph-fill ph-star" style="color:#d9a866;font-size:14px"></i>' +
+            '<span style="font-size:12.5px;font-weight:600;color:#d9a866">' + (d.rating ? String(d.rating).replace(".", ",") : "—") + '</span>' +
+            '<span style="font-size:11.5px;color:var(--color-neutral-500)">· ' + (d.rides_count || 0) + ' course(s)</span>';
+        } else { badge.style.display = "none"; }
+      }
       set("gm-cl-balance", window.gmFmt(d.wallet_balance || 0));
       set("gm-cl-free", d.free_rides || 0);
       set("gm-cl-refcode", esc(d.referral_code || "—"));
       set("gm-cl-refcount", d.referred_count || 0);
+      var badgeM = $("gm-cl-momo-badge");
+      if (badgeM) badgeM.textContent = (d.payment_methods_count || 0) + " lié" + ((d.payment_methods_count || 0) > 1 ? "s" : "");
       var eb = $("gm-cl-emptybanner");
       if (eb) eb.style.display = (Number(d.wallet_balance) || 0) <= 0 ? "flex" : "none";
       window.__gmRef = d.referral_code;
     }).catch(function () {});
+  }
+
+  // ── Thème (clair / sombre) + notifications ────────────────────────────
+  function applyTheme(theme) {
+    var root = document.querySelector(".gm-root");
+    if (root) root.classList.toggle("gm-light", theme === "light");
+    document.querySelectorAll(".gm-cl-theme").forEach(function (s) {
+      var on = s.getAttribute("data-theme") === theme;
+      s.style.background = on ? "var(--color-accent-900)" : "transparent";
+      s.style.color = on ? "var(--color-accent-200)" : "var(--color-neutral-400)";
+      s.style.fontWeight = on ? "600" : "500";
+    });
+    try { localStorage.setItem("gm-theme", theme); } catch (e) {}
+  }
+  function wireTheme() {
+    document.querySelectorAll(".gm-cl-theme").forEach(function (s) {
+      s.addEventListener("click", function () { applyTheme(s.getAttribute("data-theme")); });
+    });
+    var saved = "dark";
+    try { saved = localStorage.getItem("gm-theme") || "dark"; } catch (e) {}
+    applyTheme(saved);
+
+    var tg = $("gm-cl-notif-toggle");
+    if (tg) tg.addEventListener("click", function () {
+      var on = !tg.classList.contains("gm-on");
+      tg.classList.toggle("gm-on", on);
+      tg.style.background = on ? "#6fae90" : "var(--color-neutral-700)";
+      var knob = tg.querySelector("span");
+      if (knob) { knob.style.right = on ? "2px" : "auto"; knob.style.left = on ? "auto" : "2px"; knob.style.background = on ? "#fff" : "var(--color-neutral-400)"; }
+      toast(on ? "Notifications activées." : "Notifications désactivées.", "info");
+    });
   }
 
   // ── Lieux enregistrés ─────────────────────────────────────────────────
@@ -327,6 +373,7 @@
     wireAccount();
     wirePlaces();
     wireReferral();
+    wireTheme();
     var rq = $("gm-cl-request"); if (rq) rq.addEventListener("click", function () { requestRide(rq); });
     var cancel = $("gm-cl-cancel"); if (cancel) cancel.addEventListener("click", function () { stopPolling(); go("create"); });
     var arr = $("gm-cl-arrived"); if (arr) arr.addEventListener("click", function () { go("rate"); });

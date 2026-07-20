@@ -157,6 +157,12 @@ class ClientSummaryView(APIView):
         referred = User.objects.filter(referred_by_code=user.referral_code).count() \
             if hasattr(User, "referred_by_code") else 0
 
+        methods_count = user.payment_methods.count() if hasattr(user, "payment_methods") else 0
+        MONTHS = ["", "janvier", "février", "mars", "avril", "mai", "juin",
+                  "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
+        dj = user.date_joined
+        member_since = f"{MONTHS[dj.month]} {dj.year}" if dj else None
+
         return Response({
             "name": user.get_full_name() or user.phone_number,
             "phone_number": user.phone_number,
@@ -166,4 +172,6 @@ class ClientSummaryView(APIView):
             "referred_count": referred,
             "free_rides": 0,
             "wallet_balance": balance,
+            "member_since": member_since,
+            "payment_methods_count": methods_count,
         })

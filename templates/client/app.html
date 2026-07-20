@@ -222,13 +222,29 @@
           <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px">{{ client_name|slice:":1"|upper }}</div>
           <div style="font-size:17px;font-weight:600;color:var(--color-text)">{{ client_name }}</div>
           <div id="gm-cl-profil-sub" style="font-size:12.5px;color:var(--color-neutral-500)">Cliente</div>
+          <div id="gm-cl-profil-badge" style="display:none;align-items:center;gap:6px;margin-top:10px;padding:5px 13px;border:1px solid rgba(217,168,102,.35);border-radius:20px"></div>
         </div>
         <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
           <div class="gm-cta" data-goto="compte" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-circle" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Modifier mon compte</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="momo" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-device-mobile" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Comptes Mobile Money</span><span id="gm-cl-momo-badge" style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:2px 9px;border-radius:20px">0 lié</span></div>
           <div class="gm-cta" data-goto="referral" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-users-three" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Parrainage &amp; partage</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
           <div class="gm-cta" data-goto="motdepasse" style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-lock-key" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Changer le mot de passe</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
         </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-moon-stars" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Thème</span>
+            <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:9px"><span class="gm-seg gm-cl-theme" data-theme="dark" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)"><i class="ph-fill ph-moon"></i></span><span class="gm-seg gm-cl-theme" data-theme="light" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:500;color:var(--color-neutral-400)"><i class="ph-fill ph-sun"></i></span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-bell-ringing" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Recevoir des notifications</span><span id="gm-cl-notif-toggle" class="gm-on" style="width:44px;height:24px;border-radius:20px;background:#6fae90;position:relative;flex-shrink:0;cursor:pointer"><span style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:right .18s,left .18s"></span></span></div>
+        </div>
         <a class="btn btn-secondary btn-block gm-cta" href="{% url 'portal:logout' %}" style="font-size:13.5px;padding:11px;color:#d98a8a"><i class="ph ph-sign-out"></i>Se déconnecter</a>
+      </div>
+
+      <!-- ═══ COMPTES MOBILE MONEY ═══ -->
+      <div data-panel="momo" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ph-fill ph-device-mobile" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Comptes Mobile Money</span></div>
+        <p style="font-size:12px;color:var(--color-neutral-500);margin:0 0 16px;line-height:1.5">Reliez vos numéros pour recharger votre solde directement.</p>
+        <div id="pm-client"></div>
       </div>
 
       <!-- ═══ MODIFIER COMPTE ═══ -->
@@ -268,5 +284,7 @@
 {% endblock %}
 
 {% block page_js %}
-<script src="{% static 'js/gm-client.js' %}?v=1"></script>
+<script src="{% static 'js/gm-payment-methods.js' %}?v=1"></script>
+<script src="{% static 'js/gm-client.js' %}?v=2"></script>
+<script>document.addEventListener("DOMContentLoaded", function () { if (window.gmPaymentMethods) window.gmPaymentMethods.mount("pm-client"); });</script>
 {% endblock %}

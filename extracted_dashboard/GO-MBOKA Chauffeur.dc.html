@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/styles.css">
+<script src="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  html,body{margin:0;background:#0c0d15;min-height:100%}
+  @keyframes gmPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes gmPing{0%{transform:scale(.5);opacity:.6}80%,100%{transform:scale(2.6);opacity:0}}
+  .gm-tab{cursor:pointer}
+  .gm-cta{cursor:pointer;transition:transform .15s,filter .15s}.gm-cta:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .gm-seg{cursor:pointer;transition:background .15s,color .15s}
+  .gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;font-family:var(--font-body);background:radial-gradient(ellipse 70% 60% at 50% 0%,#1c1a30,#0c0d15)">
+  <!-- PHONE -->
+  <div class="gm-root" style="width:390px;height:820px;max-height:calc(100vh - 40px);background:var(--color-bg);border:10px solid #23252f;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(0,0,0,.6);display:flex;flex-direction:column">
+    <!-- statut bar -->
+    <div style="height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0"><span class="gm-clock" style="font-size:12px;font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace">08:42</span><div style="display:flex;gap:6px;align-items:center;color:var(--color-text)"><i class="ph-fill ph-cell-signal-full" style="font-size:13px"></i><i class="ph-fill ph-wifi-high" style="font-size:13px"></i><i class="ph-fill ph-battery-high" style="font-size:14px"></i></div></div>
+
+    <!-- HEADER -->
+    <div style="padding:8px 20px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">GK</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">Gédéon Kabasele</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Masina · ★ 4,7</div></div>
+        <div class="gm-cta" data-goto="notifs" style="position:relative;width:38px;height:38px;border:1px solid var(--color-neutral-800);border-radius:11px;display:flex;align-items:center;justify-content:center"><i class="ph ph-bell" style="font-size:17px;color:var(--color-neutral-400)"></i><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#cf7f7f;border:1.5px solid var(--color-bg)"></span></div>
+      </div>
+    </div>
+
+    <!-- CONTENU -->
+    <div id="gm-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:0 20px 16px">
+
+      <!-- ═══ NOTIFICATIONS ═══ -->
+      <div data-panel="notifs" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><i class="ph-fill ph-bell" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Notifications</span><span style="margin-left:auto;font-size:11.5px;color:var(--color-accent-300)">Tout marquer lu</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-path" style="color:var(--color-accent-300);font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Nouvelle demande de course</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Kalamu → Gombe · 3 500 FC · à 900 m</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">maintenant</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(217,168,102,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-gauge" style="color:#d9a866;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Votre score a évolué : ★ 4,7</div><div style="font-size:11.5px;color:var(--color-neutral-500)">+0,1 cette semaine — continuez ainsi !</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">il y a 2 h</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(207,127,127,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-wrench" style="color:#d98a8a;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Entretien conseillé pour votre moto</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Vidange à prévoir sous 200 km</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">hier</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Redevance du jour reçue</div><div style="font-size:11.5px;color:var(--color-neutral-500)">8 000 FC · prochaine échéance demain</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">hier</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin:22px 0 12px"><i class="ph-fill ph-chat-circle-dots" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:15px;font-weight:600;color:var(--color-text)">Messages &amp; avis</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:600;color:var(--color-neutral-100)">NM</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Nathalie (gérante)</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Bravo pour ton sérieux cette semaine 👍</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">10:12</span></div>
+          <div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-star" style="color:#d9a866;font-size:15px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Nouvel avis client · ★ 5</div><div style="font-size:11.5px;color:var(--color-neutral-500)">« Conduite prudente, merci ! » — Aline K.</div></div><span style="font-size:10.5px;color:var(--color-neutral-600);white-space:nowrap">09:40</span></div>
+        </div>
+      </div>
+
+      <!-- ═══ ACCUEIL ═══ -->
+      <div data-panel="home">
+        <!-- disponibilité -->
+        <div style="display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,rgba(111,174,144,.16),var(--color-surface));border:1px solid rgba(111,174,144,.35);border-radius:16px;padding:15px 17px;margin-bottom:16px">
+          <span style="width:10px;height:10px;border-radius:50%;background:#6fae90;animation:gmPulse 1.6s infinite"></span>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--color-text)">Vous êtes en ligne</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Vous recevez des courses</div></div>
+          <span style="width:46px;height:26px;border-radius:20px;background:#6fae90;position:relative;flex-shrink:0"><span style="position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span>
+        </div>
+
+        <!-- gains du jour -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px;margin-bottom:16px">
+          <div style="font-size:12px;color:var(--color-neutral-500);margin-bottom:4px">Gains d'aujourd'hui</div>
+          <div style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">42 500 <span style="font-size:16px;color:var(--color-neutral-600);font-weight:500">FC</span></div>
+          <div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">≈ $15,1 · 14 courses</div>
+          <div style="display:flex;gap:5px;height:44px;align-items:flex-end;margin-top:14px">
+            <div style="flex:1;height:30%;background:var(--color-neutral-800);border-radius:3px"></div><div style="flex:1;height:55%;background:var(--color-neutral-800);border-radius:3px"></div><div style="flex:1;height:72%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-700));border-radius:3px"></div><div style="flex:1;height:48%;background:var(--color-neutral-800);border-radius:3px"></div><div style="flex:1;height:88%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-700));border-radius:3px"></div><div style="flex:1;height:66%;background:var(--color-neutral-800);border-radius:3px"></div><div style="flex:1;height:100%;background:linear-gradient(180deg,var(--color-accent-300),var(--color-accent-600));border-radius:3px"></div>
+          </div>
+        </div>
+
+        <!-- nouvelle demande -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:16px;overflow:hidden;margin-bottom:16px">
+          <div style="padding:14px 17px 12px;border-bottom:1px solid var(--color-neutral-800);display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-accent-400);animation:gmPulse 1.4s infinite"></span><span style="font-size:13px;font-weight:600;color:var(--color-accent-200)">Nouvelle demande de course</span><span style="margin-left:auto;font-size:11px;color:var(--color-neutral-500)">à 900 m</span></div>
+          <div style="padding:15px 17px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px"><i class="ph-fill ph-circle" style="color:#6fae90;font-size:11px"></i><div style="font-size:13px;color:var(--color-text)">Rond-point Victoire, Kalamu</div></div>
+            <div style="width:1px;height:12px;background:var(--color-neutral-700);margin-left:5px"></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:9px;margin-bottom:14px"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:12px"></i><div style="font-size:13px;color:var(--color-text)">Marché Central, Gombe</div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><div><div style="font-size:11px;color:var(--color-neutral-500)">Prix proposé</div><div style="font-size:18px;font-weight:700;color:var(--color-text)">3 500 FC</div></div><div style="text-align:right"><div style="font-size:11px;color:var(--color-neutral-500)">Distance · durée</div><div style="font-size:13px;color:var(--color-neutral-300)">4,2 km · ~12 min</div></div></div>
+            <div style="display:flex;gap:10px"><button class="btn btn-secondary gm-cta" style="flex:1;font-size:13px;padding:10px">Refuser</button><button class="btn btn-primary gm-cta" data-goto="course" style="flex:1.4;font-size:13px;padding:10px">Accepter</button></div>
+          </div>
+        </div>
+
+        <!-- actions rapides -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="gm-cta" data-goto="moto" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:15px"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:20px"></i><div style="font-size:13px;font-weight:600;color:var(--color-text);margin-top:8px">Ma moto</div><div style="font-size:11px;color:var(--color-neutral-500)">Contrat &amp; versements</div></div>
+          <div class="gm-cta" data-goto="gains" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:15px"><i class="ph-fill ph-wallet" style="color:#8fceac;font-size:20px"></i><div style="font-size:13px;font-weight:600;color:var(--color-text);margin-top:8px">Mes gains</div><div style="font-size:11px;color:var(--color-neutral-500)">Historique &amp; retraits</div></div>
+        </div>
+      </div>
+
+      <!-- ═══ COURSE EN NAVIGATION ═══ -->
+      <div data-panel="course" style="display:none">
+        <div class="gm-cta" data-goto="home" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Course acceptée</div>
+        <!-- carte + itinéraire -->
+        <div style="position:relative;height:290px;border:1px solid var(--color-neutral-800);border-radius:16px;overflow:hidden;background:radial-gradient(ellipse 80% 90% at 40% 20%,#1c2033,#12141f);margin-bottom:14px">
+          <svg viewBox="0 0 360 290" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><g stroke="var(--color-neutral-800)" stroke-width="7" stroke-linecap="round" opacity=".7" fill="none"><path d="M20,40 L140,120 L250,110 L320,220"></path><path d="M0,150 L360,170"></path><path d="M160,0 L180,290"></path></g><g stroke="var(--color-neutral-700)" stroke-width="2.5" stroke-linecap="round" opacity=".8" fill="none"><path d="M50,70 L200,96 L320,70"></path></g>
+            <path d="M90,235 C120,190 150,180 190,150 C220,128 240,120 268,86" fill="none" stroke="var(--color-accent-400)" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"><animate attributeName="stroke-dashoffset" from="120" to="0" dur="3s" repeatCount="indefinite"></animate></path>
+          </svg>
+          <!-- position chauffeur -->
+          <div style="position:absolute;left:22%;top:80%;transform:translate(-50%,-50%)"><span style="display:block;width:16px;height:16px;border-radius:50%;background:#6fae90;border:3px solid #fff;box-shadow:0 0 0 4px rgba(111,174,144,.3)"></span></div>
+          <!-- position client -->
+          <div style="position:absolute;left:74%;top:29%;transform:translate(-50%,-100%)"><span style="position:absolute;left:50%;top:0;transform:translate(-50%,-46px)"><span style="display:inline-block;background:var(--color-accent-600);color:#fff;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:8px;white-space:nowrap">Client</span></span><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:34px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))"></i></div>
+          <div style="position:absolute;left:14px;top:14px;background:rgba(20,22,36,.85);backdrop-filter:blur(8px);border:1px solid var(--color-neutral-800);border-radius:11px;padding:9px 13px"><div style="font-size:11px;color:var(--color-neutral-500)">Vers le client</div><div style="font-size:15px;font-weight:700;color:var(--color-text)">900 m · ~3 min</div></div>
+        </div>
+        <!-- étape itinéraire -->
+        <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:14px;padding:14px 16px;margin-bottom:12px">
+          <i class="ph-fill ph-arrow-bend-up-right" style="color:var(--color-accent-300);font-size:24px"></i>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--color-text)">Tournez à droite · Av. Kasa-Vubu</div><div style="font-size:11.5px;color:var(--color-neutral-500)">dans 250 m</div></div>
+        </div>
+        <!-- carte client -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px 16px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:12px"><span style="width:40px;height:40px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--color-neutral-100)">AK</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--color-text)">Aline Kalonji</div><div style="font-size:11.5px;color:var(--color-neutral-500)">★ 4,8 · Rond-point Victoire, Kalamu</div></div></div>
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><i class="ph-fill ph-circle" style="color:#6fae90;font-size:10px"></i><span style="font-size:12.5px;color:var(--color-text)">Rond-point Victoire, Kalamu</span></div>
+          <div style="width:1px;height:10px;background:var(--color-neutral-700);margin-left:4.5px"></div>
+          <div style="display:flex;align-items:center;gap:9px;margin-top:8px"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:11px"></i><span style="font-size:12.5px;color:var(--color-text)">Marché Central, Gombe · 3 500 FC</span></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <a class="btn btn-secondary gm-cta" href="tel:+243800000000" style="flex:1;font-size:13px;padding:12px"><i class="ph-fill ph-phone"></i>Appeler</a>
+          <button class="btn btn-primary gm-cta" data-goto="home" style="flex:1.5;font-size:13px;padding:12px"><i class="ph-fill ph-check"></i>Je suis arrivé</button>
+        </div>
+      </div>
+
+      <!-- ═══ MA MOTO (location / contrat) ═══ -->
+      <div data-panel="moto" style="display:none">
+        <!-- switch formule -->
+        <div style="display:flex;gap:4px;padding:4px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:12px;margin-bottom:16px">
+          <span class="gm-seg gm-formule" data-f="location" onClick="{{ setFormule }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:12.5px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)">Location</span>
+          <span class="gm-seg gm-formule" data-f="contrat" onClick="{{ setFormule }}" style="flex:1;text-align:center;padding:9px;border-radius:9px;font-size:12.5px;font-weight:500;color:var(--color-neutral-400)">Contrat (achat)</span>
+        </div>
+
+        <!-- carte moto -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px"><span style="width:48px;height:48px;border-radius:13px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:24px"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--color-text)">Bajaj Boxer BM150</div><div style="font-size:12px;color:var(--color-neutral-500);font-family:ui-monospace,monospace">KN-3388 · rouge</div></div></div>
+          <div style="display:flex;gap:8px"><span class="gm-fbadge" style="font-size:11px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:4px 11px;border-radius:20px">Formule location</span><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:4px 11px;border-radius:20px">Versements à jour</span></div>
+        </div>
+
+        <!-- suivi moto & chauffeur -->
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:16px">
+          <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:14px">Suivi de la moto</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px">
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Immatriculation</div><div style="font-size:13.5px;font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace">KN-3388</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Âge de la moto</div><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">1 an 4 mois</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Jours travaillés</div><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">312 jours</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Conducteurs sur cette moto</div><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">3 personnes</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Retards de retour</div><div style="font-size:13.5px;font-weight:600;color:#d9a866">4 fois</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Garant</div><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Papa Célestin K.</div></div>
+          </div>
+        </div>
+
+        <!-- dettes & retards -->
+        <div style="background:linear-gradient(120deg,rgba(207,127,127,.1),var(--color-surface));border:1px solid rgba(207,127,127,.3);border-radius:16px;padding:16px 18px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><i class="ph-fill ph-warning-circle" style="color:#d98a8a;font-size:16px"></i><span style="font-size:13px;font-weight:600;color:var(--color-text)">Dettes &amp; retards</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--color-neutral-800)"><span style="font-size:12.5px;color:var(--color-neutral-400)">Dette en cours</span><span style="font-size:14px;font-weight:700;color:#d98a8a">16 000 FC</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0"><span style="font-size:12.5px;color:var(--color-neutral-400)">Retard de versement</span><span style="font-size:13px;font-weight:600;color:#d9a866">2 jours</span></div>
+          <button class="btn btn-primary btn-block gm-cta" style="font-size:13px;padding:10px;margin-top:12px"><i class="ph-fill ph-arrow-up-right"></i>Régler ma dette</button>
+        </div>
+
+        <!-- LOCATION -->
+        <div data-formule="location">
+          <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px;margin-bottom:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:4px">Redevance de location</div>
+            <div style="font-size:12px;color:var(--color-neutral-500);margin-bottom:14px">Vous versez un montant fixe, la moto reste à GO-MBOKA.</div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--color-neutral-400)">Redevance du jour</span><span style="font-size:15px;font-weight:700;color:var(--color-text)">8 000 FC / jour</span></div>
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(111,174,144,.1);border:1px solid rgba(111,174,144,.28);border-radius:11px;padding:11px 13px;margin-top:10px"><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:17px"></i><div style="font-size:12px;color:var(--color-neutral-300)">Versé aujourd'hui · prochaine échéance demain</div></div>
+          </div>
+          <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px;margin-bottom:10px"><i class="ph-fill ph-arrow-up-right"></i>Verser la redevance du jour</button>
+          <p style="font-size:11.5px;color:var(--color-neutral-500);text-align:center;line-height:1.5;margin:4px 0 0">En cas d'arrêt, la moto est restituée à GO-MBOKA. Aucune propriété n'est transférée.</p>
+        </div>
+
+        <!-- CONTRAT -->
+        <div data-formule="contrat" style="display:none">
+          <div style="background:linear-gradient(160deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-700);border-radius:16px;padding:18px;margin-bottom:16px">
+            <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:4px">Contrat d'acquisition</div>
+            <div style="font-size:12px;color:var(--color-neutral-400);margin-bottom:16px">À la fin des versements, <b style="color:var(--color-accent-200)">la moto vous appartient</b>.</div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px"><span style="font-size:12px;color:var(--color-neutral-400)">Progression du remboursement</span><span style="font-size:13px;font-weight:700;color:var(--color-accent-200)">62%</span></div>
+            <div style="height:9px;border-radius:6px;background:var(--color-neutral-800);overflow:hidden;margin-bottom:14px"><div style="width:62%;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--color-accent-400),#6fae90)"></div></div>
+            <div style="display:flex;justify-content:space-between"><div><div style="font-size:11px;color:var(--color-neutral-500)">Payé</div><div style="font-size:15px;font-weight:700;color:var(--color-text)">1 240 000 FC</div></div><div style="text-align:right"><div style="font-size:11px;color:var(--color-neutral-500)">Reste dû</div><div style="font-size:15px;font-weight:700;color:var(--color-text)">760 000 FC</div></div></div>
+          </div>
+          <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:11px"><span style="font-size:12.5px;color:var(--color-neutral-400)">Versement hebdomadaire</span><span style="font-size:13px;font-weight:600;color:var(--color-text)">50 000 FC / sem.</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:11px"><span style="font-size:12.5px;color:var(--color-neutral-400)">Échéances restantes</span><span style="font-size:13px;font-weight:600;color:var(--color-text)">≈ 15 semaines</span></div>
+            <div style="display:flex;justify-content:space-between"><span style="font-size:12.5px;color:var(--color-neutral-400)">Prochaine échéance</span><span style="font-size:13px;font-weight:600;color:#d9a866">lundi 21 juil.</span></div>
+          </div>
+          <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px;margin-bottom:10px"><i class="ph-fill ph-arrow-up-right"></i>Payer la mensualité</button>
+          <p style="font-size:11.5px;color:var(--color-neutral-500);text-align:center;line-height:1.5;margin:4px 0 0">Après le dernier versement, le titre de propriété vous est remis. Entretien à votre charge.</p>
+        </div>
+      </div>
+
+      <!-- ═══ GAINS ═══ -->
+      <div data-panel="gains" style="display:none">
+        <div style="background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:16px;padding:18px;margin-bottom:16px">
+          <div style="font-size:12px;color:var(--color-accent-200);margin-bottom:4px">Solde disponible</div>
+          <div style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">128 400 <span style="font-size:16px;color:var(--color-neutral-500);font-weight:500">FC</span></div>
+          <button class="btn btn-primary btn-block gm-cta" style="font-size:13.5px;padding:11px;margin-top:14px"><i class="ph-fill ph-arrow-down-left"></i>Retirer en Mobile Money</button>
+        </div>
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px"><div style="font-size:11px;color:var(--color-neutral-500)">Cette semaine</div><div style="font-size:18px;font-weight:700;color:var(--color-text);margin-top:3px">254k FC</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px"><div style="font-size:11px;color:var(--color-neutral-500)">Courses (sem.)</div><div style="font-size:18px;font-weight:700;color:var(--color-text);margin-top:3px">86</div></div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:10px">Dernières courses</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-path" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Kalamu → Gombe</div><div style="font-size:11px;color:var(--color-neutral-500)">08:12 · 4,2 km</div></div><div style="font-size:13px;font-weight:600;color:var(--color-text)">3 500 FC</div></div>
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-path" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Masina → Limete</div><div style="font-size:11px;color:var(--color-neutral-500)">07:48 · 6,1 km</div></div><div style="font-size:13px;font-weight:600;color:var(--color-text)">5 000 FC</div></div>
+          <div style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-path" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Ndjili → Masina</div><div style="font-size:11px;color:var(--color-neutral-500)">07:20 · 3,4 km</div></div><div style="font-size:13px;font-weight:600;color:var(--color-text)">2 500 FC</div></div>
+        </div>
+      </div>
+
+      <!-- ═══ PROFIL ═══ -->
+      <div data-panel="profil" style="display:none">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px">GK</div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">Gédéon Kabasele</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500)">Motard · Masina · depuis mars 2025</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 13px;border:1px solid rgba(217,168,102,.35);border-radius:20px"><i class="ph-fill ph-star" style="color:#d9a866;font-size:14px"></i><span style="font-size:12.5px;font-weight:600;color:#d9a866">4,7</span><span style="font-size:11.5px;color:var(--color-neutral-500)">· 612 courses</span></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div class="gm-cta" data-goto="compte" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-circle" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Modifier mon compte</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="motdepasse" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-lock-key" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Changer le mot de passe</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-moon-stars" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Thème</span>
+            <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:9px"><span class="gm-seg gm-theme gm-on" data-theme="dark" onClick="{{ setTheme }}" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)"><i class="ph-fill ph-moon"></i></span><span class="gm-seg gm-theme" data-theme="light" onClick="{{ setTheme }}" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:500;color:var(--color-neutral-400)"><i class="ph-fill ph-sun"></i></span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-bell-ringing" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Recevoir des notifications</span><span class="gm-toggle gm-on" onClick="{{ toggleNotif }}" style="width:44px;height:24px;border-radius:20px;background:#6fae90;position:relative;flex-shrink:0;cursor:pointer"><span style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:right .18s,left .18s"></span></span></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div class="gm-cta" data-goto="notifs" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-chat-circle-dots" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Messages &amp; avis</span><span style="font-size:11px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:2px 9px;border-radius:20px">2</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-gear" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Mon gérant : Nathalie M.</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-identification-card" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Mes documents</span><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:2px 9px;border-radius:20px">Validés</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-lifebuoy" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Aide &amp; support</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" style="font-size:13.5px;padding:11px;color:#d98a8a"><i class="ph ph-sign-out"></i>Se déconnecter</button>
+      </div>
+
+      <!-- ═══ MODIFIER COMPTE ═══ -->
+      <div data-panel="compte" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="text-align:center;margin-bottom:18px"><div style="position:relative;width:80px;margin:0 auto"><div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:700;color:#fff">GK</div><span class="gm-cta" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--color-accent-600);border:2px solid var(--color-bg);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-camera" style="color:#fff;font-size:13px"></i></span></div></div>
+        <div class="field" style="margin-bottom:13px"><label>Prénom</label><input class="input" type="text" value="Gédéon"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nom</label><input class="input" type="text" value="Kabasele"></div>
+        <div class="field" style="margin-bottom:13px"><label>Téléphone</label><input class="input" type="text" value="+243 82 445 7788"></div>
+        <div class="field" style="margin-bottom:13px"><label>Commune</label><select class="input"><option>Masina</option><option>Gombe</option><option>Limete</option><option>Ndjili</option></select></div>
+        <div class="field" style="margin-bottom:20px"><label>Adresse</label><input class="input" type="text" value="18 Av. Mobutu, Masina"></div>
+        <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Enregistrer</button>
+      </div>
+
+      <!-- ═══ MOT DE PASSE ═══ -->
+      <div data-panel="motdepasse" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><i class="ph-fill ph-lock-key" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Changer le mot de passe</span></div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 20px">Au moins 8 caractères.</p>
+        <div class="field" style="margin-bottom:13px"><label>Mot de passe actuel</label><input class="input" type="password" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nouveau mot de passe</label><input class="input" type="password" placeholder="Au moins 8 caractères"></div>
+        <div class="field" style="margin-bottom:20px"><label>Confirmer</label><input class="input" type="password" placeholder="Retaper le mot de passe"></div>
+        <button class="btn btn-primary btn-block gm-cta" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Mettre à jour</button>
+      </div>
+
+    </div>
+
+    <!-- TAB BAR -->
+    <div style="flex-shrink:0;display:flex;border-top:1px solid var(--color-neutral-800);background:var(--color-surface);padding:9px 8px 16px">
+      <div class="gm-tab gm-navi" data-view="home" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-300)"><i class="ph-fill ph-house" style="font-size:21px"></i><span style="font-size:10px;font-weight:600">Accueil</span></div>
+      <div class="gm-tab gm-navi" data-view="moto" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-motorcycle" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Ma moto</span></div>
+      <div class="gm-tab gm-navi" data-view="gains" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-wallet" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Gains</span></div>
+      <div class="gm-tab gm-navi" data-view="profil" onClick="{{ nav }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-user" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Profil</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const t = () => { const c = document.querySelector('.gm-clock'); if (c) c.textContent = new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); };
+    t(); this._clk = setInterval(t, 20000);
+    document.addEventListener('click', (e) => {
+      const g = e.target.closest && e.target.closest('[data-goto]');
+      if (g) this._go(g.getAttribute('data-goto'));
+    });
+  }
+  componentWillUnmount() { clearInterval(this._clk); }
+  ICONS = { home: 'ph-house', moto: 'ph-motorcycle', gains: 'ph-wallet', profil: 'ph-user' };
+  _go = (v) => {
+    document.querySelectorAll('[data-panel]').forEach(p => { p.style.display = p.getAttribute('data-panel') === v ? '' : 'none'; });
+    document.querySelectorAll('.gm-navi').forEach(n => {
+      const key = n.getAttribute('data-view'); const on = key === v;
+      n.style.color = on ? 'var(--color-accent-300)' : 'var(--color-neutral-500)';
+      const ic = n.querySelector('i');
+      ic.className = (on ? 'ph-fill ' : 'ph ') + this.ICONS[key];
+      ic.style.fontSize = '21px';
+    });
+    const sc = document.getElementById('gm-scroll'); if (sc) sc.scrollTop = 0;
+  };
+  nav = (e) => this._go(e.currentTarget.getAttribute('data-view'));
+  setTheme = (e) => {
+    const t = e.currentTarget.getAttribute('data-theme');
+    const r = document.querySelector('.gm-root'); if (r) r.classList.toggle('gm-light', t === 'light');
+    document.querySelectorAll('.gm-theme').forEach(s => {
+      const on = s.getAttribute('data-theme') === t;
+      s.classList.toggle('gm-on', on);
+      s.style.background = on ? 'var(--color-accent-900)' : 'transparent';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.fontWeight = on ? '600' : '500';
+    });
+  };
+  toggleNotif = (e) => {
+    const el = e.currentTarget; const on = !el.classList.contains('gm-on');
+    el.classList.toggle('gm-on', on);
+    el.style.background = on ? '#6fae90' : 'var(--color-neutral-700)';
+    const knob = el.querySelector('span');
+    if (knob) { knob.style.right = on ? '2px' : 'auto'; knob.style.left = on ? 'auto' : '2px'; knob.style.background = on ? '#fff' : 'var(--color-neutral-400)'; }
+  };
+  setFormule = (e) => {
+    const f = e.currentTarget.getAttribute('data-f');
+    document.querySelectorAll('[data-formule]').forEach(el => { el.style.display = el.getAttribute('data-formule') === f ? '' : 'none'; });
+    document.querySelectorAll('.gm-formule').forEach(s => {
+      const on = s.getAttribute('data-f') === f;
+      s.style.background = on ? 'var(--color-accent-900)' : 'transparent';
+      s.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      s.style.fontWeight = on ? '600' : '500';
+    });
+    const b = document.querySelector('.gm-fbadge');
+    if (b) b.textContent = f === 'contrat' ? 'Formule contrat (achat)' : 'Formule location';
+  };
+  renderVals() { return { nav: this.nav, setFormule: this.setFormule, setTheme: this.setTheme, toggleNotif: this.toggleNotif }; }
+}
+</script>
+</body>
+</html>

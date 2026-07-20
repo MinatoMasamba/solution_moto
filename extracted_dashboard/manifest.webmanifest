@@ -1,0 +1,26 @@
+{
+  "name": "GO-MBOKA — Client",
+  "short_name": "GO-MBOKA",
+  "description": "Commandez une moto-taxi à Kinshasa",
+  "start_url": "./GO-MBOKA Client.dc.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0d15",
+  "theme_color": "#0c0d15",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "go-mboka-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "go-mboka-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

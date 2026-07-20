@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/styles.css">
+<script src="_ds/nocturne-e83c6bd9-67fb-494b-b328-44eaab666367/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>
+  html,body{margin:0;height:100%;background:var(--color-bg)}
+  a{color:var(--color-accent);text-decoration:none}a:hover{color:var(--color-accent-300)}
+  @keyframes gmPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .gm-nav:hover{background:var(--color-neutral-900);color:var(--color-neutral-200)!important}
+  .gm-ico{cursor:pointer;transition:background .15s}.gm-ico:hover{background:var(--color-neutral-900)}
+  .gm-card{transition:border-color .18s}.gm-card:hover{border-color:var(--color-accent-700)!important}
+  .gm-chip{cursor:pointer;transition:border-color .15s,color .15s}.gm-chip:hover{border-color:var(--color-accent)!important;color:var(--color-accent-200)!important}
+  ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--color-neutral-800);border-radius:8px}
+</style>
+</helmet>
+
+<div style="height:100vh;display:flex;font-family:var(--font-body);overflow:hidden">
+  <!-- SIDEBAR -->
+  <aside style="width:250px;flex-shrink:0;background:#171927;border-right:1px solid var(--color-neutral-800);display:flex;flex-direction:column;padding:18px 0">
+    <div style="display:flex;align-items:center;gap:11px;padding:0 20px 16px">
+      <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;box-shadow:0 5px 16px rgba(145,132,217,.4)"><i class="ph-fill ph-motorcycle" style="font-size:22px;color:#fff"></i></div>
+      <div><div style="font-weight:700;font-size:15px;color:var(--color-text)">GO-MBOKA</div><div style="font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--color-neutral-600)">Espace propriétaire</div></div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:4px 12px">
+      <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-700);font-weight:700;padding:10px 11px 6px">Ma flotte</div>
+      <a class="gm-nav" data-view="overview" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-accent-200);background:rgba(145,132,217,.13);font-weight:600;margin-bottom:2px;box-shadow:inset 2px 0 0 var(--color-accent);cursor:pointer"><i class="ph-fill ph-squares-four" style="font-size:17px"></i>Vue d'ensemble</a>
+      <a class="gm-nav" data-view="motos" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-neutral-400);font-weight:500;margin-bottom:2px;cursor:pointer"><i class="ph ph-motorcycle" style="font-size:17px"></i>Mes motos<span style="margin-left:auto;font-size:10px;font-weight:700;color:var(--color-neutral-300);background:var(--color-neutral-800);padding:1px 7px;border-radius:20px">22</span></a>
+      <a class="gm-nav" data-view="motards" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-neutral-400);font-weight:500;margin-bottom:2px;cursor:pointer"><i class="ph ph-users" style="font-size:17px"></i>Mes chauffeurs</a>
+      <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-700);font-weight:700;padding:14px 11px 6px">Finances</div>
+      <a class="gm-nav" data-view="revenus" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-neutral-400);font-weight:500;margin-bottom:2px;cursor:pointer"><i class="ph ph-hand-coins" style="font-size:17px"></i>Revenus &amp; reversements</a>
+      <a class="gm-nav" data-view="contrats" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-neutral-400);font-weight:500;margin-bottom:2px;cursor:pointer"><i class="ph ph-file-text" style="font-size:17px"></i>Contrats &amp; formules</a>
+      <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-700);font-weight:700;padding:14px 11px 6px">Système</div>
+      <a class="gm-nav" data-view="support" onClick="{{ go }}" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;font-size:13px;color:var(--color-neutral-400);font-weight:500;margin-bottom:2px;cursor:pointer"><i class="ph ph-lifebuoy" style="font-size:17px"></i>Support</a>
+    </div>
+    <div style="margin:8px 14px 0;padding:11px;border:1px solid var(--color-neutral-800);border-radius:12px;display:flex;align-items:center;gap:10px;background:var(--color-surface)">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">MB</div>
+      <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:600;color:var(--color-text)">Maman Béatrice</div><div style="font-size:10.5px;color:var(--color-neutral-600)">Propriétaire · Ngaliema</div></div>
+      <i class="ph ph-gear-six gm-ico" style="font-size:16px;color:var(--color-neutral-500);padding:5px;border-radius:7px"></i>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <header style="height:66px;flex-shrink:0;border-bottom:1px solid var(--color-neutral-800);display:flex;align-items:center;gap:16px;padding:0 26px;background:rgba(22,24,38,.75)">
+      <div><div id="gm-title" style="font-size:16px;font-weight:600;color:var(--color-text)">Vue d'ensemble</div><div id="gm-sub" style="font-size:11.5px;color:var(--color-neutral-500)">Ma flotte · Kinshasa</div></div>
+      <div style="margin-left:14px;display:flex;align-items:center;gap:8px;padding:5px 12px;border:1px solid rgba(111,174,144,.3);background:rgba(111,174,144,.09);border-radius:20px"><span style="width:7px;height:7px;border-radius:50%;background:#6fae90;animation:gmPulse 1.6s infinite"></span><span style="font-size:11px;font-weight:600;color:#8fceac;letter-spacing:.05em">EN DIRECT</span></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:11px">
+        <div class="gm-ico" style="position:relative;width:38px;height:38px;border:1px solid var(--color-neutral-800);border-radius:10px;display:flex;align-items:center;justify-content:center"><i class="ph ph-bell" style="font-size:17px;color:var(--color-neutral-400)"></i><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#cf7f7f;border:1.5px solid var(--color-bg)"></span></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">MB</div>
+      </div>
+    </header>
+
+    <div id="gm-scroll" style="flex:1;overflow-y:auto;padding:24px 26px">
+
+      <!-- ═══ OVERVIEW ═══ -->
+      <div data-panel="overview">
+        <div style="display:flex;gap:16px;margin-bottom:18px">
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:18px"></i></span><span style="font-size:11px;font-weight:600;color:#8fceac">19 en activité</span></div><div style="font-size:27px;font-weight:700;color:var(--color-text);margin-top:12px;letter-spacing:-.02em">22</div><div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">Mes motos</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="width:34px;height:34px;border-radius:10px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-coins" style="color:#8fceac;font-size:18px"></i></span><span style="font-size:11px;font-weight:600;color:#8fceac">+8%</span></div><div style="font-size:27px;font-weight:700;color:var(--color-text);margin-top:12px;letter-spacing:-.02em">3,2M <span style="font-size:15px;color:var(--color-neutral-600);font-weight:500">FC</span></div><div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">Revenu du jour · ≈ $1 135</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="width:34px;height:34px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-hand-coins" style="color:var(--color-accent-300);font-size:18px"></i></span></div><div style="font-size:27px;font-weight:700;color:var(--color-accent-200);margin-top:12px;letter-spacing:-.02em">2,62M <span style="font-size:15px;color:var(--color-neutral-600);font-weight:500">FC</span></div><div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">Net à recevoir (jour)</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><div style="display:flex;align-items:center;justify-content:space-between"><span style="width:34px;height:34px;border-radius:10px;background:rgba(217,168,102,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-wrench" style="color:#d9a866;font-size:18px"></i></span></div><div style="font-size:27px;font-weight:700;color:var(--color-text);margin-top:12px;letter-spacing:-.02em">2</div><div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">Motos à l'entretien</div></div>
+        </div>
+
+        <div style="display:flex;gap:16px;margin-bottom:18px">
+          <div style="flex:1.5;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:18px 20px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px"><span style="font-size:14px;font-weight:600;color:var(--color-text)">Revenu de ma flotte</span><div style="display:flex;gap:6px"><span class="gm-chip" style="font-size:11px;font-weight:600;color:var(--color-accent-200);border:1px solid var(--color-accent-700);padding:3px 10px;border-radius:7px">7 jours</span><span class="gm-chip" style="font-size:11px;font-weight:500;color:var(--color-neutral-500);border:1px solid var(--color-neutral-800);padding:3px 10px;border-radius:7px">30 jours</span></div></div>
+            <div style="display:flex;align-items:flex-end;gap:12px;height:180px">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:64%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Lun</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:78%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Mar</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:70%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Mer</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:86%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Jeu</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:100%;background:linear-gradient(180deg,var(--color-accent-300),var(--color-accent-600));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-400);font-weight:600">Ven</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:92%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Sam</span></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="width:100%;height:140px;display:flex;align-items:flex-end"><div style="width:100%;height:54%;background:linear-gradient(180deg,var(--color-accent-400),var(--color-accent-800));border-radius:5px 5px 0 0"></div></div><span style="font-size:11px;color:var(--color-neutral-600)">Dim</span></div>
+            </div>
+          </div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:18px 20px">
+            <div style="font-size:14px;font-weight:600;color:var(--color-text);margin-bottom:14px">Répartition des formules</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--color-neutral-400)">Location (redevance)</span><span style="color:var(--color-text);font-weight:600">14 motos</span></div><div style="height:8px;border-radius:5px;background:var(--color-neutral-800);overflow:hidden"><div style="width:64%;height:100%;border-radius:5px;background:var(--color-accent-500)"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--color-neutral-400)">Contrat (achat progressif)</span><span style="color:var(--color-text);font-weight:600">6 motos</span></div><div style="height:8px;border-radius:5px;background:var(--color-neutral-800);overflow:hidden"><div style="width:27%;height:100%;border-radius:5px;background:#6fae90"></div></div></div>
+              <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px"><span style="color:var(--color-neutral-400)">À l'entretien</span><span style="color:var(--color-text);font-weight:600">2 motos</span></div><div style="height:8px;border-radius:5px;background:var(--color-neutral-800);overflow:hidden"><div style="width:9%;height:100%;border-radius:5px;background:#d9a866"></div></div></div>
+            </div>
+            <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--color-neutral-800)"><div style="font-size:11px;color:var(--color-neutral-500)">Commission GO-MBOKA</div><div style="font-size:16px;font-weight:700;color:var(--color-text)">18% <span style="font-size:12px;color:var(--color-neutral-500);font-weight:500">· gestion incluse</span></div></div>
+          </div>
+        </div>
+
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px 6px">
+          <div style="display:flex;align-items:center;margin-bottom:6px"><span style="font-size:13.5px;font-weight:600;color:var(--color-text)">Mes motos les plus rentables</span><a class="gm-chip" data-view="motos" onClick="{{ go }}" style="margin-left:auto;font-size:12px;color:var(--color-accent-200);border:1px solid var(--color-neutral-800);padding:5px 12px;border-radius:8px;cursor:pointer">Toutes mes motos</a></div>
+          <table class="table">
+            <thead><tr><th>Moto</th><th>Chauffeur</th><th>Formule</th><th style="text-align:right">Revenu (jour)</th><th style="text-align:right">Net à moi</th><th>État</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-3388</td><td style="color:var(--color-neutral-300)">Blaise Nzuzi</td><td style="color:var(--color-neutral-400)">Location</td><td style="text-align:right;color:var(--color-text);font-weight:600">18 000 FC</td><td style="text-align:right;color:var(--color-accent-200)">14 760 FC</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Actif</span></td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-2988</td><td style="color:var(--color-neutral-300)">Rico Mvula</td><td style="color:var(--color-neutral-400)">Contrat</td><td style="text-align:right;color:var(--color-text);font-weight:600">16 500 FC</td><td style="text-align:right;color:var(--color-accent-200)">13 530 FC</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Actif</span></td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-4102</td><td style="color:var(--color-neutral-300)">Serge Kifua</td><td style="color:var(--color-neutral-400)">Location</td><td style="text-align:right;color:var(--color-text);font-weight:600">15 000 FC</td><td style="text-align:right;color:var(--color-accent-200)">12 300 FC</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Actif</span></td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-5510</td><td style="color:var(--color-neutral-500)">— non affectée</td><td style="color:var(--color-neutral-400)">—</td><td style="text-align:right;color:var(--color-neutral-500)">—</td><td style="text-align:right;color:var(--color-neutral-500)">—</td><td><span style="font-size:11px;font-weight:600;color:#d9a866;background:rgba(217,168,102,.14);padding:3px 9px;border-radius:20px">Entretien</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ MES MOTOS ═══ -->
+      <div data-panel="motos" style="display:none">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+          <span class="gm-chip" style="font-size:12px;font-weight:600;color:var(--color-accent-200);border:1px solid var(--color-accent-700);padding:6px 13px;border-radius:9px">Toutes · 22</span>
+          <span class="gm-chip" style="font-size:12px;font-weight:500;color:var(--color-neutral-400);border:1px solid var(--color-neutral-800);padding:6px 13px;border-radius:9px">Location · 14</span>
+          <span class="gm-chip" style="font-size:12px;font-weight:500;color:var(--color-neutral-400);border:1px solid var(--color-neutral-800);padding:6px 13px;border-radius:9px">Contrat · 6</span>
+          <span class="gm-chip" style="font-size:12px;font-weight:500;color:#d9a866;border:1px solid rgba(207,154,95,.35);padding:6px 13px;border-radius:9px">Entretien · 2</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div class="gm-card" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><span style="font-family:ui-monospace,monospace;font-size:14px;font-weight:700;color:var(--color-text)">KN-3388</span><span style="font-size:10.5px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:3px 9px;border-radius:20px">Location</span></div><div style="font-size:12.5px;color:var(--color-neutral-400);margin-bottom:12px">Bajaj Boxer BM150 · rouge</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:24px;height:24px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--color-neutral-200)">BN</span><span style="font-size:12px;color:var(--color-neutral-300)">Blaise Nzuzi · ★ 4,4</span></div><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--color-neutral-800)"><span style="font-size:11px;color:var(--color-neutral-500)">Redevance</span><span style="font-size:12.5px;font-weight:600;color:var(--color-text)">8 000 FC/j</span></div></div>
+          <div class="gm-card" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><span style="font-family:ui-monospace,monospace;font-size:14px;font-weight:700;color:var(--color-text)">KN-2988</span><span style="font-size:10.5px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Contrat</span></div><div style="font-size:12.5px;color:var(--color-neutral-400);margin-bottom:12px">TVS HLX 125 · noir</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:24px;height:24px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--color-neutral-200)">RM</span><span style="font-size:12px;color:var(--color-neutral-300)">Rico Mvula · ★ 4,6</span></div><div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--color-neutral-800)"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;color:var(--color-neutral-500)">Remboursement</span><span style="font-size:11.5px;font-weight:600;color:var(--color-accent-200)">62%</span></div><div style="height:6px;border-radius:4px;background:var(--color-neutral-800);overflow:hidden"><div style="width:62%;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--color-accent-500),#6fae90)"></div></div></div></div>
+          <div class="gm-card" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><span style="font-family:ui-monospace,monospace;font-size:14px;font-weight:700;color:var(--color-text)">KN-4102</span><span style="font-size:10.5px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:3px 9px;border-radius:20px">Location</span></div><div style="font-size:12.5px;color:var(--color-neutral-400);margin-bottom:12px">Bajaj Boxer BM150 · bleu</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="width:24px;height:24px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--color-neutral-200)">SK</span><span style="font-size:12px;color:var(--color-neutral-300)">Serge Kifua · ★ 4,5</span></div><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--color-neutral-800)"><span style="font-size:11px;color:var(--color-neutral-500)">Redevance</span><span style="font-size:12.5px;font-weight:600;color:var(--color-text)">8 000 FC/j</span></div></div>
+          <div class="gm-card" style="background:var(--color-surface);border:1px solid rgba(217,168,102,.3);border-radius:16px;padding:18px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><span style="font-family:ui-monospace,monospace;font-size:14px;font-weight:700;color:var(--color-text)">KN-5510</span><span style="font-size:10.5px;font-weight:600;color:#d9a866;background:rgba(217,168,102,.14);padding:3px 9px;border-radius:20px">Entretien</span></div><div style="font-size:12.5px;color:var(--color-neutral-400);margin-bottom:12px">TVS HLX 125 · gris</div><div style="display:flex;align-items:center;gap:8px;color:var(--color-neutral-500);font-size:12px"><i class="ph ph-wrench"></i>Non affectée · atelier Ngaliema</div><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--color-neutral-800)"><span style="font-size:11px;color:var(--color-neutral-500)">Retour prévu</span><span style="font-size:12.5px;font-weight:600;color:#d9a866">22 juil.</span></div></div>
+        </div>
+      </div>
+
+      <!-- ═══ MES CHAUFFEURS ═══ -->
+      <div data-panel="motards" style="display:none">
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px 6px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--color-text);margin-bottom:6px">Chauffeurs affectés à mes motos</div>
+          <table class="table">
+            <thead><tr><th>Chauffeur</th><th>Moto</th><th>Formule</th><th>Statut</th><th style="text-align:right">Revenu (jour)</th><th>Note</th><th>Versements</th></tr></thead>
+            <tbody>
+              <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--color-neutral-200)">BN</span><span style="font-weight:600;color:var(--color-text)">Blaise Nzuzi</span></div></td><td style="color:var(--color-neutral-400);font-family:ui-monospace,monospace;font-size:12.5px">KN-3388</td><td style="color:var(--color-neutral-400)">Location</td><td><span style="font-size:11px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.15);padding:3px 9px;border-radius:20px">En course</span></td><td style="text-align:right;color:var(--color-text);font-weight:600">18 000 FC</td><td style="color:#d9a866">★ 4,4</td><td><span style="font-size:11px;color:#8fceac">À jour</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--color-neutral-200)">RM</span><span style="font-weight:600;color:var(--color-text)">Rico Mvula</span></div></td><td style="color:var(--color-neutral-400);font-family:ui-monospace,monospace;font-size:12.5px">KN-2988</td><td style="color:var(--color-neutral-400)">Contrat</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.15);padding:3px 9px;border-radius:20px">Disponible</span></td><td style="text-align:right;color:var(--color-text);font-weight:600">16 500 FC</td><td style="color:#d9a866">★ 4,6</td><td><span style="font-size:11px;color:#8fceac">À jour · 62%</span></td></tr>
+              <tr><td><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--color-neutral-200)">SK</span><span style="font-weight:600;color:var(--color-text)">Serge Kifua</span></div></td><td style="color:var(--color-neutral-400);font-family:ui-monospace,monospace;font-size:12.5px">KN-4102</td><td style="color:var(--color-neutral-400)">Location</td><td><span style="font-size:11px;font-weight:600;color:var(--color-neutral-400);background:var(--color-neutral-800);padding:3px 9px;border-radius:20px">Hors ligne</span></td><td style="text-align:right;color:var(--color-neutral-500)">—</td><td style="color:#d9a866">★ 4,5</td><td><span style="font-size:11px;color:#d98a8a">Retard 1j</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ REVENUS ═══ -->
+      <div data-panel="revenus" style="display:none">
+        <div style="display:flex;gap:16px;margin-bottom:18px">
+          <div style="flex:1.4;background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:14px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:12px;color:var(--color-accent-200);margin-bottom:6px">Net reçu ce mois</div><div style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">64,2M FC <span style="font-size:15px;color:var(--color-neutral-500);font-weight:500">· $22 750</span></div></div><i class="ph-fill ph-check-circle" style="color:#8fceac;font-size:34px"></i></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><div style="font-size:12px;color:var(--color-neutral-500);margin-bottom:8px">En attente de reversement</div><div style="font-size:24px;font-weight:700;color:#d9a866">2,62M FC</div><div style="font-size:11.5px;color:var(--color-neutral-500);margin-top:2px">reversement du 14 juil.</div></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px 6px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--color-text);margin-bottom:6px">Historique des reversements</div>
+          <table class="table">
+            <thead><tr><th>Période</th><th style="text-align:right">Revenu brut flotte</th><th style="text-align:right">Commission (18%)</th><th style="text-align:right">Net reçu</th><th>Statut</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--color-neutral-300)">14 juil.</td><td style="text-align:right;color:var(--color-neutral-300)">3,20M FC</td><td style="text-align:right;color:var(--color-neutral-400)">0,58M FC</td><td style="text-align:right;color:var(--color-text);font-weight:600">2,62M FC</td><td><span style="font-size:11px;font-weight:600;color:#d9a866;background:rgba(217,168,102,.14);padding:3px 9px;border-radius:20px">En attente</span></td></tr>
+              <tr><td style="color:var(--color-neutral-300)">13 juil.</td><td style="text-align:right;color:var(--color-neutral-300)">3,05M FC</td><td style="text-align:right;color:var(--color-neutral-400)">0,55M FC</td><td style="text-align:right;color:var(--color-text);font-weight:600">2,50M FC</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Reçu</span></td></tr>
+              <tr><td style="color:var(--color-neutral-300)">12 juil.</td><td style="text-align:right;color:var(--color-neutral-300)">2,88M FC</td><td style="text-align:right;color:var(--color-neutral-400)">0,52M FC</td><td style="text-align:right;color:var(--color-text);font-weight:600">2,36M FC</td><td><span style="font-size:11px;font-weight:600;color:#8fceac;background:rgba(111,174,144,.14);padding:3px 9px;border-radius:20px">Reçu</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ CONTRATS ═══ -->
+      <div data-panel="contrats" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+          <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:22px">
+            <div style="display:flex;align-items:center;gap:11px;margin-bottom:12px"><span style="width:40px;height:40px;border-radius:11px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-key" style="color:var(--color-accent-300);font-size:19px"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--color-text)">Formule Location</div><div style="font-size:11.5px;color:var(--color-neutral-500)">14 motos</div></div></div>
+            <p style="font-size:13px;color:var(--color-neutral-400);line-height:1.6;margin:0 0 14px">Le chauffeur verse une redevance fixe et roule. La moto reste votre propriété — elle vous est restituée à la fin du contrat.</p>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-top:1px solid var(--color-neutral-800)"><span style="color:var(--color-neutral-500)">Redevance moyenne</span><span style="color:var(--color-text);font-weight:600">8 000 FC / jour</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-top:1px solid var(--color-neutral-800)"><span style="color:var(--color-neutral-500)">Propriété à la fin</span><span style="color:var(--color-accent-200);font-weight:600">Reste au propriétaire</span></div>
+          </div>
+          <div style="background:linear-gradient(160deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-700);border-radius:16px;padding:22px">
+            <div style="display:flex;align-items:center;gap:11px;margin-bottom:12px"><span style="width:40px;height:40px;border-radius:11px;background:rgba(111,174,144,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-handshake" style="color:#8fceac;font-size:19px"></i></span><div><div style="font-size:15px;font-weight:600;color:var(--color-text)">Formule Contrat</div><div style="font-size:11.5px;color:var(--color-neutral-500)">6 motos</div></div></div>
+            <p style="font-size:13px;color:var(--color-neutral-300);line-height:1.6;margin:0 0 14px">Le chauffeur rembourse la moto par versements. Au dernier versement, <b style="color:var(--color-accent-200)">la moto lui appartient</b>.</p>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-top:1px solid var(--color-neutral-800)"><span style="color:var(--color-neutral-500)">Versement type</span><span style="color:var(--color-text);font-weight:600">50 000 FC / sem.</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:8px 0;border-top:1px solid var(--color-neutral-800)"><span style="color:var(--color-neutral-500)">Propriété à la fin</span><span style="color:#8fceac;font-weight:600">Transférée au chauffeur</span></div>
+          </div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px 6px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--color-text);margin-bottom:6px">Contrats en cours</div>
+          <table class="table">
+            <thead><tr><th>Moto</th><th>Chauffeur</th><th>Formule</th><th style="text-align:right">Progression</th><th style="text-align:right">Reste dû</th><th>Fin estimée</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-2988</td><td style="color:var(--color-neutral-300)">Rico Mvula</td><td style="color:var(--color-neutral-400)">Contrat</td><td style="text-align:right;color:var(--color-accent-200);font-weight:600">62%</td><td style="text-align:right;color:var(--color-text)">760 000 FC</td><td style="color:var(--color-neutral-400)">nov. 2026</td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-3120</td><td style="color:var(--color-neutral-300)">Gloire Empi</td><td style="color:var(--color-neutral-400)">Contrat</td><td style="text-align:right;color:var(--color-accent-200);font-weight:600">34%</td><td style="text-align:right;color:var(--color-text)">1 320 000 FC</td><td style="color:var(--color-neutral-400)">avr. 2027</td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace;font-size:12.5px">KN-3388</td><td style="color:var(--color-neutral-300)">Blaise Nzuzi</td><td style="color:var(--color-neutral-400)">Location</td><td style="text-align:right;color:var(--color-neutral-500)">—</td><td style="text-align:right;color:var(--color-neutral-500)">—</td><td style="color:var(--color-neutral-400)">renouvelable</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ SUPPORT ═══ -->
+      <div data-panel="support" style="display:none">
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px 6px">
+          <div style="font-size:13.5px;font-weight:600;color:var(--color-text);margin-bottom:6px">Mes demandes</div>
+          <table class="table">
+            <thead><tr><th>Sujet</th><th>Concerne</th><th>Statut</th><th>Ouvert</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--color-text)">Question sur le calcul de commission</td><td style="color:var(--color-neutral-400)">Reversements</td><td><span style="font-size:11px;font-weight:600;color:#d9a866;background:rgba(217,168,102,.14);padding:3px 9px;border-radius:20px">Ouvert</span></td><td style="color:var(--color-neutral-400)">il y a 3 h</td></tr>
+              <tr><td style="font-weight:600;color:var(--color-text)">Moto KN-5510 en panne</td><td style="color:var(--color-neutral-400)">Entretien</td><td><span style="font-size:11px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:3px 9px;border-radius:20px">En cours</span></td><td style="color:var(--color-neutral-400)">hier</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  go = (e) => {
+    const TITLES = {
+      overview: ["Vue d'ensemble", "Ma flotte · Kinshasa"],
+      motos: ["Mes motos", "22 motos · 2 à l'entretien"],
+      motards: ["Mes chauffeurs", "Chauffeurs affectés à mes motos"],
+      revenus: ["Revenus & reversements", "Historique et net reçu"],
+      contrats: ["Contrats & formules", "Location & contrat d'achat"],
+      support: ["Support", "Mes demandes"],
+    };
+    const v = e.currentTarget.getAttribute('data-view');
+    document.querySelectorAll('[data-panel]').forEach(p => { p.style.display = p.getAttribute('data-panel') === v ? '' : 'none'; });
+    document.querySelectorAll('.gm-nav[data-view]').forEach(n => {
+      const on = n.getAttribute('data-view') === v;
+      n.style.background = on ? 'rgba(145,132,217,.13)' : 'transparent';
+      n.style.color = on ? 'var(--color-accent-200)' : 'var(--color-neutral-400)';
+      n.style.fontWeight = on ? '600' : '500';
+      n.style.boxShadow = on ? 'inset 2px 0 0 var(--color-accent)' : 'none';
+    });
+    const t = TITLES[v];
+    if (t) { document.getElementById('gm-title').textContent = t[0]; document.getElementById('gm-sub').textContent = t[1]; }
+    const sc = document.getElementById('gm-scroll'); if (sc) sc.scrollTop = 0;
+  };
+  renderVals() { return { go: this.go }; }
+}
+</script>
+</body>
+</html>
