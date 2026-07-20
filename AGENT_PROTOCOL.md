@@ -3,7 +3,7 @@
 All agents working on `go-mboka` MUST follow this protocol to ensure synchronization and project integrity.
 
 ## 1. Pre-Task Requirement: Context Awareness
-Before initiating any work, every agent MUST read the `toujour_passer_ici.md` file located in the target directory (or closest parent directory).
+Before initiating any work, every agent MUST read the `toujour_passer_ici.md` file located in the target directory (or closest parent directory) s il neiste pas cree le stp.
 - If the directory contains folders: Explain the role and contents of those folders.
 - If the directory contains files: Explain the purpose of each class/method within those files.
 

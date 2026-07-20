@@ -26,6 +26,9 @@ urlpatterns = [
     path("proprietaire/", views.OwnerDashboardPageView.as_view(), name="proprietaire_dashboard"),
     path("proprietaire/mobile/", views.OwnerMobilePageView.as_view(), name="proprietaire_mobile"),
 
+    # Client (app de commande de courses)
+    path("client/app/", views.ClientAppView.as_view(), name="client_app"),
+
     # API tableaux de bord
     path("api/dashboard/operator/", views.OperatorDashboardView.as_view(), name="operator_dashboard"),
     path("api/dashboard/operator/clients/", views.OperatorClientsView.as_view(), name="operator_clients"),

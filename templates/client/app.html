@@ -1,0 +1,272 @@
+{% extends "gm/base.html" %}
+{% load static %}
+
+{% block title %}GO-MBOKA · Client{% endblock %}
+
+{% block head_extra %}
+<style>
+  html,body{margin:0;background:#0c0d15;min-height:100%}
+  @keyframes gmPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes gmPing{0%{transform:scale(.5);opacity:.6}80%,100%{transform:scale(2.4);opacity:0}}
+  .gm-cta{cursor:pointer;transition:transform .15s,filter .15s}.gm-cta:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .gm-seg{cursor:pointer;transition:background .15s,color .15s}
+  .gm-star{cursor:pointer;transition:transform .1s}.gm-star:hover{transform:scale(1.12)}
+  .gm-navi{cursor:pointer}
+  ::-webkit-scrollbar{width:0}
+  .gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
+  /* Sur un vrai téléphone : l'app remplit l'écran, on retire le cadre-maquette et la fausse barre d'état. */
+  @media (max-width:560px){
+    .gm-stage{padding:0!important;background:var(--color-bg)!important;align-items:stretch!important}
+    .gm-phone{width:100%!important;height:100vh!important;height:100dvh!important;max-height:none!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+    .gm-statusbar{display:none!important}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% with client_name=request.user.get_full_name|default:request.user.phone_number %}
+<div class="gm-stage" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;font-family:var(--font-body);background:radial-gradient(ellipse 70% 60% at 50% 0%,#1c1a30,#0c0d15)">
+  <div class="gm-root gm-phone" style="width:390px;height:820px;max-height:calc(100vh - 40px);background:var(--color-bg);border:10px solid #23252f;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(0,0,0,.6);display:flex;flex-direction:column">
+    <div class="gm-statusbar" style="height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0"><span class="gm-clock" style="font-size:12px;font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace">--:--</span><div style="display:flex;gap:6px;align-items:center;color:var(--color-text)"><i class="ph-fill ph-cell-signal-full" style="font-size:13px"></i><i class="ph-fill ph-wifi-high" style="font-size:13px"></i><i class="ph-fill ph-battery-high" style="font-size:14px"></i></div></div>
+
+    <!-- HEADER -->
+    <div style="padding:8px 20px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">{{ client_name|slice:":1"|upper }}</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">{{ client_name }}</div><div id="gm-cl-sub" style="font-size:11.5px;color:var(--color-neutral-500)">Cliente</div></div>
+        <div class="gm-cta" data-goto="notifs" style="position:relative;width:38px;height:38px;border:1px solid var(--color-neutral-800);border-radius:11px;display:flex;align-items:center;justify-content:center"><i class="ph ph-bell" style="font-size:17px;color:var(--color-neutral-400)"></i></div>
+      </div>
+    </div>
+
+    <div id="gm-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:0 20px 16px;position:relative">
+
+      <!-- ═══ ACCUEIL ═══ -->
+      <div data-panel="home">
+        <div id="gm-cl-emptybanner" style="display:none;align-items:center;gap:12px;background:linear-gradient(120deg,rgba(217,168,102,.18),var(--color-surface));border:1px solid rgba(217,168,102,.4);border-radius:16px;padding:14px 16px;margin-bottom:14px">
+          <span style="width:38px;height:38px;border-radius:11px;background:rgba(217,168,102,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-gift" style="color:#d9a866;font-size:19px"></i></span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Votre compte est vide</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Faites un 1<sup>er</sup> dépôt pour commander une course.</div></div>
+          <button class="btn btn-primary gm-cta" data-goto="topup" style="font-size:12px;padding:8px 12px;flex-shrink:0">Déposer</button>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+          <div class="gm-cta" data-goto="wallet" style="flex:1.5;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:15px 16px"><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:3px">Mon solde</div><div style="font-size:23px;font-weight:700;color:var(--color-text);letter-spacing:-.02em"><span id="gm-cl-balance">—</span> <span style="font-size:13px;color:var(--color-neutral-600);font-weight:500">FC</span></div><div style="font-size:11px;color:var(--color-accent-300);margin-top:2px">Recharger →</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:15px 16px"><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:3px">Courses offertes</div><div style="font-size:23px;font-weight:700;color:#8fceac;letter-spacing:-.02em" id="gm-cl-free">—</div><div style="font-size:11px;color:var(--color-neutral-500);margin-top:2px">gratuites</div></div>
+        </div>
+
+        <div class="gm-cta" data-goto="create" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:16px;padding:16px 18px;margin-bottom:16px">
+          <i class="ph-fill ph-magnifying-glass" style="color:var(--color-accent-300);font-size:20px"></i>
+          <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">Où allez-vous ?</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Commander une moto-taxi</div></div>
+          <i class="ph ph-arrow-right" style="color:var(--color-neutral-500);font-size:17px"></i>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span style="font-size:13px;font-weight:600;color:var(--color-text)">Mes lieux</span><span class="gm-cta" data-goto="places" style="font-size:11.5px;color:var(--color-accent-300)">Tout voir</span></div>
+        <div id="gm-cl-quickplaces" style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+          <div style="padding:12px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+
+        <div class="gm-cta" data-goto="referral" style="display:flex;align-items:center;gap:13px;background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-700);border-radius:16px;padding:15px 17px">
+          <span style="width:40px;height:40px;border-radius:12px;background:rgba(145,132,217,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-users-three" style="color:var(--color-accent-300);font-size:20px"></i></span>
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:600;color:var(--color-text)">Parrainez vos amis</div><div style="font-size:11.5px;color:var(--color-neutral-500)">3 courses gratuites par ami inscrit</div></div>
+          <i class="ph ph-caret-right" style="color:var(--color-neutral-500);font-size:16px"></i>
+        </div>
+      </div>
+
+      <!-- ═══ CRÉER UNE COURSE ═══ -->
+      <div data-panel="create" style="display:none">
+        <div class="gm-cta" data-goto="home" style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Nouvelle course</div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:11px;padding-bottom:12px;border-bottom:1px solid var(--color-neutral-800)">
+            <i class="ph-fill ph-circle" style="color:#6fae90;font-size:12px"></i>
+            <div style="flex:1"><div style="font-size:10.5px;color:var(--color-neutral-500)">Départ</div><input id="gm-cl-pickup" class="input" style="border:none;background:transparent;padding:2px 0;font-size:13.5px;font-weight:600;color:var(--color-text)" value="Position actuelle (GPS)"></div>
+            <span style="display:inline-flex;align-items:center;gap:4px;font-size:10px;color:#6fae90"><i class="ph-fill ph-crosshair"></i>auto</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:11px;padding-top:12px">
+            <i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:13px"></i>
+            <div style="flex:1"><div style="font-size:10.5px;color:var(--color-neutral-500)">Destination</div><input id="gm-cl-dest" class="input" style="border:none;background:transparent;padding:2px 0;font-size:13.5px;font-weight:600;color:var(--color-text)" placeholder="Saisir une adresse…"></div>
+          </div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:12px;color:var(--color-neutral-400)">Prix estimé</span><span id="gm-cl-price" style="font-size:20px;font-weight:700;color:var(--color-text)">— FC</span></div>
+          <div style="display:flex;align-items:center;gap:9px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:11px;padding:10px 12px;margin-top:2px"><i class="ph-fill ph-shuffle" style="color:var(--color-accent-300);font-size:16px"></i><span style="font-size:11.5px;color:var(--color-neutral-400);flex:1">Le serveur assigne le chauffeur le plus proche et le mieux noté.</span></div>
+        </div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-request" style="font-size:14px;padding:13px"><i class="ph-fill ph-paper-plane-tilt"></i>Demander la course</button>
+      </div>
+
+      <!-- ═══ RECHERCHE CHAUFFEUR ═══ -->
+      <div data-panel="searching" style="display:none">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 10px 30px">
+          <div style="position:relative;width:90px;height:90px;margin-bottom:24px">
+            <span style="position:absolute;inset:0;border-radius:50%;background:var(--color-accent-500);opacity:.25;animation:gmPing 1.8s infinite"></span>
+            <span style="position:absolute;inset:26px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-400),var(--color-accent-700));display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:#fff;font-size:20px"></i></span>
+          </div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text);margin-bottom:6px">Recherche d'un chauffeur…</div>
+          <div id="gm-cl-search-sub" style="font-size:12.5px;color:var(--color-neutral-500);max-width:250px;line-height:1.5">Nous contactons les motards proches de votre position.</div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" id="gm-cl-cancel" style="font-size:13px;padding:11px;color:#d98a8a">Annuler la demande</button>
+      </div>
+
+      <!-- ═══ COURSE EN COURS ═══ -->
+      <div data-panel="ontrip" style="display:none">
+        <div class="gm-cta" data-goto="home" style="display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Course en cours</div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-accent-700);border-radius:16px;padding:15px 16px;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <span id="gm-cl-driver-av" style="width:46px;height:46px;border-radius:50%;background:var(--color-neutral-800);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--color-neutral-100)">—</span>
+            <div style="flex:1"><div id="gm-cl-driver" style="font-size:14.5px;font-weight:600;color:var(--color-text)">En attente d'un chauffeur…</div><div id="gm-cl-driver-sub" style="font-size:11.5px;color:var(--color-neutral-500)">—</div></div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <a id="gm-cl-call" class="btn btn-secondary gm-cta" href="#" style="flex:1;font-size:13px;padding:11px"><i class="ph-fill ph-phone"></i>Appeler</a>
+            <a id="gm-cl-sms" class="btn btn-secondary gm-cta" href="#" style="flex:1;font-size:13px;padding:11px"><i class="ph-fill ph-chat-circle"></i>Message</a>
+          </div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><i class="ph-fill ph-circle" style="color:#6fae90;font-size:10px"></i><span id="gm-cl-trip-from" style="font-size:12.5px;color:var(--color-text)">Départ</span></div>
+          <div style="width:1px;height:10px;background:var(--color-neutral-700);margin-left:4.5px"></div>
+          <div style="display:flex;align-items:center;gap:9px;margin-top:8px"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:11px"></i><span id="gm-cl-trip-to" style="font-size:12.5px;color:var(--color-text)">Destination</span></div>
+        </div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-arrived" style="font-size:14px;padding:12px"><i class="ph-fill ph-flag-checkered"></i>Je suis arrivé(e)</button>
+      </div>
+
+      <!-- ═══ NOTER ═══ -->
+      <div data-panel="rate" style="display:none">
+        <div style="text-align:center;padding:14px 0 6px">
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">Course terminée</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500);margin-top:2px">Comment s'est passée votre course ?</div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:10px;margin:20px 0 6px">
+          <i class="ph ph-star gm-star" data-star="1" style="font-size:38px;color:var(--color-neutral-700)"></i>
+          <i class="ph ph-star gm-star" data-star="2" style="font-size:38px;color:var(--color-neutral-700)"></i>
+          <i class="ph ph-star gm-star" data-star="3" style="font-size:38px;color:var(--color-neutral-700)"></i>
+          <i class="ph ph-star gm-star" data-star="4" style="font-size:38px;color:var(--color-neutral-700)"></i>
+          <i class="ph ph-star gm-star" data-star="5" style="font-size:38px;color:var(--color-neutral-700)"></i>
+        </div>
+        <div id="gm-cl-ratelabel" style="text-align:center;font-size:13px;font-weight:600;color:var(--color-accent-200);margin-bottom:20px">&nbsp;</div>
+        <div class="field" style="margin-bottom:14px"><label>Laisser un commentaire (facultatif)</label><textarea id="gm-cl-comment" class="input" rows="3" placeholder="Conduite, ponctualité, courtoisie…"></textarea></div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-rate-submit" style="font-size:14px;padding:13px"><i class="ph-fill ph-paper-plane-tilt"></i>Envoyer mon avis</button>
+      </div>
+
+      <!-- ═══ MES LIEUX ═══ -->
+      <div data-panel="places" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ph-fill ph-map-pin-line" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Mes lieux enregistrés</span></div>
+        <p style="font-size:12px;color:var(--color-neutral-500);margin:0 0 16px">Commandez une course en un clic vers vos lieux favoris.</p>
+        <div id="gm-cl-places" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+          <div style="padding:12px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+        <button class="btn btn-secondary btn-block gm-cta" id="gm-cl-addplace" style="font-size:13px;padding:12px"><i class="ph ph-plus"></i>Ajouter un lieu</button>
+      </div>
+
+      <!-- ═══ PORTEFEUILLE ═══ -->
+      <div data-panel="wallet" style="display:none">
+        <div style="background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:16px;padding:18px;margin-bottom:14px">
+          <div style="font-size:12px;color:var(--color-accent-200);margin-bottom:4px">Solde plateforme</div>
+          <div style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em"><span id="gm-cl-wallet-balance">—</span> <span style="font-size:16px;color:var(--color-neutral-500);font-weight:500">FC</span></div>
+          <button class="btn btn-primary btn-block gm-cta" data-goto="topup" style="font-size:13.5px;padding:11px;margin-top:14px"><i class="ph-fill ph-plus-circle"></i>Recharger via Mobile Money</button>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:10px">Transactions</div>
+        <div id="gm-cl-txns" style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:12px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+      </div>
+
+      <!-- ═══ RECHARGER ═══ -->
+      <div data-panel="topup" style="display:none">
+        <div class="gm-cta" data-goto="wallet" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Recharger mon compte</div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px;line-height:1.5">Le Mobile Money sert à <b style="color:var(--color-text)">ravitailler votre solde</b>. Vous payez ensuite vos courses depuis ce solde.</p>
+        <div class="field" style="margin-bottom:12px"><label>Montant à déposer (FC)</label><input id="gm-cl-topup-amount" class="input" type="text" value="5000"></div>
+        <div style="display:flex;gap:8px;margin-bottom:18px">
+          <span class="gm-seg gm-cl-amount" data-amount="2000" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">2 000</span>
+          <span class="gm-seg gm-cl-amount" data-amount="5000" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">5 000</span>
+          <span class="gm-seg gm-cl-amount" data-amount="10000" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">10 000</span>
+          <span class="gm-seg gm-cl-amount" data-amount="20000" style="flex:1;text-align:center;padding:9px;border-radius:10px;font-size:12px;font-weight:600;color:var(--color-neutral-400);background:var(--color-bg);border:1px solid var(--color-neutral-800)">20 000</span>
+        </div>
+        <div style="font-size:12.5px;font-weight:600;color:var(--color-text);margin-bottom:10px">Opérateur Mobile Money</div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+          <span class="gm-cta gm-cl-momo" data-provider="mpesa" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-accent-400);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(111,174,144,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#8fceac;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">M-Pesa (Vodacom)</div></div><i class="ph-fill ph-check-circle gm-cl-momomark" style="color:var(--color-accent-400);font-size:19px"></i></span>
+          <span class="gm-cta gm-cl-momo" data-provider="airtel_money" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(207,127,127,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#d98a8a;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Airtel Money</div></div><i class="ph ph-circle gm-cl-momomark" style="color:var(--color-neutral-700);font-size:19px"></i></span>
+          <span class="gm-cta gm-cl-momo" data-provider="orange_money" style="display:flex;align-items:center;gap:12px;background:var(--color-surface);border:1.5px solid var(--color-neutral-800);border-radius:13px;padding:12px 14px"><span style="width:36px;height:36px;border-radius:9px;background:rgba(217,168,102,.16);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-device-mobile" style="color:#d9a866;font-size:17px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">Orange Money</div></div><i class="ph ph-circle gm-cl-momomark" style="color:var(--color-neutral-700);font-size:19px"></i></span>
+        </div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-topup-confirm" style="font-size:14px;padding:13px"><i class="ph-fill ph-lock-key"></i>Confirmer le dépôt</button>
+        <p style="font-size:11px;color:var(--color-neutral-600);text-align:center;line-height:1.5;margin:12px 0 0">Vous recevrez une demande de confirmation sur votre téléphone Mobile Money.</p>
+      </div>
+
+      <!-- ═══ PARRAINAGE ═══ -->
+      <div data-panel="referral" style="display:none">
+        <div style="text-align:center;padding:6px 0 14px">
+          <span style="display:inline-flex;width:64px;height:64px;border-radius:18px;background:rgba(145,132,217,.16);align-items:center;justify-content:center;margin-bottom:12px"><i class="ph-fill ph-users-three" style="color:var(--color-accent-300);font-size:30px"></i></span>
+          <div style="font-size:18px;font-weight:700;color:var(--color-text)">Parrainez, gagnez des courses</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500);margin-top:4px;max-width:270px;margin:4px auto 0;line-height:1.5">Chaque ami qui s'inscrit avec votre code vous offre <b style="color:var(--color-accent-200)">3 courses gratuites</b>.</div>
+        </div>
+        <div style="background:var(--color-surface);border:1px dashed var(--color-accent-600);border-radius:16px;padding:16px;text-align:center;margin-bottom:14px">
+          <div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:6px">Votre code de parrainage</div>
+          <div id="gm-cl-refcode" style="font-size:26px;font-weight:800;letter-spacing:.14em;color:var(--color-accent-200);font-family:ui-monospace,monospace">—</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+          <button class="btn btn-primary gm-cta" id="gm-cl-share" style="font-size:13px;padding:12px"><i class="ph-fill ph-share-network"></i>Partager</button>
+          <button class="btn btn-secondary gm-cta" id="gm-cl-copy" style="font-size:13px;padding:12px"><i class="ph-fill ph-copy"></i>Copier</button>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px"><span style="font-size:12.5px;font-weight:600;color:var(--color-text)">Amis inscrits</span><span id="gm-cl-refcount" style="font-size:13px;font-weight:700;color:var(--color-accent-200)">0</span></div>
+        </div>
+      </div>
+
+      <!-- ═══ NOTIFICATIONS ═══ -->
+      <div data-panel="notifs" style="display:none">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><i class="ph-fill ph-bell" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Notifications</span></div>
+        <div id="gm-cl-notifs" style="display:flex;flex-direction:column;gap:10px">
+          <div style="padding:12px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+      </div>
+
+      <!-- ═══ PROFIL ═══ -->
+      <div data-panel="profil" style="display:none">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px">{{ client_name|slice:":1"|upper }}</div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">{{ client_name }}</div>
+          <div id="gm-cl-profil-sub" style="font-size:12.5px;color:var(--color-neutral-500)">Cliente</div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div class="gm-cta" data-goto="compte" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-circle" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Modifier mon compte</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="referral" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-users-three" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Parrainage &amp; partage</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="motdepasse" style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-lock-key" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Changer le mot de passe</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+        </div>
+        <a class="btn btn-secondary btn-block gm-cta" href="{% url 'portal:logout' %}" style="font-size:13.5px;padding:11px;color:#d98a8a"><i class="ph ph-sign-out"></i>Se déconnecter</a>
+      </div>
+
+      <!-- ═══ MODIFIER COMPTE ═══ -->
+      <div data-panel="compte" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div class="field" style="margin-bottom:13px"><label>Prénom</label><input id="gm-cl-first" class="input" type="text"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nom</label><input id="gm-cl-last" class="input" type="text"></div>
+        <div class="field" style="margin-bottom:13px"><label>Email</label><input id="gm-cl-email" class="input" type="email"></div>
+        <div class="field" style="margin-bottom:20px"><label>Téléphone</label><input id="gm-cl-phone" class="input" type="text" disabled></div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-account-save" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Enregistrer</button>
+      </div>
+
+      <!-- ═══ MOT DE PASSE ═══ -->
+      <div data-panel="motdepasse" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><i class="ph-fill ph-lock-key" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Changer le mot de passe</span></div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 20px">Au moins 8 caractères.</p>
+        <div class="field" style="margin-bottom:13px"><label>Mot de passe actuel</label><input id="gm-cl-pw-old" class="input" type="password" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nouveau mot de passe</label><input id="gm-cl-pw-new" class="input" type="password" placeholder="Au moins 8 caractères"></div>
+        <div class="field" style="margin-bottom:20px"><label>Confirmer</label><input id="gm-cl-pw-new2" class="input" type="password" placeholder="Retaper le mot de passe"></div>
+        <button class="btn btn-primary btn-block gm-cta" id="gm-cl-pw-submit" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Mettre à jour</button>
+      </div>
+
+    </div>
+
+    <!-- TAB BAR -->
+    <div style="flex-shrink:0;display:flex;border-top:1px solid var(--color-neutral-800);background:var(--color-surface);padding:9px 8px 16px">
+      <div class="gm-navi" data-view="home" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-300)"><i class="ph-fill ph-house" style="font-size:21px"></i><span style="font-size:10px;font-weight:600">Accueil</span></div>
+      <div class="gm-navi" data-view="places" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-map-pin-line" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Mes lieux</span></div>
+      <div class="gm-navi" data-view="create" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-plus-circle" style="font-size:24px"></i><span style="font-size:10px;font-weight:500">Course</span></div>
+      <div class="gm-navi" data-view="wallet" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-wallet" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Solde</span></div>
+      <div class="gm-navi" data-view="profil" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-user" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Profil</span></div>
+    </div>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}
+
+{% block page_js %}
+<script src="{% static 'js/gm-client.js' %}?v=1"></script>
+{% endblock %}

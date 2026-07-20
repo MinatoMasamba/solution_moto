@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import MotardProfile, OwnerProfile, SupportTicket, User
+from .models import MotardProfile, OwnerProfile, SavedPlace, SupportTicket, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -79,3 +79,10 @@ class SupportTicketSerializer(serializers.ModelSerializer):
 
     def get_requester_name(self, obj):
         return obj.requester.get_full_name() or obj.requester.phone_number
+
+
+class SavedPlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavedPlace
+        fields = ["id", "label", "address", "latitude", "longitude", "icon", "created_at"]
+        read_only_fields = ["id", "created_at"]

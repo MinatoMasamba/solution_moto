@@ -76,3 +76,10 @@ Il existe **deux chemins distincts** pour créer un compte motard, qui ne collec
 ## 9. Architecture Front-end
 
 Cette application contribue à l'écosystème front-end dynamique. Les données utilisateurs et les profils fournis par ses services sont consommés en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.
+
+## 9. App Client — SavedPlace & résumé (ajouts)
+
+- **`SavedPlace`** (`models.py`) : lieux enregistrés d'un client (label, adresse, lat/lng). API `/api/v1/saved-places/` (`SavedPlaceViewSet`, scopé à l'utilisateur).
+- **`User.referral_code`** : propriété (pas un champ) — code de parrainage stable dérivé du prénom + id (ex. `SARAH24`).
+- **`ClientSummaryView`** (`/api/v1/client/summary/`) : identité, note moyenne reçue, nb de courses terminées, code parrainage, filleuls, solde portefeuille, courses offertes. Alimente l'en-tête/accueil de `templates/client/app.html`.
+- **`MeView.patch`** (`/api/v1/auth/me/`) : mise à jour `first_name`/`last_name`/`email` (écran « Modifier mon compte »).

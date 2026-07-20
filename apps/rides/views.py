@@ -34,7 +34,13 @@ class RideViewSet(viewsets.ModelViewSet):
         return qs.filter(client=user)
 
     def perform_create(self, serializer):
-        serializer.save(client=self.request.user)
+        """Création d'une demande de course : la logique métier (rôle client,
+        unicité de la course active, statut REQUESTED) vit dans le service."""
+        try:
+            ride = services.create_ride_request(self.request.user, **serializer.validated_data)
+        except DjangoValidationError as exc:
+            raise ValidationError(exc.messages)
+        serializer.instance = ride
 
     def _apply(self, service_fn, **kwargs):
         ride = self.get_object()
@@ -43,6 +49,29 @@ class RideViewSet(viewsets.ModelViewSet):
         except DjangoValidationError as exc:
             raise ValidationError(exc.message)
         return Response(RideSerializer(ride).data)
+
+    @action(detail=False, methods=["get"])
+    def current(self, request):
+        """Course active du client connecté (REQUESTED/ACCEPTED/ONGOING) + position du motard."""
+        ride = (
+            Ride.objects.select_related("motard")
+            .filter(client=request.user, status__in=services.ACTIVE_RIDE_STATUSES)
+            .order_by("-requested_at")
+            .first()
+        )
+        if ride is None:
+            return Response({"ride": None})
+
+        data = RideSerializer(ride).data
+        # Dernière position connue du motard assigné (pour le suivi temps réel).
+        if ride.motard_id:
+            from apps.geoloc.services import latest_position
+            ping = latest_position(ride.motard)
+            data["motard_position"] = (
+                {"latitude": float(ping.latitude), "longitude": float(ping.longitude)}
+                if ping else None
+            )
+        return Response({"ride": data})
 
     @action(detail=True, methods=["post"])
     def accept(self, request, pk=None):

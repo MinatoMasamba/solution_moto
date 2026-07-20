@@ -100,3 +100,37 @@ class PaymentMethod(models.Model):
         if self.kind == self.Kind.MOBILE_MONEY:
             return f"{self.get_provider_display()} · {self.phone_number}"
         return f"{self.bank_name} · {self.account_number}"
+
+
+class WalletTransaction(models.Model):
+    """Mouvement du solde plateforme d'un client (recharge, paiement de course)."""
+
+    class Kind(models.TextChoices):
+        TOPUP = "topup", "Recharge"
+        RIDE = "ride", "Paiement de course"
+        REFUND = "refund", "Remboursement"
+        BONUS = "bonus", "Bonus"
+
+    class Status(models.TextChoices):
+        PENDING = "pending", "En attente"
+        SUCCESS = "success", "Réussi"
+        FAILED = "failed", "Échoué"
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="wallet_transactions"
+    )
+    kind = models.CharField(max_length=20, choices=Kind.choices)
+    # Montant signé : positif = crédit (recharge/bonus/remboursement), négatif = débit (course).
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    label = models.CharField(max_length=150, blank=True)
+    provider = models.CharField(max_length=20, choices=Provider.choices, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "transaction portefeuille"
+        verbose_name_plural = "transactions portefeuille"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.get_kind_display()} {self.amount} ({self.get_status_display()})"

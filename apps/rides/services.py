@@ -1,8 +1,58 @@
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from apps.users.models import User
 from service.service_rides.logic import RideDispatchService
 from .models import Ride
+
+# Statuts pour lesquels une course est considérée « en cours » (non terminée).
+ACTIVE_RIDE_STATUSES = (Ride.Status.REQUESTED, Ride.Status.ACCEPTED, Ride.Status.ONGOING)
+
+
+def create_ride_request(
+    client,
+    *,
+    pickup_address,
+    dropoff_address,
+    pickup_latitude=0,
+    pickup_longitude=0,
+    dropoff_latitude=0,
+    dropoff_longitude=0,
+    agreed_price=None,
+) -> Ride:
+    """Crée une demande de course pour un client.
+
+    Règles métier :
+    - seul un utilisateur au rôle CLIENT (ou le staff, pour les tests) peut demander une course ;
+    - un client ne peut avoir qu'une seule course active à la fois
+      (REQUESTED / ACCEPTED / ONGOING) ;
+    - la course naît au statut REQUESTED et devient alors visible pour les
+      motards abonnés actifs (cf. RideViewSet.get_queryset / RideDispatchService).
+    """
+    if client.role != User.Role.CLIENT and not client.is_staff:
+        raise ValidationError("Seuls les clients peuvent demander une course.")
+
+    if Ride.objects.filter(client=client, status__in=ACTIVE_RIDE_STATUSES).exists():
+        raise ValidationError(
+            "Vous avez déjà une course en cours ou en attente. Terminez-la ou annulez-la avant d'en demander une autre."
+        )
+
+    return Ride.objects.create(
+        client=client,
+        status=Ride.Status.REQUESTED,
+        pickup_address=pickup_address,
+        pickup_latitude=pickup_latitude,
+        pickup_longitude=pickup_longitude,
+        dropoff_address=dropoff_address,
+        dropoff_latitude=dropoff_latitude,
+        dropoff_longitude=dropoff_longitude,
+        agreed_price=agreed_price,
+    )
+
+
+def eligible_motards_count() -> int:
+    """Nombre de motards actuellement éligibles à recevoir une demande (dispo + abonnés actifs)."""
+    return RideDispatchService.filter_eligible_motards_for_dispatch(User.objects.all()).count()
 
 
 def accept_ride(ride: Ride, motard) -> Ride:

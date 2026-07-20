@@ -1,12 +1,21 @@
+from decimal import Decimal, InvalidOperation
+
+from django.db.models import Sum
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.users.models import User
 
 from . import services
-from .models import Payment, PaymentMethod, Subscription
-from .serializers import PaymentMethodSerializer, PaymentSerializer, SubscriptionSerializer
+from .models import Payment, PaymentMethod, Subscription, WalletTransaction
+from .serializers import (
+    PaymentMethodSerializer,
+    PaymentSerializer,
+    SubscriptionSerializer,
+    WalletTransactionSerializer,
+)
 
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
@@ -83,3 +92,48 @@ class PaymentMethodViewSet(viewsets.ModelViewSet):
         method.is_default = True
         method.save(update_fields=["is_default"])
         return Response(PaymentMethodSerializer(method).data)
+
+
+class WalletView(APIView):
+    """Portefeuille plateforme du client : solde + historique + recharge."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    @staticmethod
+    def _balance(user):
+        return WalletTransaction.objects.filter(
+            user=user, status=WalletTransaction.Status.SUCCESS
+        ).aggregate(total=Sum("amount"))["total"] or Decimal("0")
+
+    def get(self, request):
+        txns = WalletTransaction.objects.filter(user=request.user)[:50]
+        return Response({
+            "balance": self._balance(request.user),
+            "transactions": WalletTransactionSerializer(txns, many=True).data,
+        })
+
+    def post(self, request):
+        """Recharge (top-up) via Mobile Money. Crée une transaction de crédit.
+        NB : l'intégration réelle de l'opérateur reste à brancher — la transaction
+        est créée en 'success' pour refléter le solde ; passez-la en 'pending' quand
+        un vrai flux de confirmation Mobile Money sera connecté."""
+        try:
+            amount = Decimal(str(request.data.get("amount", "0")).replace(" ", ""))
+        except (InvalidOperation, TypeError):
+            return Response({"detail": "Montant invalide."}, status=400)
+        if amount <= 0:
+            return Response({"detail": "Le montant doit être positif."}, status=400)
+
+        provider = request.data.get("provider", "")
+        txn = WalletTransaction.objects.create(
+            user=request.user,
+            kind=WalletTransaction.Kind.TOPUP,
+            amount=amount,
+            status=WalletTransaction.Status.SUCCESS,
+            label="Recharge Mobile Money",
+            provider=provider if provider in dict(WalletTransaction._meta.get_field("provider").choices) else "",
+        )
+        return Response({
+            "transaction": WalletTransactionSerializer(txn).data,
+            "balance": self._balance(request.user),
+        }, status=201)

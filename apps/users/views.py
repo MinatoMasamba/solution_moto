@@ -6,11 +6,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.utils import timezone
 
-from .models import MotardProfile, OwnerProfile, SupportTicket, User
+from django.db.models import Avg, Sum
+
+from .models import MotardProfile, OwnerProfile, SavedPlace, SupportTicket, User
 from .serializers import (
     MotardProfileSerializer,
     OwnerProfileSerializer,
     RegisterSerializer,
+    SavedPlaceSerializer,
     SupportTicketSerializer,
     UserSerializer,
 )
@@ -120,3 +123,47 @@ class SupportTicketViewSet(viewsets.ModelViewSet):
         ticket.resolved_at = timezone.now()
         ticket.save(update_fields=["status", "resolved_at"])
         return Response(SupportTicketSerializer(ticket).data)
+
+
+class SavedPlaceViewSet(viewsets.ModelViewSet):
+    """Lieux enregistrés du client connecté (CRUD, strictement scopé à l'utilisateur)."""
+
+    serializer_class = SavedPlaceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return SavedPlace.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ClientSummaryView(APIView):
+    """Synthèse pour l'en-tête / accueil de l'app client : identité, note,
+    nombre de courses, code de parrainage, filleuls, solde et courses offertes."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        from apps.rides.models import Ride, RideRating
+        from apps.payments.models import WalletTransaction
+
+        user = request.user
+        rides_count = Ride.objects.filter(client=user, status=Ride.Status.COMPLETED).count()
+        rating = RideRating.objects.filter(ride__client=user).aggregate(avg=Avg("score"))["avg"]
+        balance = WalletTransaction.objects.filter(
+            user=user, status=WalletTransaction.Status.SUCCESS
+        ).aggregate(total=Sum("amount"))["total"] or 0
+        referred = User.objects.filter(referred_by_code=user.referral_code).count() \
+            if hasattr(User, "referred_by_code") else 0
+
+        return Response({
+            "name": user.get_full_name() or user.phone_number,
+            "phone_number": user.phone_number,
+            "rating": round(float(rating), 1) if rating else None,
+            "rides_count": rides_count,
+            "referral_code": user.referral_code,
+            "referred_count": referred,
+            "free_rides": 0,
+            "wallet_balance": balance,
+        })

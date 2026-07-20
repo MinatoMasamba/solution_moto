@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Payment, PaymentMethod, Subscription
+from .models import Payment, PaymentMethod, Subscription, WalletTransaction
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -53,3 +53,12 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError({"kind": "Type de moyen de paiement invalide."})
         return attrs
+
+
+class WalletTransactionSerializer(serializers.ModelSerializer):
+    kind_display = serializers.CharField(source="get_kind_display", read_only=True)
+
+    class Meta:
+        model = WalletTransaction
+        fields = ["id", "kind", "kind_display", "amount", "status", "label", "provider", "created_at"]
+        read_only_fields = ["id", "status", "created_at"]

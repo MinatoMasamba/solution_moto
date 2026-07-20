@@ -124,7 +124,10 @@ class AppRedirectView(View):
             return redirect("portal:direction_dashboard")
         if user.role == User.Role.FLEET_MANAGER:
             return redirect("portal:gerance_dashboard")
-        # Motard, client, propriétaire : pas encore de console web dédiée.
+        if user.role == User.Role.OWNER:
+            return redirect("portal:proprietaire_dashboard")
+        if user.role == User.Role.CLIENT:
+            return redirect("portal:client_app")
         return redirect("portal:home")
 
 
@@ -328,6 +331,18 @@ class OwnerMobilePageView(RoleRequiredMixin, TemplateView):
     template_name = "proprietaire/mobile.html"
     required_roles = (User.Role.OWNER,)
     login_url = "portal:proprietaire_auth"
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# Client — app de commande de courses (mobile)
+# ══════════════════════════════════════════════════════════════════════════
+
+class ClientAppView(RoleRequiredMixin, TemplateView):
+    """App client : commander une course, portefeuille, lieux, profil."""
+
+    template_name = "client/app.html"
+    required_roles = (User.Role.CLIENT,)
+    login_url = "portal:login"
 
 
 # ══════════════════════════════════════════════════════════════════════════

@@ -20,6 +20,14 @@ class RideSerializer(serializers.ModelSerializer):
             "id", "client", "motard", "status", "requested_at", "accepted_at",
             "started_at", "completed_at", "cancelled_at",
         ]
+        extra_kwargs = {
+            # Le client commande à l'adresse ; les coordonnées (GPS départ,
+            # destination géocodée) sont optionnelles et valent 0 par défaut.
+            "pickup_latitude": {"required": False, "default": 0},
+            "pickup_longitude": {"required": False, "default": 0},
+            "dropoff_latitude": {"required": False, "default": 0},
+            "dropoff_longitude": {"required": False, "default": 0},
+        }
 
     def get_client_name(self, obj):
         return obj.client.get_full_name() or obj.client.phone_number if obj.client_id else None

@@ -68,6 +68,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name or self.phone_number
 
+    @property
+    def referral_code(self):
+        """Code de parrainage stable, dérivé du prénom + id (ex. SARAH24)."""
+        base = "".join(c for c in (self.first_name or "GM") if c.isalpha()).upper()[:5] or "GM"
+        return f"{base}{self.pk or ''}"
+
 
 PROVINCE_CHOICES = [
     ("kinshasa", "Kinshasa"),
@@ -212,3 +218,25 @@ class SupportTicket(models.Model):
 
     def __str__(self):
         return f"[{self.get_status_display()}] {self.subject} — {self.requester}"
+
+
+class SavedPlace(models.Model):
+    """Lieu enregistré par un client pour commander une course en un clic."""
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="saved_places"
+    )
+    label = models.CharField("nom du lieu", max_length=80)
+    address = models.CharField("adresse", max_length=255)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    icon = models.CharField(max_length=30, default="map-pin", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "lieu enregistré"
+        verbose_name_plural = "lieux enregistrés"
+        ordering = ["label"]
+
+    def __str__(self):
+        return f"{self.label} — {self.user}"
