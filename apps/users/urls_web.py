@@ -1,13 +1,12 @@
 from django.urls import path
 
 from . import views_web
-from .views_web import client_dashboard_view, ClientLoginView  # Importer ClientLoginView
 
 app_name = "chauffeur"
 
 urlpatterns = [
-    path("client/dashboard/", client_dashboard_view, name="client_dashboard"),
-    path("client/login/", ClientLoginView.as_view(), name="client_login"), # Ajout
+    path("dashboard/", views_web.client_dashboard_view, name="client_dashboard"),
+    path("login/", views_web.ClientLoginView.as_view(), name="client_login"),
     path("connexion/", views_web.ChauffeurLoginView.as_view(), name="chauffeur_login"),
     path("inscription/", views_web.ChauffeurRegistrationView.as_view(), name="chauffeur_registration"),
     path("app/", views_web.ChauffeurAppView.as_view(), name="chauffeur_app"),
