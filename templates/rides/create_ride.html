@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nouvelle Course - GO-MBOKA</title>
+    <link rel="stylesheet" href="/static/vendor/tailwindcss.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+        <h1 class="text-xl font-bold mb-4">Demander une course</h1>
+        <form method="post" action="/api/v1/rides/">
+            {% csrf_token %}
+            <input type="hidden" name="status" value="REQUESTED">
+            <div class="mb-4">
+                <label class="block text-gray-700">Départ</label>
+                <input type="text" name="departure_address" class="w-full border p-2 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Destination</label>
+                <input type="text" name="destination_address" class="w-full border p-2 rounded" required>
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">Demander</button>
+        </form>
+    </div>
+</body>
+</html>
