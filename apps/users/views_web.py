@@ -34,11 +34,28 @@ class ChauffeurLoginView(View):
             )
             if user is not None:
                 login(request, user)
+                if user.role == User.Role.MOTARD or user.is_staff:
+                    return redirect("chauffeur:chauffeur_app")
                 return redirect("portal:home")
             messages.error(request, "Numéro de téléphone ou mot de passe incorrect.")
         else:
             messages.error(request, "Veuillez renseigner votre numéro et votre mot de passe.")
         return render(request, self.template_name, {"active_tab": "login"}, status=401)
+
+
+class ChauffeurAppView(View):
+    """App du motard (session). Réservée au rôle MOTARD."""
+
+    template_name = "chauffeur/chauffeur_web_mobile/app.html"
+
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return redirect("chauffeur:chauffeur_login")
+        if not (user.role == User.Role.MOTARD or user.is_staff):
+            messages.error(request, "Accès réservé aux motards.")
+            return redirect("chauffeur:chauffeur_login")
+        return render(request, self.template_name)
 
 
 class ChauffeurRegistrationView(View):

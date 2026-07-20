@@ -26,4 +26,10 @@ Ce fichier est le point d'entrée pour toute IA ou agent travaillant sur le serv
 
 - **Le motard ne peut pas accepter de course (Erreur : "Accès refusé")** :
   1. Aller sur le profil du motard (`MotardProfile`).
-  2. Vérifier que son `subscription_status` est bien égal à `"active"`. S'il est à `"trial"` (en essai), `"expired"` (expiré), ou `"suspended"`, il sera bloqué par `validate_motard_for_ride_acceptance`.
+  - Vérifier que son `subscription_status` est bien égal à `"active"`. S'il est à `"trial"` (en essai), `"expired"` (expiré), ou `"suspended"`, il sera bloqué par `validate_motard_for_ride_acceptance`.
+
+  ---
+
+  ## 4. Architecture Front-end
+
+  Ce service fournit des logiques métier critiques (ex: éligibilité motard) qui sont consommées par les APIs. Les tableaux de bord utilisent ces résultats pour garantir une interface réactive et sans données statiques.

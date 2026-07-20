@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import MotardProfile, OwnerProfile, User
+from .models import MotardProfile, OwnerProfile, SupportTicket, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,11 +41,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 class MotardProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
+    application_status_display = serializers.CharField(source="get_application_status_display", read_only=True)
+
     class Meta:
         model = MotardProfile
         fields = [
             "id", "user", "license_number", "id_card_number", "photo",
             "subscription_status", "subscription_expires_at", "rating_average", "is_available",
+            "application_status", "application_status_display", "commune",
         ]
         read_only_fields = ["id", "subscription_status", "subscription_expires_at", "rating_average"]
 
@@ -57,3 +60,22 @@ class OwnerProfileSerializer(serializers.ModelSerializer):
         model = OwnerProfile
         fields = ["id", "user", "company_name", "id_card_number"]
         read_only_fields = ["id"]
+
+
+class SupportTicketSerializer(serializers.ModelSerializer):
+    requester_name = serializers.SerializerMethodField()
+    requester_role = serializers.CharField(source="requester.get_role_display", read_only=True)
+    priority_display = serializers.CharField(source="get_priority_display", read_only=True)
+    status_display = serializers.CharField(source="get_status_display", read_only=True)
+
+    class Meta:
+        model = SupportTicket
+        fields = [
+            "id", "requester", "requester_name", "requester_role",
+            "subject", "message", "priority", "priority_display",
+            "status", "status_display", "created_at", "resolved_at",
+        ]
+        read_only_fields = ["id", "requester", "status", "created_at", "resolved_at"]
+
+    def get_requester_name(self, obj):
+        return obj.requester.get_full_name() or obj.requester.phone_number

@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}GO-MBOKA{% endblock %}</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏍️</text></svg>">
+
 
   {# Design-system + icons, vendored locally (no external CDN). #}
   <link rel="stylesheet" href="{% static 'vendor/nocturne/styles.css' %}">
@@ -37,7 +39,7 @@
 
   {# ?v=N : à incrémenter quand ces scripts changent, pour invalider le cache navigateur. #}
   <script src="{% static 'js/network-utils.js' %}?v=2"></script>
-  <script src="{% static 'js/gm-dashboard.js' %}?v=2"></script>
+  <script src="{% static 'js/gm-dashboard.js' %}?v=3"></script>
   {% block page_js %}{% endblock %}
 </body>
 </html>

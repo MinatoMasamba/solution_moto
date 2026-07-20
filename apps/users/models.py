@@ -182,3 +182,33 @@ class OwnerProfile(models.Model):
 
     def __str__(self):
         return f"Profil propriétaire de {self.user}"
+
+
+class SupportTicket(models.Model):
+    class Priority(models.TextChoices):
+        LOW = "low", "Basse"
+        MEDIUM = "medium", "Moyenne"
+        HIGH = "high", "Haute"
+
+    class Status(models.TextChoices):
+        OPEN = "open", "Ouvert"
+        IN_PROGRESS = "in_progress", "En cours"
+        RESOLVED = "resolved", "Résolu"
+
+    requester = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="support_tickets"
+    )
+    subject = models.CharField("sujet", max_length=200)
+    message = models.TextField("message", blank=True)
+    priority = models.CharField(max_length=10, choices=Priority.choices, default=Priority.MEDIUM)
+    status = models.CharField(max_length=15, choices=Status.choices, default=Status.OPEN)
+    created_at = models.DateTimeField(auto_now_add=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "ticket support"
+        verbose_name_plural = "tickets support"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"[{self.get_status_display()}] {self.subject} — {self.requester}"

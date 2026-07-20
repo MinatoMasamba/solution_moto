@@ -49,19 +49,9 @@
     <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
       <div class="gm-themebtn" data-gm-theme-toggle style="display:flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--color-neutral-700);border-radius:20px;font-size:12px;color:var(--color-neutral-300)"><i class="ph-fill ph-moon gm-thi"></i><span class="gm-thl">Sombre</span></div>
       {% if user.is_authenticated %}
-    {% if user.role == "operator" or user.is_staff %}
-    <a class="btn btn-primary" href="{% url 'portal:direction_dashboard' %}" style="font-size:13px;padding:8px 15px">
+    <a class="btn btn-primary" href="{% url 'portal:app' %}" style="font-size:13px;padding:8px 15px">
         Passer à l'app
     </a>
-    {% elif user.role == "fleet_manager" %}
-    <a class="btn btn-primary" href="{% url 'portal:gerance_dashboard' %}" style="font-size:13px;padding:8px 15px">
-        Passer à l'app
-    </a>
-    {% else %}
-    <a class="btn btn-secondary" href="{% url 'portal:logout' %}" style="font-size:13px;padding:8px 15px">
-        Se déconnecter
-    </a>
-    {% endif %}
 {% else %}
     <a class="btn btn-secondary" href="{% url 'chauffeur:chauffeur_login' %}" style="font-size:13px;padding:8px 15px">
         Se connecter

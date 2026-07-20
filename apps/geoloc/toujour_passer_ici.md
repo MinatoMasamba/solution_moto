@@ -49,3 +49,9 @@ Si vous cherchez un bug, une modification ou un comportement précis, voici l'in
   - `lng` : nombre décimal (Longitude).
   - `speed` : optionnel (Vitesse en km/h).
   - `batt` : optionnel (Pourcentage de batterie du tracker).
+
+---
+
+## 4. Architecture Front-end
+
+Cette application contribue à l'écosystème front-end dynamique. Les données fournies par ses services sont consommées en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.

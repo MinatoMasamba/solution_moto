@@ -59,3 +59,44 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Paiement {self.amount} ({self.get_status_display()})"
+
+
+class PaymentMethod(models.Model):
+    """Moyen de paiement lié au compte : Mobile Money ou compte bancaire.
+    Sert à recevoir les reversements (propriétaire) ou les retraits (motard)."""
+
+    class Kind(models.TextChoices):
+        MOBILE_MONEY = "mobile_money", "Mobile Money"
+        BANK = "bank", "Compte bancaire"
+
+    class MobileProvider(models.TextChoices):
+        AIRTEL_MONEY = "airtel_money", "Airtel Money"
+        MPESA = "mpesa", "M-Pesa"
+        ORANGE_MONEY = "orange_money", "Orange Money"
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="payment_methods"
+    )
+    kind = models.CharField(max_length=20, choices=Kind.choices)
+
+    # Mobile Money
+    provider = models.CharField("opérateur", max_length=20, choices=MobileProvider.choices, blank=True)
+    phone_number = models.CharField("numéro mobile money", max_length=20, blank=True)
+
+    # Compte bancaire
+    bank_name = models.CharField("banque", max_length=100, blank=True)
+    account_number = models.CharField("numéro de compte", max_length=50, blank=True)
+    account_holder = models.CharField("titulaire du compte", max_length=150, blank=True)
+
+    is_default = models.BooleanField("par défaut", default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "moyen de paiement"
+        verbose_name_plural = "moyens de paiement"
+        ordering = ["-is_default", "-created_at"]
+
+    def __str__(self):
+        if self.kind == self.Kind.MOBILE_MONEY:
+            return f"{self.get_provider_display()} · {self.phone_number}"
+        return f"{self.bank_name} · {self.account_number}"

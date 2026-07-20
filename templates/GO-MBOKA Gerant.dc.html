@@ -480,14 +480,7 @@ class Component extends DCLogic {
     clearInterval(this._clk);
     clearInterval(this._drift);
   }
-  MOTARDS = {
-    "Trésor Mbuyi":  {init:"TM", tel:"+243 81 234 1122", commune:"Gombe",    adresse:"14 Av. du Commerce, Gombe",  moto:"Bajaj Boxer BM150", plaque:"KN-1042", entree:"12/03/2025", reception:"Moto personnelle", garant:"—", ratt:"Indépendant (abonnement)", statut:"En course", note:"★ 4,9"},
-    "Carine Lofoli": {init:"CL", tel:"+243 82 556 7788", commune:"Lingwala", adresse:"22 Av. Kasa-Vubu, Lingwala", moto:"TVS HLX 125",      plaque:"KN-2210", entree:"04/06/2025", reception:"04/06/2025",       garant:"Papa Célestin Lofoli", ratt:"GO-MBOKA (moto allouée)", statut:"Disponible", note:"★ 4,8"},
-    "Hervé Bemba":   {init:"HB", tel:"+243 89 112 3344", commune:"Gombe",    adresse:"7 Av. Batetela, Gombe",      moto:"Sanya SY150",       plaque:"KN-3050", entree:"19/02/2025", reception:"20/02/2025",       garant:"Flotte Kin-Express", ratt:"Gérance · Kin-Express", statut:"En course", note:"★ 4,7"},
-    "Aaron Lusala":  {init:"AL", tel:"+243 81 990 5566", commune:"Lingwala", adresse:"3 Av. Bokassa, Lingwala",     moto:"Haojue KA125",      plaque:"KN-2761", entree:"30/07/2025", reception:"Moto personnelle", garant:"Maman Lusala", ratt:"Indépendant (abonnement)", statut:"Disponible", note:"★ 3,9"},
-    "Fiston Kimbi":  {init:"FK", tel:"+243 85 447 2211", commune:"Gombe",    adresse:"9 Av. de la Justice, Gombe",  moto:"TVS HLX 125",       plaque:"KN-3372", entree:"15/01/2025", reception:"16/01/2025",       garant:"Pasteur Kimbi", ratt:"GO-MBOKA (moto allouée)", statut:"Hors ligne", note:"★ 4,3"},
-    "Prince Kamber": {init:"PK", tel:"+243 84 220 8899", commune:"Lingwala", adresse:"41 Av. Kato, Lingwala",       moto:"Bajaj Boxer BM100", plaque:"KN-1908", entree:"08/05/2025", reception:"Moto personnelle", garant:"Oncle Kamber", ratt:"Indépendant (abonnement)", statut:"Hors ligne", note:"★ 4,2"},
-  };
+  MOTARDS = {};
   _statutStyle(s) {
     if (s === "En course") return "color:var(--color-accent-200);background:rgba(145,132,217,.15)";
     if (s === "Disponible") return "color:#8fceac;background:rgba(111,174,144,.15)";

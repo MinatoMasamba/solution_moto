@@ -4,8 +4,8 @@ from django.db.models import Sum, Count, Avg, F, Value, FloatField
 from django.db.models.functions import Cast, TruncHour, TruncDate
 from django.utils import timezone
 from django.db.models import Q
-from apps.rides.models import Ride
-from apps.users.models import User, MotardProfile
+from apps.rides.models import Ride, RideRating, RideRating
+from apps.users.models import User, MotardProfile, SupportTicket
 from apps.fleet.models import MotardTrial, Motorcycle, TrialDailyLog
 from apps.payments.models import Payment, Subscription
 
@@ -48,6 +48,7 @@ class DashboardService:
             "revenue_fc": total_revenue_fc,
             "revenue_usd": total_revenue_usd,
             "avg_rating": float(avg_rating),
+            "total_ratings": RideRating.objects.count(),
         }
 
     @staticmethod
@@ -100,7 +101,8 @@ class DashboardService:
                 
             results.append({
                 "name": m.get_full_name(),
-                "commune": "Gombe", # Placeholder: we'll need a Commune model/field later
+                # Pas de champ commune dans le modèle : on n'invente pas de donnée.
+                "commune": None,
                 "rides": m.ride_count,
                 "revenue": m.total_revenue or 0,
                 "rating": profile.rating_average if profile else 0,
@@ -184,6 +186,36 @@ class DashboardService:
         return fleet_data
 
     @staticmethod
+    def get_motard_kpis(motard):
+        """KPIs for the Chauffeur (motard) app — scoped to the logged-in motard."""
+        today = timezone.localdate()
+        week_start = today - timedelta(days=today.weekday())
+
+        rides = Ride.objects.filter(motard=motard)
+        completed = rides.filter(status=Ride.Status.COMPLETED)
+
+        today_qs = completed.filter(completed_at__date=today)
+        week_qs = completed.filter(completed_at__date__gte=week_start)
+
+        today_earnings = today_qs.aggregate(total=Sum("agreed_price"))["total"] or 0
+        week_earnings = week_qs.aggregate(total=Sum("agreed_price"))["total"] or 0
+
+        profile = MotardProfile.objects.filter(user=motard).first()
+
+        return {
+            "today_earnings": today_earnings,
+            "today_rides": today_qs.count(),
+            "week_earnings": week_earnings,
+            "week_rides": week_qs.count(),
+            "total_rides": completed.count(),
+            "rating": float(profile.rating_average) if profile else 0.0,
+            "subscription_status": profile.subscription_status if profile else "expired",
+            "is_available": bool(profile.is_available) if profile else False,
+            "has_open_request": rides.filter(status=Ride.Status.REQUESTED).exists()
+            or Ride.objects.filter(status=Ride.Status.REQUESTED).exists(),
+        }
+
+    @staticmethod
     def get_manager_kpis(fleet_manager=None):
         """KPIs for the Gérant de flotte (fleet manager) dashboard.
 
@@ -214,6 +246,17 @@ class DashboardService:
             trial__motorcycle__in=bikes, date=today, is_payment_complete=False
         ).count()
 
+        supervised = User.objects.filter(assigned_motorcycle__in=bikes).distinct()
+        today_rides = Ride.objects.filter(
+            motard__in=supervised, requested_at__date=today
+        ).count()
+        online_motards = MotardProfile.objects.filter(
+            user__in=supervised, is_available=True
+        ).count()
+        avg_rating = MotardProfile.objects.filter(user__in=supervised).aggregate(
+            avg=Avg("rating_average")
+        )["avg"] or 0
+
         return {
             "total_bikes": total_bikes,
             "bikes_in_maintenance": bikes_in_maintenance,
@@ -221,6 +264,75 @@ class DashboardService:
             "ongoing_trials": ongoing_trials,
             "today_revenue": today_revenue,
             "incomplete_trial_payments": incomplete_trial_payments,
+            "today_rides": today_rides,
+            "online_motards": online_motards,
+            "avg_rating": float(avg_rating),
+        }
+
+    @staticmethod
+    def get_manager_watchlist(fleet_manager=None, limit=5):
+        """Motards à suivre : hors ligne, note en baisse ou abonnement expiré."""
+        bikes = Motorcycle.objects.filter(fleet_manager__isnull=False)
+        if fleet_manager is not None:
+            bikes = bikes.filter(fleet_manager=fleet_manager)
+        profiles = MotardProfile.objects.filter(
+            user__assigned_motorcycle__in=bikes
+        ).select_related("user").distinct()
+
+        watch = []
+        for p in profiles:
+            name = p.user.get_full_name() or p.user.phone_number
+            if p.subscription_status == "expired":
+                watch.append({"name": name, "reason": "Abonnement expiré", "action": "relancer"})
+            elif not p.is_available:
+                watch.append({"name": name, "reason": "Hors ligne", "action": "à appeler"})
+            elif p.rating_average is not None and float(p.rating_average) < 4.2:
+                watch.append({
+                    "name": name,
+                    "reason": "Note en baisse · ★ " + str(p.rating_average).replace(".", ","),
+                    "action": "à suivre",
+                })
+        return watch[:limit]
+
+    @staticmethod
+    def get_manager_remittances(fleet_manager=None):
+        """Synthèse reversements : à envoyer (calculé sur les courses de la semaine),
+        déjà envoyé (reversements enregistrés sur 7 jours), propriétaires en attente."""
+        today = timezone.now().date()
+        week_start = today - timedelta(days=today.weekday())
+        bikes = Motorcycle.objects.filter(
+            fleet_manager__isnull=False,
+            ownership_type=Motorcycle.OwnershipType.OWNER_FLEET,
+        ).select_related("owner")
+        if fleet_manager is not None:
+            bikes = bikes.filter(fleet_manager=fleet_manager)
+
+        to_send = 0
+        pending_owners = set()
+        for bike in bikes:
+            if bike.assigned_motard is None:
+                continue
+            gross = Ride.objects.filter(
+                motard=bike.assigned_motard,
+                status=Ride.Status.COMPLETED,
+                requested_at__date__gte=week_start,
+            ).aggregate(total=Sum("agreed_price"))["total"] or 0
+            net = gross - (gross * bike.commission_rate) / 100
+            if net > 0:
+                to_send += net
+                if bike.owner_id:
+                    pending_owners.add(bike.owner_id)
+
+        from apps.fleet.models import FleetRemittance
+        sent_week = FleetRemittance.objects.filter(
+            motorcycle__in=bikes,
+            created_at__date__gte=today - timedelta(days=7),
+        ).aggregate(total=Sum("net_amount"))["total"] or 0
+
+        return {
+            "to_send": to_send,
+            "sent_week": sent_week,
+            "pending_owners": len(pending_owners),
         }
 
     @staticmethod
@@ -256,6 +368,31 @@ class DashboardService:
     # ──────────────────────────────────────────────────────────────────────
 
     @staticmethod
+    def get_support_requests(limit=30):
+        """Tickets support réels créés par les utilisateurs (modèle SupportTicket)."""
+        tickets = SupportTicket.objects.select_related("requester").order_by(
+            "-created_at"
+        )[:limit]
+        items = [
+            {
+                "id": t.id,
+                "requester": t.requester.get_full_name() or t.requester.phone_number,
+                "role": t.requester.get_role_display(),
+                "subject": t.subject,
+                "priority": t.priority,
+                "priority_label": t.get_priority_display(),
+                "status": t.status,
+                "status_label": t.get_status_display(),
+                "date": t.created_at.strftime("%d/%m/%Y"),
+            }
+            for t in tickets
+        ]
+        open_count = SupportTicket.objects.filter(
+            status=SupportTicket.Status.OPEN
+        ).count()
+        return {"open": open_count, "items": items}
+
+    @staticmethod
     def get_operator_clients(limit=50):
         """Liste des clients avec nombre de courses et dépense totale."""
         base = User.objects.filter(role=User.Role.CLIENT)
@@ -278,7 +415,22 @@ class DashboardService:
             }
             for c in clients
         ]
-        return {"total": base.count(), "clients": results}
+
+        total_clients = base.count()
+        new_today = base.filter(date_joined__date=timezone.localdate()).count()
+        total_client_rides = Ride.objects.filter(client__role=User.Role.CLIENT).count()
+        avg_rides = round(total_client_rides / total_clients, 1) if total_clients else 0
+        avg_rating = RideRating.objects.filter(
+            rated_by__role=User.Role.CLIENT
+        ).aggregate(avg=Avg("score"))["avg"] or 0
+
+        return {
+            "total": total_clients,
+            "new_today": new_today,
+            "avg_rides": avg_rides,
+            "rating": round(float(avg_rating), 1),
+            "clients": results,
+        }
 
     @staticmethod
     def get_operator_gerants():
@@ -388,8 +540,13 @@ class DashboardService:
             if r["day"] in by_day:
                 by_day[r["day"]] = {"count": r["count"], "revenue": r["revenue"] or 0}
 
+        day_names = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
         days = [
-            {"date": d.strftime("%a %d"), "count": v["count"], "revenue": v["revenue"]}
+            {
+                "date": f"{day_names[d.weekday()]} {d.day:02d}",
+                "count": v["count"],
+                "revenue": v["revenue"],
+            }
             for d, v in sorted(by_day.items())
         ]
         return {

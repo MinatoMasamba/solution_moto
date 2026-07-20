@@ -178,6 +178,9 @@
       document.querySelectorAll(".gm-clock").forEach((e) => { e.textContent = s; });
     };
     if (document.querySelector(".gm-clock")) { tick(); setInterval(tick, 1000); }
+    var dateStr = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+    document.querySelectorAll(".gm-date").forEach(function (e) { e.textContent = dateStr; });
     if (document.querySelector('.gm-marker[data-move="1"]')) {
       setInterval(() => {
         document.querySelectorAll('.gm-marker[data-move="1"]').forEach((el) => {

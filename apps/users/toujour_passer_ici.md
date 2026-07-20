@@ -70,3 +70,9 @@ Il existe **deux chemins distincts** pour créer un compte motard, qui ne collec
 - `EMAIL_BACKEND` n'est pas configuré dans `config/settings/` → en prod, `send_mail(..., fail_silently=True)` échouera silencieusement tant qu'un backend SMTP n'est pas branché. Le code de reset est donc généré mais jamais réellement envoyé en l'état.
 - Validation fichiers uploadés (`photo_piece_identite`, `permis_conduire`) : taille vérifiée côté serveur, mais pas le type MIME réel (un fichier renommé pourrait passer).
 - Pas de tests automatisés (`tests.py`) pour `forms.py`/`views_web.py` — uniquement vérifié manuellement via `manage.py shell` + `django.test.Client`.
+
+---
+
+## 9. Architecture Front-end
+
+Cette application contribue à l'écosystème front-end dynamique. Les données utilisateurs et les profils fournis par ses services sont consommés en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.

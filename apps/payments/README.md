@@ -11,3 +11,6 @@ Ce module gère tous les flux financiers du système Go-Mboka.
 ## Modèles Principaux
 - `Subscription` : Suivi des périodes d'abonnement.
 - `Payment` : Registre universel des transactions financières.
+
+## Architecture Front-end
+Cette application contribue à l'écosystème front-end dynamique. Les données financières fournies par ses services sont consommées en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.

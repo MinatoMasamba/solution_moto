@@ -1,0 +1,172 @@
+{% extends "gm/base.html" %}
+{% load static %}
+
+{% block title %}Espace propriétaire (mobile) · GO-MBOKA{% endblock %}
+
+{% block head_extra %}
+<style>
+  html,body{margin:0;background:#0c0d15;min-height:100%}
+  @keyframes gmPulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .gm-cta{cursor:pointer;transition:transform .15s,filter .15s}.gm-cta:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .gm-seg{cursor:pointer;transition:background .15s,color .15s}
+  .gm-navi{cursor:pointer}
+  ::-webkit-scrollbar{width:0}
+  .gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
+  /* Sur un vrai téléphone : l'app remplit l'écran, on retire le cadre-maquette et la fausse barre d'état. */
+  @media (max-width:560px){
+    .gm-stage{padding:0!important;background:var(--color-bg)!important;align-items:stretch!important}
+    .gm-phone{width:100%!important;height:100vh!important;height:100dvh!important;max-height:none!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+    .gm-statusbar{display:none!important}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% with owner_name=request.user.get_full_name|default:request.user.phone_number %}
+<div class="gm-stage" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;font-family:var(--font-body);background:radial-gradient(ellipse 70% 60% at 50% 0%,#1c1a30,#0c0d15)">
+  <div class="gm-root gm-phone" style="width:390px;height:820px;max-height:calc(100vh - 40px);background:var(--color-bg);border:10px solid #23252f;border-radius:44px;overflow:hidden;position:relative;box-shadow:0 40px 90px rgba(0,0,0,.6);display:flex;flex-direction:column">
+    <div class="gm-statusbar" style="height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0"><span class="gm-clock" style="font-size:12px;font-weight:600;color:var(--color-text);font-family:ui-monospace,monospace">--:--</span><div style="display:flex;gap:6px;align-items:center;color:var(--color-text)"><i class="ph-fill ph-cell-signal-full" style="font-size:13px"></i><i class="ph-fill ph-wifi-high" style="font-size:13px"></i><i class="ph-fill ph-battery-high" style="font-size:14px"></i></div></div>
+
+    <div style="padding:8px 20px 14px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff">{{ owner_name|slice:":1"|upper }}</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--color-text)">{{ owner_name }}</div><div style="font-size:11.5px;color:var(--color-neutral-500)">Propriétaire</div></div>
+        <div style="position:relative;width:38px;height:38px;border:1px solid var(--color-neutral-800);border-radius:11px;display:flex;align-items:center;justify-content:center"><i class="ph ph-bell" style="font-size:17px;color:var(--color-neutral-400)"></i><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:#cf7f7f;border:1.5px solid var(--color-bg)"></span></div>
+      </div>
+    </div>
+
+    <div id="gm-scroll" style="flex:1;min-height:0;overflow-y:auto;padding:0 20px 16px">
+
+      <!-- ═══ ACCUEIL ═══ -->
+      <div data-panel="home">
+        <div style="background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:16px;padding:18px;margin-bottom:16px">
+          <div style="font-size:12px;color:var(--color-accent-200);margin-bottom:4px">Net à recevoir aujourd'hui</div>
+          <div id="gm-m-net" style="font-size:30px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">—</div>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(217,168,102,.1);border:1px solid rgba(217,168,102,.28);border-radius:11px;padding:10px 13px;margin-top:14px"><i class="ph-fill ph-clock" style="color:#d9a866;font-size:16px"></i><div style="font-size:12px;color:var(--color-neutral-300)">Reversement assuré par GO-MBOKA</div></div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:16px">
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px"><span style="width:32px;height:32px;border-radius:9px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;margin-bottom:9px"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:17px"></i></span><div id="gm-m-bikes" style="font-size:20px;font-weight:700;color:var(--color-text)">—</div><div style="font-size:11px;color:var(--color-neutral-500)">Mes motos</div></div>
+          <div style="flex:1;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px"><span style="width:32px;height:32px;border-radius:9px;background:rgba(111,174,144,.14);display:flex;align-items:center;justify-content:center;margin-bottom:9px"><i class="ph-fill ph-coins" style="color:#8fceac;font-size:17px"></i></span><div id="gm-m-gross" style="font-size:20px;font-weight:700;color:var(--color-text)">—</div><div style="font-size:11px;color:var(--color-neutral-500)">Revenu flotte / jour</div></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="gm-cta" data-goto="motos" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:15px"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:20px"></i><div style="font-size:13px;font-weight:600;color:var(--color-text);margin-top:8px">Mes motos</div><div style="font-size:11px;color:var(--color-neutral-500)">Location &amp; contrat</div></div>
+          <div class="gm-cta" data-goto="revenus" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:15px"><i class="ph-fill ph-hand-coins" style="color:#8fceac;font-size:20px"></i><div style="font-size:13px;font-weight:600;color:var(--color-text);margin-top:8px">Reversements</div><div style="font-size:11px;color:var(--color-neutral-500)">Historique &amp; net reçu</div></div>
+        </div>
+      </div>
+
+      <!-- ═══ MES MOTOS ═══ -->
+      <div data-panel="motos" style="display:none">
+        <div id="gm-m-motos" style="display:flex;flex-direction:column;gap:12px">
+          <div style="padding:18px;color:var(--color-neutral-500)">Chargement…</div>
+        </div>
+      </div>
+
+      <!-- ═══ DÉTAIL MOTO ═══ -->
+      <div data-panel="motodetail" style="display:none">
+        <div class="gm-cta" data-goto="motos" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Mes motos</div>
+        <div style="display:flex;align-items:center;gap:13px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:14px"><span style="width:52px;height:52px;border-radius:13px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center"><i class="ph-fill ph-motorcycle" style="color:var(--color-accent-300);font-size:26px"></i></span><div style="flex:1"><div class="gm-d-plaque" style="font-size:16px;font-weight:700;color:var(--color-text);font-family:ui-monospace,monospace">—</div><div class="gm-d-moto" style="font-size:12.5px;color:var(--color-neutral-500)">—</div></div><span class="gm-d-formule" style="font-size:11px;font-weight:600;color:var(--color-accent-200);background:rgba(145,132,217,.14);padding:4px 11px;border-radius:20px">—</span></div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:14px">Chauffeur</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px">
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Chauffeur</div><div class="gm-d-chauf" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">État</div><div class="gm-d-statut" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Commission</div><div class="gm-d-comm" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Couleur</div><div class="gm-d-color" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+          </div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:16px;padding:16px 18px;margin-bottom:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:14px">Identité de la moto</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 16px">
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Marque / modèle</div><div class="gm-d-brand" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">État général</div><div class="gm-d-cond" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Acquisition</div><div class="gm-d-acq" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+            <div><div style="font-size:11px;color:var(--color-neutral-500);margin-bottom:2px">Tracker (IMEI)</div><div class="gm-d-imei" style="font-size:13.5px;font-weight:600;color:var(--color-text)">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ REVERSEMENTS ═══ -->
+      <div data-panel="revenus" style="display:none">
+        <div style="background:linear-gradient(120deg,var(--color-accent-900),var(--color-surface));border:1px solid var(--color-accent-800);border-radius:16px;padding:18px;margin-bottom:16px">
+          <div style="font-size:12px;color:var(--color-accent-200);margin-bottom:4px">Net à recevoir (jour)</div>
+          <div id="gm-m-revnet" style="font-size:28px;font-weight:700;color:var(--color-text);letter-spacing:-.02em">—</div>
+          <div style="font-size:12px;color:var(--color-neutral-500);margin-top:2px">après commission GO-MBOKA</div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:10px">Par chauffeur</div>
+        <div id="gm-m-perchauf" style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px">
+          <div style="padding:14px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--color-text);margin-bottom:10px">Historique des reversements</div>
+        <div id="gm-m-history" style="display:flex;flex-direction:column;gap:9px">
+          <div style="padding:14px;color:var(--color-neutral-500);font-size:12px">Chargement…</div>
+        </div>
+      </div>
+
+      <!-- ═══ PROFIL ═══ -->
+      <div data-panel="profil" style="display:none">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--color-accent-500),var(--color-accent-800));display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px">{{ owner_name|slice:":1"|upper }}</div>
+          <div style="font-size:17px;font-weight:600;color:var(--color-text)">{{ owner_name }}</div>
+          <div style="font-size:12.5px;color:var(--color-neutral-500)">Propriétaire GO-MBOKA</div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div class="gm-cta" data-goto="compte" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-user-circle" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Modifier mon compte</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="paiement" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--color-neutral-900)"><i class="ph ph-wallet" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Paiement &amp; retraits</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+          <div class="gm-cta" data-goto="motdepasse" style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-lock-key" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Changer le mot de passe</span><i class="ph ph-caret-right" style="color:var(--color-neutral-600);font-size:15px"></i></div>
+        </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:6px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 0"><i class="ph ph-moon-stars" style="color:var(--color-neutral-400);font-size:18px"></i><span style="flex:1;font-size:13.5px;color:var(--color-text)">Thème</span>
+            <div style="display:flex;gap:3px;padding:3px;background:var(--color-bg);border:1px solid var(--color-neutral-800);border-radius:9px"><span class="gm-seg gm-theme gm-on" data-theme="dark" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:600;color:var(--color-accent-200);background:var(--color-accent-900)"><i class="ph-fill ph-moon"></i></span><span class="gm-seg gm-theme" data-theme="light" style="padding:5px 10px;border-radius:7px;font-size:11.5px;font-weight:500;color:var(--color-neutral-400)"><i class="ph-fill ph-sun"></i></span></div>
+          </div>
+        </div>
+        <a class="btn btn-secondary btn-block gm-cta" href="{% url 'portal:logout' %}" style="font-size:13.5px;padding:11px;color:#d98a8a;display:flex;align-items:center;justify-content:center;gap:8px"><i class="ph ph-sign-out"></i>Se déconnecter</a>
+      </div>
+
+      <!-- ═══ PAIEMENT & RETRAITS ═══ -->
+      <div data-panel="paiement" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><i class="ph-fill ph-wallet" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Paiement &amp; retraits</span></div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 16px">Où recevoir vos reversements.</p>
+        <div id="pm-proprio-mobile"></div>
+      </div>
+
+      <!-- ═══ MODIFIER COMPTE ═══ -->
+      <div data-panel="compte" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div class="field" style="margin-bottom:13px"><label>Nom complet</label><input class="input" type="text" id="gm-m-set-name" value="{{ owner_name }}"></div>
+        <div class="field" style="margin-bottom:13px"><label>Téléphone</label><input class="input" type="text" id="gm-m-set-phone" value="{{ request.user.phone_number }}"></div>
+        <div class="field" style="margin-bottom:20px"><label>E-mail</label><input class="input" type="email" id="gm-m-set-email" value="{{ request.user.email }}"></div>
+        <div style="font-size:11.5px;color:var(--color-neutral-500)">La modification du compte se fait auprès de la Direction Générale.</div>
+      </div>
+
+      <!-- ═══ MOT DE PASSE ═══ -->
+      <div data-panel="motdepasse" style="display:none">
+        <div class="gm-cta" data-goto="profil" style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--color-neutral-400)"><i class="ph ph-caret-left"></i>Profil</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><i class="ph-fill ph-lock-key" style="color:var(--color-accent-300);font-size:18px"></i><span style="font-size:16px;font-weight:600;color:var(--color-text)">Changer le mot de passe</span></div>
+        <p style="font-size:12.5px;color:var(--color-neutral-500);margin:0 0 20px">Au moins 8 caractères.</p>
+        <div class="field" style="margin-bottom:13px"><label>Mot de passe actuel</label><input class="input" type="password" id="gm-m-pw-old" placeholder="••••••••"></div>
+        <div class="field" style="margin-bottom:13px"><label>Nouveau mot de passe</label><input class="input" type="password" id="gm-m-pw-new" placeholder="Au moins 8 caractères"></div>
+        <div class="field" style="margin-bottom:20px"><label>Confirmer</label><input class="input" type="password" id="gm-m-pw-new2" placeholder="Retaper le mot de passe"></div>
+        <button class="btn btn-primary btn-block" id="gm-m-pw-btn" style="font-size:14px;padding:12px"><i class="ph ph-check"></i>Mettre à jour</button>
+      </div>
+
+    </div>
+
+    <div style="flex-shrink:0;display:flex;border-top:1px solid var(--color-neutral-800);background:var(--color-surface);padding:9px 8px 16px">
+      <div class="gm-navi" data-view="home" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-accent-300)"><i class="ph-fill ph-house" style="font-size:21px"></i><span style="font-size:10px;font-weight:600">Accueil</span></div>
+      <div class="gm-navi" data-view="motos" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-motorcycle" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Mes motos</span></div>
+      <div class="gm-navi" data-view="revenus" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-hand-coins" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Reversements</span></div>
+      <div class="gm-navi" data-view="profil" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--color-neutral-500)"><i class="ph ph-user" style="font-size:21px"></i><span style="font-size:10px;font-weight:500">Profil</span></div>
+    </div>
+  </div>
+</div>
+{% endwith %}
+{% endblock %}
+
+{% block page_js %}
+<script src="{% static 'js/gm-payment-methods.js' %}?v=1"></script>
+<script src="{% static 'js/gm-proprietaire-mobile.js' %}?v=2"></script>
+<script>document.addEventListener("DOMContentLoaded", function () { if (window.gmPaymentMethods) window.gmPaymentMethods.mount("pm-proprio-mobile"); });</script>
+{% endblock %}

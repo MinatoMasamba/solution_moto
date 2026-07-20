@@ -22,3 +22,6 @@ Ce module gère l'identité, l'authentification et les profils de tous les acteu
 - `views_web.py` → `ChauffeurLoginView`, `ChauffeurRegistrationView`, reset de mot de passe par code (cache local, 10 min).
 - `urls_web.py` → namespace `chauffeur`, monté dans `config/urls.py`.
 - Templates : `templates/chauffeur/chauffeur_auth/chauffeur_login.html` et `chauffeur_registration.html`.
+
+## Architecture Front-end
+Cette application contribue à l'écosystème front-end dynamique. Les données utilisateurs et les profils fournis par ses services sont consommés en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.

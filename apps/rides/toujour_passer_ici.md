@@ -32,4 +32,10 @@ Si vous cherchez un bug ou devez modifier la logique des courses :
 
 - **Un motard se plaint de ne pas voir ou de ne pas pouvoir accepter de demandes de parcours** :
   1. Vérifier si son `subscription_status` dans `MotardProfile` est bien à `active`. S'il est à `trial`, `expired` ou `suspended`, il ne verra pas le flux et l'API rejettera ses tentatives d'acceptation.
-  2. Vérifier si `is_available` est activé à `True`.
+  - Vérifier si `is_available` est activé à `True`.
+
+  ---
+
+  ## 4. Architecture Front-end
+
+  Cette application contribue à l'écosystème front-end dynamique. Les données de courses en temps réel fournies par ses services sont consommées par les tableaux de bord pour garantir une interface réactive et sans données statiques.

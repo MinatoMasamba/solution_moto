@@ -11,3 +11,6 @@ Ce module gère le cœur du métier : la mise en relation entre clients et motar
 ## Modèles Principaux
 - `Ride` : Représente une course individuelle.
 - `RideRating` : Stocke la note et le commentaire laissés après une course.
+
+## Architecture Front-end
+Cette application contribue à l'écosystème front-end dynamique. Les données de courses en temps réel fournies par ses services sont consommées par les tableaux de bord pour garantir une interface réactive et sans données statiques.

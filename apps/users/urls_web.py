@@ -7,6 +7,7 @@ app_name = "chauffeur"
 urlpatterns = [
     path("connexion/", views_web.ChauffeurLoginView.as_view(), name="chauffeur_login"),
     path("inscription/", views_web.ChauffeurRegistrationView.as_view(), name="chauffeur_registration"),
+    path("app/", views_web.ChauffeurAppView.as_view(), name="chauffeur_app"),
     path(
         "mot-de-passe/demande/",
         views_web.chauffeur_password_reset_request,

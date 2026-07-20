@@ -7,6 +7,7 @@ from . import views
 router = DefaultRouter()
 router.register("motard-profiles", views.MotardProfileViewSet, basename="motard-profile")
 router.register("owner-profiles", views.OwnerProfileViewSet, basename="owner-profile")
+router.register("support-tickets", views.SupportTicketViewSet, basename="support-ticket")
 
 app_name = "users"
 

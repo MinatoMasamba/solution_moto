@@ -17,3 +17,6 @@ Ce module gère le parc de motos, les affectations, les périodes d'essai et les
 - `TrialDailyLog` : Journal quotidien d'essai.
 - `Agreement` : Contrat définitif.
 - `FleetRemittance` : Reversements.
+
+## Architecture Front-end
+Cette application contribue à l'écosystème front-end dynamique. Les données liées aux flottes et au rendement fournis par ses services sont consommées en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.

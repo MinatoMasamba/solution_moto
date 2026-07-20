@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.db import IntegrityError
@@ -9,7 +11,7 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.users.models import User
+from apps.users.models import OwnerProfile, User
 
 from .services import DashboardService
 
@@ -27,6 +29,35 @@ def _is_manager(user):
         user and user.is_authenticated
         and (user.role == User.Role.FLEET_MANAGER or user.is_staff)
     )
+
+
+def _is_owner(user):
+    return bool(
+        user and user.is_authenticated
+        and (user.role == User.Role.OWNER or user.is_staff)
+    )
+
+
+# Mots-clés typiques des User-Agent de téléphones/tablettes.
+_MOBILE_UA = re.compile(
+    r"Mobi|Android|iPhone|iPad|iPod|Windows Phone|BlackBerry|Opera Mini|IEMobile|webOS",
+    re.IGNORECASE,
+)
+
+
+def _is_mobile_request(request):
+    """Décide si on sert la version mobile.
+
+    Priorité au paramètre explicite ``?view=mobile|web`` (utile pour tester et
+    partager un lien), sinon détection automatique via le User-Agent.
+    """
+    forced = (request.GET.get("view") or "").strip().lower()
+    if forced in ("mobile", "phone"):
+        return True
+    if forced in ("web", "pc", "desktop"):
+        return False
+    ua = request.META.get("HTTP_USER_AGENT", "")
+    return bool(_MOBILE_UA.search(ua))
 
 
 def _authenticate_identifier(request, identifier, password):
@@ -79,6 +110,21 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
+        return redirect("portal:home")
+
+
+class AppRedirectView(View):
+    """« Passer à l'app » : route l'utilisateur connecté vers sa console selon son rôle."""
+
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return redirect("chauffeur:chauffeur_login")
+        if _is_operator(user):
+            return redirect("portal:direction_dashboard")
+        if user.role == User.Role.FLEET_MANAGER:
+            return redirect("portal:gerance_dashboard")
+        # Motard, client, propriétaire : pas encore de console web dédiée.
         return redirect("portal:home")
 
 
@@ -182,13 +228,106 @@ class GeranceAuthView(View):
             request,
             "Compte gérant créé. Il sera activé après validation par la Direction Générale.",
         )
-        return render(request, self.template_name, {"active_tab": "login"})
+        return redirect("portal:gerance_auth")
 
 
 class GeranceDashboardView(RoleRequiredMixin, TemplateView):
     template_name = "gerance/dashboard.html"
     required_roles = (User.Role.FLEET_MANAGER,)
     login_url = "portal:gerance_auth"
+
+
+# ══════════════════════════════════════════════════════════════════════════
+# Propriétaire (owner de flotte) — pages
+# ══════════════════════════════════════════════════════════════════════════
+
+class ProprietaireAuthView(View):
+    template_name = "proprietaire/auth.html"
+
+    def get(self, request):
+        if _is_owner(request.user):
+            return redirect("portal:proprietaire_dashboard")
+        return render(request, self.template_name, {"active_tab": "login"})
+
+    def post(self, request):
+        if request.POST.get("action") == "register":
+            return self._register(request)
+        return self._login(request)
+
+    def _login(self, request):
+        user = _authenticate_identifier(
+            request, request.POST.get("identifier"), request.POST.get("password")
+        )
+        if user is not None and _is_owner(user):
+            login(request, user)
+            return redirect("portal:proprietaire_dashboard")
+        messages.error(request, "Identifiants invalides ou accès réservé aux propriétaires.")
+        return render(request, self.template_name, {"active_tab": "login"}, status=401)
+
+    def _register(self, request):
+        data = request.POST
+        ctx = {"active_tab": "create", "form_data": data}
+
+        prenom = (data.get("prenom") or "").strip()
+        nom = (data.get("nom") or "").strip()
+        phone = (data.get("phone_number") or "").strip()
+        email = (data.get("email") or "").strip().lower()
+        company = (data.get("company_name") or "").strip()
+        password = data.get("password") or ""
+
+        if not all([prenom, nom, phone, password]):
+            messages.error(request, "Tous les champs obligatoires doivent être remplis.")
+            return render(request, self.template_name, ctx, status=400)
+        if len(password) < 8:
+            messages.error(request, "Le mot de passe doit contenir au moins 8 caractères.")
+            return render(request, self.template_name, ctx, status=400)
+        if User.objects.filter(phone_number=phone).exists():
+            messages.error(request, "Ce numéro de téléphone est déjà utilisé.")
+            return render(request, self.template_name, ctx, status=400)
+        if email and User.objects.filter(email__iexact=email).exists():
+            messages.error(request, "Cette adresse e-mail est déjà utilisée.")
+            return render(request, self.template_name, ctx, status=400)
+
+        try:
+            user = User(
+                phone_number=phone, email=email, first_name=prenom, last_name=nom,
+                role=User.Role.OWNER, is_verified=False,
+            )
+            user.set_password(password)
+            user.save()
+            OwnerProfile.objects.get_or_create(
+                user=user, defaults={"company_name": company}
+            )
+        except IntegrityError:
+            messages.error(request, "Un compte existe déjà avec ces informations.")
+            return render(request, self.template_name, ctx, status=400)
+
+        messages.success(
+            request,
+            "Compte propriétaire créé. Il sera activé après validation par la Direction Générale.",
+        )
+        return render(request, self.template_name, {"active_tab": "login"})
+
+
+class OwnerDashboardPageView(RoleRequiredMixin, TemplateView):
+    """Espace propriétaire. Sert automatiquement la version mobile ou PC
+    selon l'appareil (User-Agent), avec override ``?view=mobile|web``."""
+
+    required_roles = (User.Role.OWNER,)
+    login_url = "portal:proprietaire_auth"
+
+    def get_template_names(self):
+        if _is_mobile_request(self.request):
+            return ["proprietaire/mobile.html"]
+        return ["proprietaire/dashboard.html"]
+
+
+class OwnerMobilePageView(RoleRequiredMixin, TemplateView):
+    """Force la version mobile (lien direct /proprietaire/mobile/)."""
+
+    template_name = "proprietaire/mobile.html"
+    required_roles = (User.Role.OWNER,)
+    login_url = "portal:proprietaire_auth"
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -243,6 +382,21 @@ class OwnerDashboardView(APIView):
         })
 
 
+class IsMotard(permissions.BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return bool(user and user.is_authenticated and (user.role == User.Role.MOTARD or user.is_staff))
+
+
+class MotardDashboardView(APIView):
+    """Tableau de bord de l'app Chauffeur (motard) — gains, courses, abonnement."""
+
+    permission_classes = [IsMotard]
+
+    def get(self, request):
+        return Response({"kpis": DashboardService.get_motard_kpis(request.user)})
+
+
 class FleetManagerDashboardView(APIView):
     """Tableau de bord 1b — Gérant : portefeuille de motos/motards suivi au quotidien."""
 
@@ -254,6 +408,8 @@ class FleetManagerDashboardView(APIView):
         return Response({
             "kpis": DashboardService.get_manager_kpis(fleet_manager=manager),
             "fleet": DashboardService.get_manager_fleet_detail(fleet_manager=manager),
+            "watch": DashboardService.get_manager_watchlist(fleet_manager=manager),
+            "remittances": DashboardService.get_manager_remittances(fleet_manager=manager),
         })
 
 
@@ -262,6 +418,13 @@ class OperatorClientsView(APIView):
 
     def get(self, request):
         return Response(DashboardService.get_operator_clients())
+
+
+class SupportRequestsView(APIView):
+    permission_classes = [IsOperator]
+
+    def get(self, request):
+        return Response(DashboardService.get_support_requests())
 
 
 class OperatorGerantsView(APIView):

@@ -4,14 +4,24 @@ from .models import Agreement, FleetRemittance, MotardTrial, Motorcycle, TrialDa
 
 
 class MotorcycleSerializer(serializers.ModelSerializer):
+    assigned_motard_name = serializers.SerializerMethodField()
+    ownership_type_display = serializers.CharField(source="get_ownership_type_display", read_only=True)
+    status_display = serializers.CharField(source="get_status_display", read_only=True)
+
     class Meta:
         model = Motorcycle
         fields = [
-            "id", "owner", "fleet_manager", "ownership_type", "plate_number", "device_id",
+            "id", "owner", "fleet_manager", "ownership_type", "ownership_type_display",
+            "plate_number", "device_id",
             "brand", "model_style", "acquisition_date", "chassis_number", "color",
-            "general_condition", "status", "assigned_motard", "commission_rate", "created_at",
+            "general_condition", "status", "status_display", "assigned_motard",
+            "assigned_motard_name", "commission_rate", "created_at",
         ]
         read_only_fields = ["id", "status", "assigned_motard", "fleet_manager", "created_at"]
+
+    def get_assigned_motard_name(self, obj):
+        m = obj.assigned_motard
+        return (m.get_full_name() or m.phone_number) if m else None
 
 
 class FleetRemittanceSerializer(serializers.ModelSerializer):
