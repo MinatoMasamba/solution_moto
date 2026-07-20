@@ -1,0 +1,10 @@
+# Dépendances du projet GO-MBOKA (Solution Moto).
+#
+# Ce fichier racine est le point d'entrée standard (détecté automatiquement par
+# la plupart des plateformes de déploiement) et réutilise la source de vérité
+# dans requirements/base.txt pour éviter toute duplication.
+#
+#   Installation :  pip install -r requirements.txt
+#   Développement : pip install -r requirements/dev.txt   (ajoute django-browser-reload)
+
+-r requirements/base.txt
