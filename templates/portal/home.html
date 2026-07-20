@@ -27,7 +27,44 @@
      donc plus aucune section transparente ne laisse voir un fond sombre. */
   :root[data-gm-theme="light"],.gm-root.gm-light{--color-bg:#f5f6fa;--color-surface:#ffffff;--color-text:#1b1d29;--color-neutral-100:#12141f;--color-neutral-200:#2a2d3d;--color-neutral-300:#3a3e52;--color-neutral-400:#565b71;--color-neutral-500:#6f7590;--color-neutral-600:#828aa0;--color-neutral-700:#6b7185;--color-neutral-800:#e3e5ed;--color-neutral-900:#eef0f6;--color-accent-200:#4a3fa0;--color-accent-300:#5b4fb0;--color-accent-900:#eae7f8}
   :root[data-gm-theme="light"] header,.gm-root.gm-light header{background:rgba(255,255,255,.9)!important}
-  @media(max-width:860px){.gm-hero{grid-template-columns:1fr!important}.gm-cols3{grid-template-columns:1fr!important}.gm-navlinks{display:none!important}.gm-hero-art{display:none!important}.gm-part{grid-template-columns:1fr!important}}
+  @media(max-width:860px){.gm-hero{grid-template-columns:1fr!important}.gm-cols3{grid-template-columns:1fr!important}.gm-navlinks{display:none!important}.gm-hero-art{display:none!important}.gm-part{grid-template-columns:1fr!important}#motards>div{grid-template-columns:1fr!important}}
+
+  /* ——— Responsive mobile ———
+     Typographie fluide : chaque section est un conteneur (container-type) et les
+     textes se dimensionnent en cqi (% de la largeur du conteneur), avec un repli
+     en vw pour les navigateurs sans container queries. Sur desktop, clamp() plafonne
+     aux tailles d'origine → aucun changement visuel au-dessus de 860px. */
+  .gm-hero,.gm-part,.gm-band,#motards>div,#avis>div,.gm-ctabox{container-type:inline-size}
+  .gm-root h1{font-size:clamp(27px,7.5vw,44px)!important;font-size:clamp(27px,8.5cqi,44px)!important;overflow-wrap:break-word}
+  .gm-root h2{font-size:clamp(21px,5vw,30px)!important;font-size:clamp(21px,5.2cqi,30px)!important;overflow-wrap:break-word}
+  .gm-ctabox h2{font-size:clamp(19px,4.5vw,26px)!important;font-size:clamp(19px,6cqi,26px)!important}
+  .gm-hero p{font-size:clamp(13.5px,3.6vw,15.5px)!important;font-size:clamp(13.5px,3.6cqi,15.5px)!important}
+  .gm-part p{font-size:clamp(13px,3.4vw,14.5px)!important;font-size:clamp(13px,3.4cqi,14.5px)!important}
+  .gm-ctabox p{font-size:clamp(12.5px,3.2vw,14px)!important;font-size:clamp(12.5px,3.5cqi,14px)!important}
+  .gm-slide>div:first-child{font-size:clamp(15.5px,4.2vw,20px)!important;font-size:clamp(15.5px,4.6cqi,20px)!important}
+  .gm-stats{flex-wrap:wrap}
+  .gm-stats>div>div:first-child{font-size:clamp(20px,5vw,24px)!important;font-size:clamp(20px,5.5cqi,24px)!important}
+  .gm-pill{max-width:100%;box-sizing:border-box}
+  @media(max-width:640px){
+    .gm-root header{padding:10px 14px!important;gap:10px!important;flex-wrap:wrap}
+    .gm-actions{gap:8px!important}
+    .gm-actions .btn{font-size:12px!important;padding:7px 11px!important}
+    .gm-themebtn .gm-thl{display:none}
+    .gm-hero{padding:40px 18px 36px!important;gap:26px!important}
+    .gm-band{padding:0 18px 16px!important}
+    .gm-cols3{gap:12px!important}
+    .gm-part{padding:44px 18px!important;gap:26px!important}
+    #motards>div{padding:44px 18px!important;gap:26px!important}
+    #avis>div{padding:44px 18px!important}
+    .gm-ctasec{padding:0 18px 44px!important}
+    .gm-ctabox{padding:26px 20px!important}
+    .gm-root footer{padding:24px 18px!important}
+    .gm-card{padding:18px!important}
+    .gm-stats{gap:14px 22px!important}
+  }
+  @media(max-width:480px){
+    .gm-form2{grid-template-columns:1fr!important}
+  }
 </style>
 {% endblock %}
 
@@ -46,7 +83,7 @@
       <a class="gm-nav-a" href="#avis" style="color:var(--color-neutral-400)">Avis</a>
       <a class="gm-nav-a" href="#contact" style="color:var(--color-neutral-400)">Contact</a>
     </nav>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
+    <div class="gm-actions" style="margin-left:auto;display:flex;align-items:center;gap:10px">
       <div class="gm-themebtn" data-gm-theme-toggle style="display:flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid var(--color-neutral-700);border-radius:20px;font-size:12px;color:var(--color-neutral-300)"><i class="ph-fill ph-moon gm-thi"></i><span class="gm-thl">Sombre</span></div>
       {% if user.is_authenticated %}
     <a class="btn btn-primary" href="{% url 'portal:app' %}" style="font-size:13px;padding:8px 15px">
@@ -64,14 +101,14 @@
   <!-- HERO -->
   <section class="gm-hero" style="display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:70px 40px 60px;max-width:1180px;margin:0 auto">
     <div class="gm-reveal">
-      <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border:1px solid var(--color-accent-700);background:var(--color-accent-900);border-radius:20px;margin-bottom:22px"><span style="width:7px;height:7px;border-radius:50%;background:#8fceac;animation:gmPulse 1.6s infinite"></span><span style="font-size:11.5px;font-weight:600;color:var(--color-accent-200);letter-spacing:.03em">Bienvenue chez GO-MBOKA · Kinshasa vous attend</span></div>
+      <div class="gm-pill" style="display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border:1px solid var(--color-accent-700);background:var(--color-accent-900);border-radius:20px;margin-bottom:22px"><span style="width:7px;height:7px;border-radius:50%;background:#8fceac;animation:gmPulse 1.6s infinite"></span><span style="font-size:11.5px;font-weight:600;color:var(--color-accent-200);letter-spacing:.03em">Bienvenue chez GO-MBOKA · Kinshasa vous attend</span></div>
       <h1 style="font-size:44px;line-height:1.1;font-weight:600;letter-spacing:-.025em;margin:0 0 18px;text-wrap:pretty">Ensemble, faisons bouger Kinshasa, <span style="color:var(--color-accent-300)">avec le sourire et en confiance</span></h1>
       <p style="font-size:15.5px;line-height:1.6;color:var(--color-neutral-400);margin:0 0 28px;max-width:520px;text-wrap:pretty">Ici, chaque trajet rapproche les gens. Clients, motards et propriétaires forment une vraie famille GO-MBOKA : un trajet sûr et chaleureux pour vous, un métier digne et de vrais revenus pour eux. Venez comme vous êtes — et suivez-nous, l'aventure ne fait que commencer.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         <a class="btn btn-primary gm-cta" href="#clients" style="font-size:14.5px;padding:12px 22px"><i class="ph-fill ph-motorcycle"></i>Commander une course</a>
         <a class="btn btn-secondary gm-cta" href="#motards" style="font-size:14.5px;padding:12px 22px">Devenir motard</a>
       </div>
-      <div style="display:flex;gap:30px;margin-top:34px">
+      <div class="gm-stats" style="display:flex;gap:30px;margin-top:34px">
         <div><div style="font-size:24px;font-weight:700">468</div><div style="font-size:12px;color:var(--color-neutral-500)">motards actifs</div></div>
         <div><div style="font-size:24px;font-weight:700">6 200+</div><div style="font-size:12px;color:var(--color-neutral-500)">clients servis</div></div>
         <div><div style="font-size:24px;font-weight:700">★ 4,7</div><div style="font-size:12px;color:var(--color-neutral-500)">satisfaction</div></div>
@@ -91,7 +128,7 @@
   </section>
 
   <!-- BANDEAU CONFIANCE -->
-  <section class="gm-reveal" style="max-width:1180px;margin:0 auto;padding:0 40px 20px">
+  <section class="gm-band gm-reveal" style="max-width:1180px;margin:0 auto;padding:0 40px 20px">
     <div class="gm-cols3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
       <div style="display:flex;align-items:center;gap:13px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><i class="ph-fill ph-lightning" style="color:var(--color-accent-300);font-size:22px"></i><div><div style="font-size:14px;font-weight:600">Rapide &amp; proche</div><div style="font-size:12px;color:var(--color-neutral-500)">Un motard à quelques minutes</div></div></div>
       <div style="display:flex;align-items:center;gap:13px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:16px 18px"><i class="ph-fill ph-shield-check" style="color:#8fceac;font-size:22px"></i><div><div style="font-size:14px;font-weight:600">Sûr &amp; suivi</div><div style="font-size:12px;color:var(--color-neutral-500)">Motards vérifiés, GPS en direct</div></div></div>
@@ -211,7 +248,7 @@
       </div>
     </div>
     <div class="gm-card" style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:18px;padding:26px">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+      <div class="gm-form2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <div class="field"><label>Nom</label><input class="input" type="text" placeholder="Votre nom"></div>
         <div class="field"><label>Téléphone</label><input class="input" type="text" placeholder="+243 8XX XXX XXX"></div>
       </div>
@@ -222,8 +259,8 @@
   </section>
 
   <!-- CTA -->
-  <section class="gm-reveal" style="padding:0 40px 60px;max-width:1180px;margin:0 auto">
-    <div style="background:radial-gradient(ellipse 90% 120% at 20% 10%,#2a2452,#171730);border:1px solid var(--color-accent-800);border-radius:20px;padding:44px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+  <section class="gm-ctasec gm-reveal" style="padding:0 40px 60px;max-width:1180px;margin:0 auto">
+    <div class="gm-ctabox" style="background:radial-gradient(ellipse 90% 120% at 20% 10%,#2a2452,#171730);border:1px solid var(--color-accent-800);border-radius:20px;padding:44px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
       <div style="flex:1;min-width:260px"><h2 style="font-size:26px;font-weight:600;letter-spacing:-.02em;margin:0 0 8px;color:#fff">Venez faire partie de la famille GO-MBOKA</h2><p style="font-size:14px;color:#cfc9e6;margin:0">Rejoignez la communauté qui rend la moto-taxi plus humaine à Kinshasa — et suivez-nous, on avance mieux ensemble.</p></div>
       <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-primary gm-cta" href="#contact" style="font-size:14px;padding:12px 20px">Commander une course</a><a class="btn btn-secondary gm-cta" href="#contact" style="font-size:14px;padding:12px 20px">Devenir partenaire</a></div>
     </div>
