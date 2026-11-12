@@ -1,0 +1,49 @@
+import 'dart:convert';
+import 'dart:io';
+
+/// Shared authenticated transport for all personnel roles. Tokens stay in memory.
+class PersonnelApi {
+  final Uri base;
+  String? token;
+  PersonnelApi(String url) : base = Uri.parse(url);
+  Future<Map<String, dynamic>> request(
+    String path, {
+    Map<String, dynamic>? body,
+  }) async {
+    final client = HttpClient()
+      ..connectionTimeout = const Duration(seconds: 15);
+    try {
+      final req = await client.openUrl(
+        body == null ? 'GET' : 'POST',
+        base.resolve(path),
+      );
+      req.headers.contentType = ContentType.json;
+      if (token != null) req.headers.set('Authorization', 'Bearer $token');
+      if (body != null) req.write(jsonEncode(body));
+      final res = await req.close().timeout(const Duration(seconds: 20));
+      final text = await utf8.decoder.bind(res).join();
+      if (res.statusCode >= 400) {
+        throw HttpException(
+          'Accès refusé ou serveur indisponible (${res.statusCode})',
+        );
+      }
+      return jsonDecode(text) as Map<String, dynamic>;
+    } finally {
+      client.close(force: true);
+    }
+  }
+
+  Future<Map<String, dynamic>> login(String username, String password) async {
+    final result = await request(
+      '/api/v1/auth/login/',
+      body: {'username': username, 'password': password},
+    );
+    token = result['access'] as String;
+    try {
+      return await request('/api/v1/auth/me/');
+    } catch (_) {
+      token = null;
+      rethrow;
+    }
+  }
+}
