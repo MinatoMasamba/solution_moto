@@ -126,6 +126,72 @@
       isAvailable = !!p.is_available;
       renderAvail();
     }).catch(function () {});
+    loadSubscription();
+  }
+
+  // ---------------------------------------------------------------- abonnement
+  var subInfo = null;
+  var subPrice = null;
+
+  function loadSubscription() {
+    window.gmGetJSON("/api/v1/subscriptions/price/").then(function (pr) { subPrice = pr.amount; })
+      .catch(function () { subPrice = null; });
+    window.gmGetJSON("/api/v1/motard-profiles/").then(function (d) {
+      var p = (rows(d) || [])[0];
+      if (!p) return;
+      renderSubscription(p.subscription_status, p.subscription_expires_at);
+    }).catch(function () {});
+    window.gmGetJSON("/api/v1/subscriptions/").then(function (d) {
+      var subs = rows(d) || [];
+      subInfo = subs[0] || null;
+    }).catch(function () { subInfo = null; });
+  }
+
+  var SUB_LABELS = {
+    active: { label: "Actif", color: "rgba(111,174,144,.16)", text: "#8fceac" },
+    trial: { label: "En essai", color: "rgba(217,168,102,.16)", text: "#d9a866" },
+    expired: { label: "Expiré", color: "rgba(207,127,127,.16)", text: "#d98a8a" },
+    suspended: { label: "Suspendu", color: "rgba(207,127,127,.16)", text: "#d98a8a" },
+  };
+
+  function renderSubscription(status, expiresAt) {
+    var pill = document.getElementById("gm-c-sub-status");
+    var expiry = document.getElementById("gm-c-sub-expiry");
+    var payBtn = document.getElementById("gm-c-sub-pay");
+    if (!pill || !expiry || !payBtn) return;
+    var info = SUB_LABELS[status] || { label: status || "—", color: "var(--color-neutral-800)", text: "var(--color-neutral-400)" };
+    pill.textContent = info.label;
+    pill.style.background = info.color;
+    pill.style.color = info.text;
+    if (expiresAt) {
+      var dt = new Date(expiresAt);
+      expiry.textContent = "Valable jusqu'au " + dt.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    } else {
+      expiry.textContent = "Aucun abonnement en cours.";
+    }
+    payBtn.style.display = status === "active" ? "none" : "";
+  }
+
+  function wireSubscription() {
+    var payBtn = document.getElementById("gm-c-sub-pay");
+    if (!payBtn) return;
+    payBtn.addEventListener("click", function () {
+      var createSub = window.gmPostJSON("/api/v1/subscriptions/", { amount: subPrice || "0" });
+      createSub
+        .then(function (s) { return window.gmPostJSON("/api/v1/subscriptions/" + s.id + "/pay/", {}); })
+        .then(function (r) {
+          if (r.status === "success") {
+            if (window.showAppToast) window.showAppToast("Abonnement activé — bienvenue en service !", "success");
+            loadDashboard();
+          } else {
+            if (window.showAppToast) window.showAppToast("Paiement initié — confirmation en attente de l'opérateur.", "info");
+          }
+          loadProfile();
+        })
+        .catch(function (err) {
+          if (window.showAppToast) window.showAppToast((err && err.message) || "Paiement impossible.", "error");
+        });
+    });
   }
 
   // ---------------------------------------------------------------- demande de course
@@ -296,16 +362,27 @@
   }
 
   // ---------------------------------------------------------------- notifications
+  function notifIcon(kind) {
+    return { ride: "ph-motorcycle", payment: "ph-coins", subscription: "ph-credit-card", system: "ph-gear" }[kind] || "ph-bell";
+  }
+  function setNotifBadge(unread) {
+    var dot = document.querySelector('[data-goto="notifs"] span[style*="background:#cf7f7f"]');
+    if (dot) dot.style.display = unread > 0 ? "" : "none";
+  }
   function loadNotifs() {
-    window.gmGetJSON("/api/dashboard/notifications/").then(function (d) {
-      var list = rows(d);
+    window.gmGetJSON("/api/v1/notifications/").then(function (d) {
+      setNotifBadge(d.unread || 0);
+      var list = d.items || [];
       if (!list.length) {
         set("gm-c-notifs", '<div style="padding:14px;color:var(--color-neutral-500);font-size:12px">Aucune notification.</div>');
         return;
       }
       set("gm-c-notifs", list.map(function (n) {
-        return '<div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ph-bell" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">' + esc(n.title || n.message || "Notification") + '</div><div style="font-size:11.5px;color:var(--color-neutral-500)">' + esc(n.detail || n.subtitle || "") + "</div></div></div>";
+        return '<div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid ' + (n.is_read ? "var(--color-neutral-800)" : "var(--color-accent-700)") + ';border-radius:14px;padding:13px 15px"><span style="width:36px;height:36px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ' + notifIcon(n.kind) + '" style="color:var(--color-accent-300);font-size:16px"></i></span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">' + esc(n.title) + '</div><div style="font-size:11.5px;color:var(--color-neutral-500)">' + esc(n.body || "") + '</div><div style="font-size:10px;color:var(--color-neutral-500);margin-top:3px">' + esc((n.created_at || "").slice(0, 16).replace("T", " ")) + "</div></div></div>";
       }).join(""));
+      if (list.length) {
+        window.gmPostJSON("/api/v1/notifications/", {}).then(function (r) { setNotifBadge(r.unread || 0); }).catch(function () {});
+      }
     }).catch(function () {
       set("gm-c-notifs", '<div style="padding:14px;color:var(--color-neutral-500);font-size:12px">Aucune notification.</div>');
     });
@@ -382,6 +459,7 @@
     wireRideActions();
     wireAccount();
     wireWithdraw();
+    wireSubscription();
     loadProfile();
     loadDashboard();
     loadRequests();

@@ -6,11 +6,12 @@ from .models import Ride, RideRating
 class RideSerializer(serializers.ModelSerializer):
     client_name = serializers.SerializerMethodField()
     motard_name = serializers.SerializerMethodField()
+    motard_phone = serializers.SerializerMethodField()
 
     class Meta:
         model = Ride
         fields = [
-            "id", "client", "client_name", "motard", "motard_name", "status",
+            "id", "client", "client_name", "motard", "motard_name", "motard_phone", "status",
             "pickup_address", "pickup_latitude", "pickup_longitude",
             "dropoff_address", "dropoff_latitude", "dropoff_longitude",
             "agreed_price", "requested_at", "accepted_at", "started_at",
@@ -34,6 +35,9 @@ class RideSerializer(serializers.ModelSerializer):
 
     def get_motard_name(self, obj):
         return (obj.motard.get_full_name() or obj.motard.phone_number) if obj.motard_id else None
+
+    def get_motard_phone(self, obj):
+        return obj.motard.phone_number if obj.motard_id else None
 
 
 class RideRatingSerializer(serializers.ModelSerializer):

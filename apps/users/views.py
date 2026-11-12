@@ -8,9 +8,10 @@ from django.utils import timezone
 
 from django.db.models import Avg, Sum
 
-from .models import MotardProfile, OwnerProfile, SavedPlace, SupportTicket, User
+from .models import MotardProfile, Notification, OwnerProfile, SavedPlace, SupportTicket, User
 from .serializers import (
     MotardProfileSerializer,
+    NotificationSerializer,
     OwnerProfileSerializer,
     RegisterSerializer,
     SavedPlaceSerializer,
@@ -136,6 +137,29 @@ class SavedPlaceViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class NotificationsView(APIView):
+    """Boîte de notifications in-app de l'utilisateur connecté.
+    GET  -> {"unread": n, "items": [30 dernières]}
+    POST -> marque comme lues ({'ids': [...]} ou rien pour tout marquer)."""
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        items = Notification.objects.filter(user=request.user)[:30]
+        unread = Notification.objects.filter(user=request.user, read_at__isnull=True).count()
+        return Response({
+            "unread": unread,
+            "items": NotificationSerializer(items, many=True).data,
+        })
+
+    def post(self, request):
+        ids = request.data.get("ids")
+        from .services import mark_notifications_read
+        updated = mark_notifications_read(request.user, ids if isinstance(ids, list) else None)
+        unread = Notification.objects.filter(user=request.user, read_at__isnull=True).count()
+        return Response({"marked": updated, "unread": unread})
 
 
 class ClientSummaryView(APIView):

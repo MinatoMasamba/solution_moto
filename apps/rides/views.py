@@ -68,7 +68,11 @@ class RideViewSet(viewsets.ModelViewSet):
             from apps.geoloc.services import latest_position
             ping = latest_position(ride.motard)
             data["motard_position"] = (
-                {"latitude": float(ping.latitude), "longitude": float(ping.longitude)}
+                {
+                    "latitude": float(ping.latitude),
+                    "longitude": float(ping.longitude),
+                    "recorded_at": ping.recorded_at.isoformat(),
+                }
                 if ping else None
             )
         return Response({"ride": data})

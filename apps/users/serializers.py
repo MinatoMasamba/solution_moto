@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import MotardProfile, OwnerProfile, SavedPlace, SupportTicket, User
+from .models import MotardProfile, Notification, OwnerProfile, SavedPlace, SupportTicket, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -86,3 +86,15 @@ class SavedPlaceSerializer(serializers.ModelSerializer):
         model = SavedPlace
         fields = ["id", "label", "address", "latitude", "longitude", "icon", "created_at"]
         read_only_fields = ["id", "created_at"]
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    is_read = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Notification
+        fields = ["id", "kind", "title", "body", "ride", "is_read", "read_at", "created_at"]
+        read_only_fields = ["id", "read_at", "created_at"]
+
+    def get_is_read(self, obj):
+        return obj.read_at is not None

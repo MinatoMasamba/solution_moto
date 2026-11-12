@@ -135,6 +135,15 @@
           <div style="width:1px;height:10px;background:var(--color-neutral-700);margin-left:4.5px"></div>
           <div style="display:flex;align-items:center;gap:9px;margin-top:8px"><i class="ph-fill ph-map-pin" style="color:var(--color-accent-400);font-size:11px"></i><span id="gm-cl-trip-to" style="font-size:12.5px;color:var(--color-text)">Destination</span></div>
         </div>
+        <div style="background:var(--color-surface);border:1px solid var(--color-neutral-800);border-radius:14px;padding:14px 16px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <i class="ph-fill ph-navigation-arrow" style="color:var(--color-accent-300);font-size:15px"></i>
+            <span style="flex:1;font-size:13px;font-weight:600;color:var(--color-text)">Position du motard</span>
+            <span id="gm-cl-track-time" style="font-size:10.5px;color:var(--color-neutral-500)">—</span>
+          </div>
+          <div id="gm-cl-track-sub" style="font-size:11.5px;color:var(--color-neutral-500)">En attente du premier signal GPS…</div>
+          <a id="gm-cl-track-map" href="#" target="_blank" rel="noopener" class="btn btn-secondary btn-block gm-cta" style="margin-top:10px;font-size:12.5px;padding:10px"><i class="ph-fill ph-map-trifold"></i>Ouvrir la carte</a>
+        </div>
         <button class="btn btn-primary btn-block gm-cta" id="gm-cl-arrived" style="font-size:14px;padding:12px"><i class="ph-fill ph-flag-checkered"></i>Je suis arrivé(e)</button>
       </div>
 

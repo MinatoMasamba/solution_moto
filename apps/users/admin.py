@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 
-from .models import MotardProfile, OwnerProfile, User
+from .models import MotardProfile, Notification, OwnerProfile, User
 
 
 @admin.register(User)
@@ -41,3 +41,14 @@ class MotardProfileAdmin(admin.ModelAdmin):
 class OwnerProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "company_name")
     search_fields = ("user__phone_number", "company_name")
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ("user", "kind", "title", "is_read_marker", "created_at")
+    list_filter = ("kind",)
+    search_fields = ("user__phone_number", "title", "body")
+
+    @admin.display(boolean=True, description="lue")
+    def is_read_marker(self, obj):
+        return obj.read_at is not None

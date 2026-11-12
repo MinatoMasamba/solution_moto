@@ -240,3 +240,31 @@ class SavedPlace(models.Model):
 
     def __str__(self):
         return f"{self.label} — {self.user}"
+
+
+class Notification(models.Model):
+    """Notification in-app d'un utilisateur (course, paiement, abonnement…)."""
+
+    class Kind(models.TextChoices):
+        RIDE = "ride", "Course"
+        PAYMENT = "payment", "Paiement"
+        SUBSCRIPTION = "subscription", "Abonnement"
+        SYSTEM = "system", "Système"
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    kind = models.CharField(max_length=20, choices=Kind.choices, default=Kind.RIDE)
+    title = models.CharField("titre", max_length=150)
+    body = models.CharField("message", max_length=255, blank=True)
+    ride = models.ForeignKey(
+        "rides.Ride", on_delete=models.SET_NULL, null=True, blank=True, related_name="notifications"
+    )
+    read_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "notification"
+        verbose_name_plural = "notifications"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.title} — {self.user}"

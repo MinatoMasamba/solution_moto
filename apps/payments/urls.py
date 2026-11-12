@@ -11,5 +11,6 @@ router.register("payment-methods", views.PaymentMethodViewSet, basename="payment
 app_name = "payments"
 urlpatterns = [
     path("wallet/", views.WalletView.as_view(), name="wallet"),
+    path("payments/webhook/", views.PaymentWebhookView.as_view(), name="payment-webhook"),
     *router.urls,
 ]

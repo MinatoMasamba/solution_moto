@@ -141,6 +141,14 @@ NPM_BIN_PATH = env("NPM_BIN_PATH", default="npm")
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 
 
+# Paiements Mobile Money
+
+PAYMENT_PROVIDER = env("PAYMENT_PROVIDER", default="simulator")
+PAYMENTS_WEBHOOK_TOKEN = env("PAYMENTS_WEBHOOK_TOKEN", default="dev-webhook-token")
+# Montant mensuel de l'abonnement motard (à trancher commercialement, cf. blueprint §11).
+SUBSCRIPTION_MONTHLY_AMOUNT = env("SUBSCRIPTION_MONTHLY_AMOUNT", default="15000")
+
+
 # Django REST Framework
 
 REST_FRAMEWORK = {

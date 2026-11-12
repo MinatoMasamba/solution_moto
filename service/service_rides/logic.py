@@ -16,12 +16,18 @@ class RideDispatchService:
         """
         if not motard or motard.role != User.Role.MOTARD:
             return False
-        
+
+        # Expiration "lazy" : un abonnement actif dont la date est passée est
+        # basculé en 'expired' ici même, même si le cron (management command
+        # expire_subscriptions) n'a pas encore tourné.
+        from apps.users.services import expire_outdated_subscriptions
+        expire_outdated_subscriptions()
+
         # Check if they have a motard profile and if the subscription status is 'active'
         profile = getattr(motard, "motard_profile", None)
         if not profile:
             return False
-            
+
         return profile.subscription_status == MotardProfile.SubscriptionStatus.ACTIVE
 
     @classmethod
@@ -39,6 +45,9 @@ class RideDispatchService:
         """
         Filters a queryset of users to return only those eligible to receive ride requests.
         """
+        from apps.users.services import expire_outdated_subscriptions
+        expire_outdated_subscriptions()
+
         return queryset.filter(
             role=User.Role.MOTARD,
             motard_profile__subscription_status=MotardProfile.SubscriptionStatus.ACTIVE,

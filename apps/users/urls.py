@@ -18,5 +18,6 @@ urlpatterns = [
     path("auth/refresh/", TokenRefreshView.as_view(), name="refresh"),
     path("auth/me/", views.MeView.as_view(), name="me"),
     path("client/summary/", views.ClientSummaryView.as_view(), name="client_summary"),
+    path("notifications/", views.NotificationsView.as_view(), name="notifications"),
     path("", include(router.urls)),
 ]

@@ -196,13 +196,46 @@
       } else if (r.motard) {
         // Un motard a accepté → écran course en cours
         set("gm-cl-driver", esc(r.motard_name || "Chauffeur"));
-        set("gm-cl-driver-sub", "En route vers vous");
+        set("gm-cl-driver-sub", r.status === "ongoing" ? "Course démarrée" : "En route vers vous");
         set("gm-cl-driver-av", esc(initials(r.motard_name)));
+        var call = $("gm-cl-call"), sms = $("gm-cl-sms");
+        if (call && r.motard_phone) call.href = "tel:" + r.motard_phone;
+        if (sms && r.motard_phone) sms.href = "sms:" + r.motard_phone;
+        updateTracking(r);
         var visible = $('[data-panel="ontrip"]');
         if (!visible || visible.style.display === "none") go("ontrip");
         if (r.status === "completed") { stopPolling(); go("rate"); }
       }
     }).catch(function () {});
+  }
+
+  function updateTracking(r) {
+    var timeEl = $("gm-cl-track-time"), subEl = $("gm-cl-track-sub"), mapEl = $("gm-cl-track-map");
+    if (!timeEl || !subEl) return;
+    var pos = r.motard_position;
+    if (!pos) { subEl.textContent = "En attente du premier signal GPS du motard…"; return; }
+    var when = (pos.recorded_at || "").slice(11, 16);
+    if (when) timeEl.textContent = "signal " + when;
+    if (mapEl) mapEl.href = "https://www.google.com/maps?q=" + pos.latitude + "," + pos.longitude;
+    if (r.status === "ongoing") {
+      subEl.textContent = "Course en cours vers votre destination.";
+    } else {
+      var dest = { lat: r.dropoff_latitude, lng: r.dropoff_longitude };
+      if (dest.lat && dest.lng) {
+        var km = distanceKm(pos.latitude, pos.longitude, dest.lat, dest.lng);
+        subEl.textContent = km < 1 ? "Motard à moins d'1 km de la destination." : "Motard à environ " + Math.round(km) + " km de la destination.";
+      } else {
+        subEl.textContent = "Motard en route.";
+      }
+    }
+  }
+
+  function distanceKm(lat1, lng1, lat2, lng2) {
+    var R = 6371, toRad = Math.PI / 180;
+    var dLat = (lat2 - lat1) * toRad, dLng = (lng2 - lng1) * toRad;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
   // ── Notation ──────────────────────────────────────────────────────────
@@ -274,14 +307,45 @@
       var amt = (($("gm-cl-topup-amount") || {}).value || "").replace(/\s/g, "");
       if (!amt || Number(amt) <= 0) { toast("Montant invalide.", "warning"); return; }
       window.withButtonLoading(btn, function () { return window.gmPostJSON("/api/v1/wallet/", { amount: amt, provider: topupProvider }); })
-        .then(function () { toast("Dépôt confirmé.", "success"); go("wallet"); loadSummary(); })
+        .then(function (d) {
+          var txn = d && d.transaction;
+          if (txn && txn.status === "pending") {
+            toast("Dépôt initié — en attente de confirmation de l'opérateur.", "info");
+            var tries = 0;
+            var poll = setInterval(function () {
+              tries += 1;
+              window.gmGetJSON("/api/v1/wallet/").then(function (w) {
+                var done = (w.transactions || []).some(function (x) { return x.id === txn.id && x.status === "success"; });
+                if (done) { clearInterval(poll); toast("Dépôt confirmé.", "success"); loadSummary(); if (currentTab === "wallet") loadWallet(); }
+              }).catch(function () {});
+              if (tries >= 10) clearInterval(poll);
+            }, 5000);
+          } else { toast("Dépôt confirmé.", "success"); }
+          go("wallet"); loadSummary();
+        })
         .catch(function (err) { toast((err && err.message) || "Dépôt impossible.", "error"); });
     });
   }
 
-  // ── Notifications (pas d'endpoint client dédié : état honnête) ─────────
+  // ── Notifications ──────────────────────────────────────────────────────
+  function notifIcon(kind) {
+    return { ride: "ph-motorcycle", payment: "ph-coins", subscription: "ph-credit-card", system: "ph-gear" }[kind] || "ph-bell";
+  }
   function loadNotifs() {
-    set("gm-cl-notifs", '<div style="padding:22px 10px;text-align:center;color:var(--color-neutral-500);font-size:12.5px;border:1px dashed var(--color-neutral-800);border-radius:14px"><i class="ph ph-bell-slash" style="font-size:22px;display:block;margin-bottom:6px"></i>Aucune notification pour le moment.</div>');
+    window.gmGetJSON("/api/v1/notifications/").then(function (d) {
+      var items = d.items || [];
+      set("gm-cl-notifs", items.length ? items.map(function (n) {
+        return '<div style="display:flex;gap:12px;background:var(--color-surface);border:1px solid ' + (n.is_read ? "var(--color-neutral-800)" : "var(--color-accent-700)") + ';border-radius:14px;padding:13px 15px">' +
+          '<span style="width:36px;height:36px;border-radius:10px;background:rgba(145,132,217,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph-fill ' + notifIcon(n.kind) + '" style="color:var(--color-accent-300);font-size:16px"></i></span>' +
+          '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--color-text)">' + esc(n.title) + '</div><div style="font-size:11.5px;color:var(--color-neutral-500)">' + esc(n.body || "") + '</div>' +
+          '<div style="font-size:10px;color:var(--color-neutral-500);margin-top:3px">' + esc((n.created_at || "").slice(0, 16).replace("T", " ")) + '</div></div></div>';
+      }).join("") : '<div style="padding:22px 10px;text-align:center;color:var(--color-neutral-500);font-size:12.5px;border:1px dashed var(--color-neutral-800);border-radius:14px"><i class="ph ph-bell-slash" style="font-size:22px;display:block;margin-bottom:6px"></i>Aucune notification pour le moment.</div>');
+      if (items.length) {
+        window.gmPostJSON("/api/v1/notifications/", {});
+      }
+    }).catch(function () {
+      set("gm-cl-notifs", '<div style="padding:22px 10px;text-align:center;color:var(--color-neutral-500);font-size:12.5px;border:1px dashed var(--color-neutral-800);border-radius:14px">Aucune notification pour le moment.</div>');
+    });
   }
 
   // ── Compte / mot de passe ─────────────────────────────────────────────
