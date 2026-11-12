@@ -13,3 +13,6 @@ theme/static/css/dist/
 
 .vscode/
 .idea/
+
+# Local acceptance credentials and backups
+.local/

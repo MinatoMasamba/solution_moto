@@ -193,7 +193,7 @@ def chauffeur_password_reset_confirm(request):
 # Client-specific views
 # L'app client fonctionnelle est servie par portal.views.ClientAppView
 # (templates/client/app.html + gm-client.js). Cette ancienne route redirige
-# vers elle pour éviter le doublon avec la maquette statique client_dashboard.html.
+# vers elle (la maquette statique a été supprimée lors du nettoyage).
 @login_required
 def client_dashboard_view(request):
     from django.shortcuts import redirect
