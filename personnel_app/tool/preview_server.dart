@@ -19,7 +19,10 @@ Future<void> main() async {
   runApp(
     RepaintBoundary(
       key: key,
-      child: PersonnelApp(api: api, initialPage: 1),
+      child: PersonnelApp(
+        api: api,
+        initialPage: const int.fromEnvironment('PREVIEW_PAGE', defaultValue: 1),
+      ),
     ),
   );
   for (final seconds in [15, 30]) {

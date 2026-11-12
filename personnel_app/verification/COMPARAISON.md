@@ -25,3 +25,9 @@ La carte routière OpenStreetMap remplace désormais la grille. Les itinéraires
 Les notifications sont internes à Django. Pas de bouton simulant un paiement, un push, un e-mail ou un transfert financier. Les données RECETTE sont des exemples enregistrés, pas une activité commerciale réelle. Les réglages opérationnels incluent profil, mot de passe, actualisation et déconnexion ; photo de profil, préférences de langue et notifications externes ne sont pas implémentées.
 
 Windows n'est pas exécuté depuis cet environnement Linux. Une capture au format téléphone ne prouve pas l'exécution Android sur appareil. La conformité graphique exacte au ZIP n'est pas déclarée acquise.
+
+## Révision du thème et du profil
+
+Les palettes et styles de `/home/minato/project/flutter_app` remplacent le thème Nocturne précédent : Inter, bleu RDC, surfaces claires/sombres, champs et cartes cohérents. Profil complet avec enregistrement serveur et photo. Les précédentes limites « photo/préférences » ne s'appliquent plus à ces fonctions ; la traduction de l'application et les notifications externes restent hors de cette révision.
+
+Tests de non-régression : aucune requête automatique depuis le profil après saisie ; seule l'API cartographique est interrogée par la minuterie ; cette minuterie est détruite lorsqu'on quitte la carte. Captures réelles du profil : `verification/live/profile-1440-light.png`, `profile-1440-dark.png`, `profile-412-light.png`, `profile-412-dark.png`, plus vues de bas de formulaire.

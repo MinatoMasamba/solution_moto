@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/api.dart';
-import 'road_map.dart';
+import 'live_road_map.dart';
+import 'profile_page.dart';
+import '../../theme/personnel_theme.dart';
+import '../../theme/app_colors.dart';
 
-const accent = Color(0xff9184d9),
-    surface = Color(0xff232532),
-    muted = Color(0xff9397ab),
-    green = Color(0xff8fceac),
-    border = Color(0xff3f424d);
+const accent = AppColors.rdcBlue, green = AppColors.success;
 const labels = [
   "Vue d'ensemble",
   "Carte temps réel",
@@ -17,7 +16,7 @@ const labels = [
   "Commissions",
   "Notifications",
   "Support",
-  "Réglages",
+  "Mon profil",
 ];
 const icons = [
   Icons.dashboard_rounded,
@@ -45,7 +44,11 @@ class _State extends State<DirectionDashboard> {
   int page = 0;
   bool busy = false;
   String error = '', query = '', statusFilter = 'Tous';
-  Timer? timer;
+  Color get surface => Theme.of(context).colorScheme.surface;
+  Color get border => Theme.of(context).dividerColor;
+  Color get muted => Theme.of(context).brightness == Brightness.dark
+      ? const Color(0xff94a3b8)
+      : AppColors.muted;
   final scaffold = GlobalKey<ScaffoldState>();
   @override
   void initState() {
@@ -53,19 +56,6 @@ class _State extends State<DirectionDashboard> {
     api = widget.initialApi;
     page = widget.initialPage;
     if (api != null) unawaited(load());
-    timer = Timer.periodic(const Duration(seconds: 2), (_) {
-      if (api != null &&
-          !busy &&
-          (page == 1 || DateTime.now().second % 15 < 2)) {
-        unawaited(load());
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
   }
 
   Future<void> load() async {
@@ -73,6 +63,9 @@ class _State extends State<DirectionDashboard> {
     setState(() => busy = true);
     try {
       final d = await api!.request('/api/personnel/direction/');
+      final profile = await api!.request('/api/personnel/profile/');
+      d['me'] = {...d['me'], ...profile, 'phone': profile['phone_number']};
+      PersonnelTheme.apply(profile['theme']);
       if (mounted) {
         setState(() {
           data = d;
@@ -181,9 +174,12 @@ class _State extends State<DirectionDashboard> {
                   : () async {
                       setDialog(() => saving = true);
                       try {
-                        await save(
-                          controllers.map((x) => x.text.trim()).toList(),
-                        );
+                        await save([
+                          for (int i = 0; i < controllers.length; i++)
+                            secret || fields[i].toLowerCase().contains('passe')
+                                ? controllers[i].text
+                                : controllers[i].text.trim(),
+                        ]);
                         if (c.mounted) Navigator.pop(c);
                       } catch (e) {
                         setDialog(() {
@@ -216,6 +212,13 @@ class _State extends State<DirectionDashboard> {
       final candidate = PersonnelApi(v[0]);
       await candidate.login(v[1], v[2]);
       final snapshot = await candidate.request('/api/personnel/direction/');
+      final profile = await candidate.request('/api/personnel/profile/');
+      snapshot['me'] = {
+        ...snapshot['me'],
+        ...profile,
+        'phone': profile['phone_number'],
+      };
+      PersonnelTheme.apply(profile['theme']);
       if (mounted) {
         setState(() {
           api = candidate;
@@ -257,7 +260,7 @@ class _State extends State<DirectionDashboard> {
         '/api/personnel/direction/',
         body: {'action': action, ...values},
       );
-      await load();
+      if (!action.startsWith('simulation_')) await load();
     } catch (e) {
       if (mounted) setState(() => error = '$e');
     }
@@ -274,7 +277,9 @@ class _State extends State<DirectionDashboard> {
   Widget sidebar() => SizedBox(
     width: 252,
     child: Material(
-      color: const Color(0xff171927),
+      color: Theme.of(context).brightness == Brightness.dark
+          ? const Color(0xff0a0a10)
+          : surface,
       child: Column(
         children: [
           Padding(
@@ -300,7 +305,7 @@ class _State extends State<DirectionDashboard> {
                 for (int i = 0; i < labels.length; i++)
                   ListTile(
                     selected: page == i,
-                    selectedTileColor: const Color(0xff2b2741),
+                    selectedTileColor: accent.withValues(alpha: .10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(9),
                     ),
@@ -346,7 +351,8 @@ class _State extends State<DirectionDashboard> {
                     Container(
                       height: 72,
                       padding: const EdgeInsets.symmetric(horizontal: 18),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
+                        color: surface,
                         border: Border(bottom: BorderSide(color: border)),
                       ),
                       child: Row(
@@ -875,92 +881,54 @@ class _State extends State<DirectionDashboard> {
       ],
     ),
   );
+
   Widget gps() => box(
-    RoadMap(
-      positions: filtered(list('positions')),
-      simulation: data?['simulation'] == null
+    LiveRoadMap(
+      key: ValueKey(api),
+      api: api!,
+      initialPositions: list('positions'),
+      initialSimulation: data?['simulation'] == null
           ? null
           : Map<String, dynamic>.from(data!['simulation']),
       control: (name, id) => action(name, {'id': id}),
     ),
   );
-  Widget settings() {
-    final me = data!['me'];
-    return box(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          text('Mon compte', size: 18),
-          const SizedBox(height: 16),
-          text(name, size: 16),
-          text('${me['phone']} · ${me['email']}'),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: [
-              FilledButton(
-                onPressed: () => form(
-                  'Modifier le profil',
-                  ['Prénom', 'Nom', 'E-mail'],
-                  (v) async {
-                    await api!.request(
-                      '/api/v1/auth/me/',
-                      method: 'PATCH',
-                      body: {
-                        'first_name': v[0],
-                        'last_name': v[1],
-                        'email': v[2],
-                      },
-                    );
-                    await load();
-                  },
-                  initial: [
-                    me['first_name'] ?? '',
-                    me['last_name'] ?? '',
-                    me['email'] ?? '',
-                  ],
-                ),
-                child: const Text('Modifier le profil'),
-              ),
-              OutlinedButton(
-                onPressed: () => form(
-                  'Changer le mot de passe',
-                  ['Mot de passe actuel', 'Nouveau mot de passe', 'Confirmer'],
-                  (v) async {
-                    await api!.request(
-                      '/api/account/password/',
-                      body: {
-                        'old_password': v[0],
-                        'new_password': v[1],
-                        'new_password2': v[2],
-                      },
-                    );
-                  },
-                  secret: true,
-                ),
-                child: const Text('Changer le mot de passe'),
-              ),
-              OutlinedButton(
-                onPressed: load,
-                child: const Text('Actualiser les données'),
-              ),
-              TextButton(
-                onPressed: () {
-                  api?.token = null;
-                  setState(() {
-                    api = null;
-                    data = null;
-                    error = '';
-                    page = 0;
-                  });
-                },
-                child: const Text('Déconnexion'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  void logout() {
+    api?.token = null;
+    setState(() {
+      api = null;
+      data = null;
+      error = '';
+      page = 0;
+    });
+    PersonnelTheme.apply('light');
   }
+
+  Widget settings() => PersonnelProfilePage(
+    key: ValueKey(api),
+    api: api!,
+    onSaved: (profile) => setState(
+      () => data!['me'] = {
+        ...data!['me'],
+        ...profile,
+        'phone': profile['phone_number'],
+      },
+    ),
+    logout: logout,
+    changePassword: () => form(
+      'Changer le mot de passe',
+      ['Mot de passe actuel', 'Nouveau mot de passe', 'Confirmer'],
+      (v) async {
+        await api!.request(
+          '/api/account/password/',
+          body: {
+            'old_password': v[0],
+            'new_password': v[1],
+            'new_password2': v[2],
+          },
+        );
+      },
+      secret: true,
+    ),
+  );
 }

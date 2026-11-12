@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'features/direction/dashboard.dart';
 import 'core/api.dart';
+import 'theme/personnel_theme.dart';
 
 void main() => runApp(const PersonnelApp());
 
@@ -9,19 +10,15 @@ class PersonnelApp extends StatelessWidget {
   final PersonnelApi? api;
   final int initialPage;
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'GO-MBOKA · Personnel',
-    theme: ThemeData(
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: const Color(0xff161826),
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff9184d9),
-        brightness: Brightness.dark,
-      ),
-      fontFamily: 'Inter',
-      useMaterial3: true,
+  Widget build(BuildContext context) => ValueListenableBuilder<ThemeMode>(
+    valueListenable: PersonnelTheme.mode,
+    builder: (context, mode, _) => MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'GO-MBOKA · Personnel',
+      theme: PersonnelTheme.light(),
+      darkTheme: PersonnelTheme.dark(),
+      themeMode: mode,
+      home: DirectionDashboard(initialApi: api, initialPage: initialPage),
     ),
-    home: DirectionDashboard(initialApi: api, initialPage: initialPage),
   );
 }

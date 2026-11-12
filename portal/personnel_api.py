@@ -73,3 +73,10 @@ class PersonnelSnapshot(APIView):
             Notification.objects.create(user=p.user,kind='system',title='Décision sur votre dossier',body=p.get_application_status_display())
         else: raise ValidationError('Action inconnue.')
         return Response({'ok':True})
+
+
+class PersonnelMapSnapshot(APIView):
+    permission_classes = [IsOperator]
+
+    def get(self, request):
+        return Response({'positions':latest_positions_for(request.user),'simulation':snapshot(),'updated_at':timezone.now()})

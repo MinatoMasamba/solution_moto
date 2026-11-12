@@ -88,7 +88,7 @@ void main() {
         "Commissions",
         "Notifications",
         "Support",
-        "Réglages",
+        "Mon profil",
       ]) {
         if (!desktop) {
           await tester.tap(find.byIcon(Icons.menu));
@@ -126,7 +126,7 @@ void main() {
             "Commissions",
             "Notifications",
             "Support",
-            "Réglages",
+            "Mon profil",
           ].indexOf(label);
           await File(
             'verification/live/dg-${size.width.toInt()}-$index.png',
