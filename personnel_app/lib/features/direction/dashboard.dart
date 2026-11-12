@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/api.dart';
+import 'road_map.dart';
 
 const accent = Color(0xff9184d9),
     surface = Color(0xff232532),
@@ -31,8 +32,9 @@ const icons = [
 ];
 
 class DirectionDashboard extends StatefulWidget {
-  const DirectionDashboard({super.key, this.initialApi});
+  const DirectionDashboard({super.key, this.initialApi, this.initialPage = 0});
   final PersonnelApi? initialApi;
+  final int initialPage;
   @override
   State<DirectionDashboard> createState() => _State();
 }
@@ -49,9 +51,14 @@ class _State extends State<DirectionDashboard> {
   void initState() {
     super.initState();
     api = widget.initialApi;
+    page = widget.initialPage;
     if (api != null) unawaited(load());
-    timer = Timer.periodic(const Duration(seconds: 30), (_) {
-      if (api != null && !busy) unawaited(load());
+    timer = Timer.periodic(const Duration(seconds: 2), (_) {
+      if (api != null &&
+          !busy &&
+          (page == 1 || DateTime.now().second % 15 < 2)) {
+        unawaited(load());
+      }
     });
   }
 
@@ -868,53 +875,15 @@ class _State extends State<DirectionDashboard> {
       ],
     ),
   );
-  Widget gps() {
-    final positions = filtered(list('positions'));
-    return box(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          text('Positions GPS — Kinshasa', weight: FontWeight.w600),
-          const SizedBox(height: 12),
-          if (positions.isEmpty)
-            const SizedBox(
-              height: 220,
-              child: Center(child: Text('Aucune position GPS enregistrée.')),
-            )
-          else ...[
-            SizedBox(
-              height: 300,
-              child: InteractiveViewer(
-                minScale: 1,
-                maxScale: 8,
-                child: CustomPaint(
-                  size: const Size(double.infinity, 300),
-                  painter: PositionsPainter(positions),
-                ),
-              ),
-            ),
-            if (page == 1)
-              for (final p in positions)
-                ListTile(
-                  dense: true,
-                  leading: const Icon(
-                    Icons.location_on,
-                    color: green,
-                    size: 17,
-                  ),
-                  title: text(p['name'], size: 12),
-                  subtitle: text(
-                    '${p['latitude']}, ${p['longitude']} · ${fmt(p['recorded_at'])}',
-                    size: 10,
-                    color: muted,
-                  ),
-                ),
-          ],
-        ],
-      ),
-    );
-  }
-
+  Widget gps() => box(
+    RoadMap(
+      positions: filtered(list('positions')),
+      simulation: data?['simulation'] == null
+          ? null
+          : Map<String, dynamic>.from(data!['simulation']),
+      control: (name, id) => action(name, {'id': id}),
+    ),
+  );
   Widget settings() {
     final me = data!['me'];
     return box(
@@ -994,44 +963,4 @@ class _State extends State<DirectionDashboard> {
       ),
     );
   }
-}
-
-class PositionsPainter extends CustomPainter {
-  final List<Map<String, dynamic>> positions;
-  PositionsPainter(this.positions);
-  @override
-  void paint(Canvas canvas, Size s) {
-    canvas.drawRect(Offset.zero & s, Paint()..color = const Color(0xff191d2e));
-    const west = 15.20, east = 15.65, north = -4.20, south = -4.55;
-    for (final p in positions) {
-      final x = ((p['longitude'] as num) - west) / (east - west) * s.width;
-      final y = (north - (p['latitude'] as num)) / (north - south) * s.height;
-      if (x < 0 || x > s.width || y < 0 || y > s.height) continue;
-      canvas.drawCircle(Offset(x, y), 7, Paint()..color = green);
-      final label = TextPainter(
-        text: TextSpan(
-          text: p['name'],
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            color: Colors.white,
-            fontSize: 10,
-          ),
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout(maxWidth: 120);
-      label.paint(canvas, Offset(x.clamp(0, s.width - 120), y + 10));
-    }
-    final t = TextPainter(
-      text: const TextSpan(
-        text:
-            'KINSHASA · Positions enregistrées\n15.20°E → 15.65°E / 4.20°S → 4.55°S',
-        style: TextStyle(fontFamily: 'Inter', fontSize: 10, color: muted),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    t.paint(canvas, const Offset(8, 8));
-  }
-
-  @override
-  bool shouldRepaint(covariant PositionsPainter old) => true;
 }

@@ -19,3 +19,15 @@ class LocationPing(models.Model):
 
     def __str__(self):
         return f"{self.user} @ ({self.latitude}, {self.longitude})"
+
+
+class SimulationRun(models.Model):
+    """Synthetic trajectories, isolated from real rides, payments and GPS pings."""
+    name = models.CharField(max_length=120)
+    status = models.CharField(max_length=12, default='paused', choices=[('paused','Pause'),('running','En cours'),('completed','Terminée')])
+    elapsed = models.FloatField(default=0)
+    routes = models.JSONField(default=list)
+    frame = models.JSONField(default=dict)
+    history = models.JSONField(default=list)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

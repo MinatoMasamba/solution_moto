@@ -5,8 +5,9 @@ import 'core/api.dart';
 void main() => runApp(const PersonnelApp());
 
 class PersonnelApp extends StatelessWidget {
-  const PersonnelApp({super.key, this.api});
+  const PersonnelApp({super.key, this.api, this.initialPage = 0});
   final PersonnelApi? api;
+  final int initialPage;
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -21,6 +22,6 @@ class PersonnelApp extends StatelessWidget {
       fontFamily: 'Inter',
       useMaterial3: true,
     ),
-    home: DirectionDashboard(initialApi: api),
+    home: DirectionDashboard(initialApi: api, initialPage: initialPage),
   );
 }

@@ -20,7 +20,7 @@ Boucle visuelle : captures, inspection, correction du rendu Material de la barre
 
 ## Limites explicites
 
-Le fond routier de la maquette n'est pas repris en faux : la carte affiche les coordonnées persistées sur une grille géographique Kinshasa, avec zoom et déplacement. Les dates GPS sont visibles ; des positions anciennes restent des positions historiques, pas une présence actuelle garantie.
+La carte routière OpenStreetMap remplace désormais la grille. Les itinéraires OSRM et les coordonnées simulées proviennent de Django et sont identifiés séparément des GPS réels. Le trafic de la simulation est synthétique. Les dates GPS sont visibles ; des positions anciennes restent des positions historiques, pas une présence actuelle garantie.
 
 Les notifications sont internes à Django. Pas de bouton simulant un paiement, un push, un e-mail ou un transfert financier. Les données RECETTE sont des exemples enregistrés, pas une activité commerciale réelle. Les réglages opérationnels incluent profil, mot de passe, actualisation et déconnexion ; photo de profil, préférences de langue et notifications externes ne sont pas implémentées.
 

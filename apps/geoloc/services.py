@@ -23,7 +23,11 @@ def latest_positions_for(viewer):
         qs = qs.filter(user=viewer)
 
     latest = {}
+    trajectories = {}
     for ping in qs.order_by("user_id", "-recorded_at"):
+        samples=trajectories.setdefault(ping.user_id,[])
+        if len(samples)<500:
+            samples.append([float(ping.longitude),float(ping.latitude)])
         if ping.user_id not in latest:
             latest[ping.user_id] = ping
 
@@ -35,6 +39,7 @@ def latest_positions_for(viewer):
             "longitude": float(p.longitude),
             "recorded_at": p.recorded_at.isoformat(),
             "on_ride": p.ride_id is not None,
+            "trajectory": list(reversed(trajectories[p.user_id])),
         }
         for p in latest.values()
     ]

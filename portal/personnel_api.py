@@ -9,6 +9,9 @@ from apps.users.models import User, MotardProfile, SupportTicket, Notification
 from apps.fleet.models import Motorcycle, FleetRemittance
 from apps.rides.models import Ride
 from apps.geoloc.services import latest_positions_for
+from apps.geoloc.simulation import snapshot, advance
+from apps.geoloc.models import SimulationRun
+from django.db import transaction
 from .views import IsOperator
 from .services import DashboardService
 
@@ -39,11 +42,21 @@ class PersonnelSnapshot(APIView):
         commissions=[{'id':r.pk,'plate':r.motorcycle.plate_number,'owner':r.motorcycle.owner.get_full_name() if r.motorcycle.owner else 'GO-MBOKA','start':r.period_start,'end':r.period_end,'gross':r.gross_revenue,'commission':r.commission_amount,'net':r.net_amount} for r in FleetRemittance.objects.select_related('motorcycle__owner').order_by('-created_at')]
         notices=[{'id':n.pk,'title':n.title,'body':n.body,'kind':n.get_kind_display(),'read':bool(n.read_at),'date':n.created_at} for n in Notification.objects.filter(user=request.user)]
         tickets=[{'id':t.pk,'name':t.requester.get_full_name() or t.requester.phone_number,'subject':t.subject,'message':t.message,'priority':t.get_priority_display(),'status':t.status,'status_label':t.get_status_display(),'date':t.created_at} for t in SupportTicket.objects.select_related('requester')]
-        return Response({'me':identity(request.user),'kpis':DashboardService.get_operator_kpis(),'activity':DashboardService.get_hourly_activity(),'motards':rows,'clients':clients,'managers':managers,'commissions':commissions,'notifications':notices,'support':tickets,'positions':latest_positions_for(request.user),'updated_at':timezone.now()})
+        return Response({'me':identity(request.user),'kpis':DashboardService.get_operator_kpis(),'activity':DashboardService.get_hourly_activity(),'motards':rows,'clients':clients,'managers':managers,'commissions':commissions,'notifications':notices,'support':tickets,'positions':latest_positions_for(request.user),'simulation':snapshot(),'updated_at':timezone.now()})
 
     def post(self, request):
         action=request.data.get('action')
-        if action=='notification_read':
+        if action in ('simulation_pause','simulation_resume','simulation_step'):
+            with transaction.atomic():
+                run=get_object_or_404(SimulationRun.objects.select_for_update(),pk=request.data.get('id'))
+                if run.status=='completed': raise ValidationError('Trajet terminé. Créer une nouvelle simulation.')
+                run.status='paused' if action=='simulation_pause' else 'running'
+                run.save(update_fields=['status','updated_at'])
+                if action=='simulation_step':
+                    run=advance(run.pk,10)
+                    if run.status!='completed':
+                        run.status='paused';run.save(update_fields=['status','updated_at'])
+        elif action=='notification_read':
             n=get_object_or_404(Notification,user=request.user,pk=request.data.get('id'))
             n.read_at=timezone.now();n.save(update_fields=['read_at'])
         elif action=='support_status':

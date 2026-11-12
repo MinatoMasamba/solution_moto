@@ -19,7 +19,7 @@ La commande `seed_personnel --password <mot-de-passe>` crée des comptes RECETTE
 
 Recherche dans chaque onglet, filtres des dossiers, fiche du motard, approbation/rejet, notifications lues, traitement/réouverture des tickets, modification du profil, changement du mot de passe, déconnexion, actualisation manuelle et automatique (30 secondes). Une erreur réseau conserve la date du dernier instantané et affiche une erreur ; aucun remplacement par des données fictives.
 
-La carte trace les positions persistées sur une grille géographique Kinshasa avec zoom et déplacement. Ce n'est pas un fond de carte routière. Les notifications sont celles stockées dans Django, sans promesse d'envoi push ou e-mail. Les commissions sont les écritures existantes, sans bouton simulant un transfert financier.
+La carte utilise un vrai fond OpenStreetMap, les positions GPS persistées et les itinéraires OSRM de la simulation serveur. Les motos, clients, arrêts et embouteillages synthétiques sont identifiés SIMULATION. Voir `apps/geoloc/SIMULATION.md` à la racine pour préparer et exécuter le worker. Les notifications sont celles stockées dans Django, sans promesse d'envoi push ou e-mail. Les commissions sont les écritures existantes, sans bouton simulant un transfert financier.
 
 ## Vérification
 

@@ -55,3 +55,7 @@ Si vous cherchez un bug, une modification ou un comportement précis, voici l'in
 ## 4. Architecture Front-end
 
 Cette application contribue à l'écosystème front-end dynamique. Les données fournies par ses services sont consommées en temps réel par les tableaux de bord pour garantir une interface réactive et sans données statiques.
+
+## Simulation routière isolée
+
+`simulation.py` calcule les itinéraires OSRM et les positions par distance parcourue. `SimulationRun` conserve géométries, chronologie et événements. La commande `simulate_trips` fait avancer l'horloge ; l'API DG expose l'instantané et les contrôles sans toucher aux vrais `LocationPing`, courses ou paiements. Voir `SIMULATION.md`.
