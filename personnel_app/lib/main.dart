@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'features/direction/dashboard.dart';
+import 'core/api.dart';
 
 void main() => runApp(const PersonnelApp());
 
 class PersonnelApp extends StatelessWidget {
-  const PersonnelApp({super.key});
+  const PersonnelApp({super.key, this.api});
+  final PersonnelApi? api;
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -19,6 +21,6 @@ class PersonnelApp extends StatelessWidget {
       fontFamily: 'Inter',
       useMaterial3: true,
     ),
-    home: const DirectionDashboard(),
+    home: DirectionDashboard(initialApi: api),
   );
 }

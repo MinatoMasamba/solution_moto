@@ -1,10 +1,12 @@
 from django.urls import path
 
 from . import views
+from .personnel_api import PersonnelSnapshot
 
 app_name = "portal"
 
 urlpatterns = [
+    path("api/personnel/direction/", PersonnelSnapshot.as_view(), name="personnel_direction"),
     # Portail public
     path("", views.HomeView.as_view(), name="home"),
     path("inscription/", views.RegisterPageView.as_view(), name="register"),

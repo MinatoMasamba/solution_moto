@@ -1,38 +1,34 @@
-# GO-MBOKA — Application du personnel
+# GO-MBOKA — Personnel (Linux, Android, Windows)
 
-Application Flutter commune prévue pour Linux, Android et Windows. Première interface : Direction Générale. Les autres interfaces seront ouvertes selon les rôles attribués par le serveur, sans auto-attribution de rôle.
+Une application commune, interface DG reliée au serveur Django. Aucun mode maquette ni chiffre de secours. Au lancement, la connexion est obligatoire. Les profils, indicateurs, motards, clients, gérants, commissions, notifications, tickets et positions proviennent de `/api/personnel/direction/`, réservé à la DG/staff.
 
-## Structure
-
-- `lib/core/api.dart` : transport JSON et authentification JWT en mémoire, partagé entre les futures interfaces.
-- `lib/features/direction/dashboard.dart` : coque DG, navigation, disposition bureau/mobile, indicateurs, carte de référence et tableau.
-- `lib/main.dart` : application et thème Nocturne.
-- `assets/dg_reference.html` : maquette originale extraite du ZIP racine, pour traçabilité.
-- `test/visual_test.dart` : captures reproductibles 1440 × 1000 et 412 × 915, avec détection des débordements.
-- `linux`, `android`, `windows` : lanceurs natifs.
-
-## Lancement
+## Utilisation locale
 
 ```bash
-flutter pub get
+# À la racine
+venv/bin/python manage.py runserver 127.0.0.1:8000
+# Dans personnel_app
 flutter run -d linux
-flutter run -d windows
-flutter run -d <identifiant-android>
 ```
 
-Windows nécessite une machine Windows avec la chaîne de compilation Flutter appropriée.
+Les identifiants de recette sont dans `.local/personnel-recette.txt` à la racine, exclus de Git. Sur Android, utiliser l'adresse réseau de l'ordinateur (ou 10.0.2.2 pour l'émulateur Android standard), pas 127.0.0.1. HTTP est autorisé en debug seulement ; utiliser HTTPS en production. Windows doit être compilé sur Windows.
 
-Le démarrage montre explicitement les données fictives du ZIP pour la comparaison. Le bouton Connexion demande l'adresse du serveur et les identifiants existants. L'API DG conserve son contrôle d'accès côté Django. Le téléphone doit joindre l'adresse réseau du serveur ; `127.0.0.1` désigne le téléphone lui-même. Utiliser HTTPS pour le serveur de production.
+## Données et actions
 
-## État de la première tranche
+La commande `seed_personnel --password <mot-de-passe>` crée des comptes RECETTE, flottes, courses, paiements espèces, avis, abonnements, positions GPS et tickets. Elle est additive et idempotente ; elle ne contacte aucun opérateur Mobile Money ni destinataire externe et ne réinitialise pas les mots de passe existants. Ces enregistrements de recette ne doivent pas être présentés comme une activité commerciale réelle.
 
-Vue d'ensemble, navigation fixe, adaptation étroite, recherche dans le tableau et connexion JWT implémentées. Le mode serveur remplace les indicateurs et le classement par `/api/dashboard/operator/`. La carte GPS réelle, les écrans secondaires métier, les mutations, le renouvellement de session et les autres rôles restent à réaliser. Aucun chiffre de maquette n'est substitué aux réponses serveur.
+Recherche dans chaque onglet, filtres des dossiers, fiche du motard, approbation/rejet, notifications lues, traitement/réouverture des tickets, modification du profil, changement du mot de passe, déconnexion, actualisation manuelle et automatique (30 secondes). Une erreur réseau conserve la date du dernier instantané et affiche une erreur ; aucun remplacement par des données fictives.
+
+La carte trace les positions persistées sur une grille géographique Kinshasa avec zoom et déplacement. Ce n'est pas un fond de carte routière. Les notifications sont celles stockées dans Django, sans promesse d'envoi push ou e-mail. Les commissions sont les écritures existantes, sans bouton simulant un transfert financier.
+
+## Vérification
 
 ```bash
 flutter analyze
 flutter test
-flutter build linux
-flutter build apk
+flutter test test/visual_test.dart --dart-define=LIVE_DG=true
 ```
 
-La boucle visuelle n'est validée qu'après inspection des PNG de `verification/`, comparaison au ZIP et essais sur les plateformes réelles. Une capture au format téléphone ne constitue pas un essai Android.
+La dernière commande requiert le serveur local et le fichier d'identifiants de recette. Elle ouvre les neuf onglets en 1440×1000 et 412×915 et produit `verification/live/`. Les captures utilisent les vraies réponses du serveur. Un test au format téléphone ne remplace pas un essai sur un appareil Android.
+
+Backend : `venv/bin/python manage.py test portal.test_personnel --noinput`.
