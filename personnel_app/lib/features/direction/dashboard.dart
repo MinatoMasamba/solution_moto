@@ -243,7 +243,9 @@ class _DashboardState extends State<DirectionDashboard> {
               ),
               TextField(
                 controller: user,
-                decoration: const InputDecoration(labelText: 'Identifiant'),
+                decoration: const InputDecoration(
+                  labelText: 'Numéro de téléphone',
+                ),
               ),
               TextField(
                 controller: pass,

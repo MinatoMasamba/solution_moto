@@ -26,3 +26,5 @@ Ne pas passer à un autre rôle en considérant cette vue comme totalement valid
 ## Vérifications
 
 `flutter analyze` : aucune anomalie. `flutter test --timeout 45s` : 3 tests réussis après les corrections, dont les deux formats sans débordement. Première compilation Linux réussie et lancement natif observé. Android et Windows ne sont pas déclarés validés.
+
+Contrat JWT vérifié séparément par test HTTP local : `phone_number`, mot de passe, jeton Bearer et récupération du profil. Test réussi. Cela ne remplace pas une connexion au serveur réel.

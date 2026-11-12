@@ -36,7 +36,7 @@ class PersonnelApi {
   Future<Map<String, dynamic>> login(String username, String password) async {
     final result = await request(
       '/api/v1/auth/login/',
-      body: {'username': username, 'password': password},
+      body: {'phone_number': username, 'password': password},
     );
     token = result['access'] as String;
     try {
