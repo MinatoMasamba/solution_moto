@@ -19,7 +19,12 @@ class LocationPingViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewse
         qs = LocationPing.objects.select_related("user", "ride")
         if user.role == User.Role.OPERATOR or user.is_staff:
             return qs
-        return qs.filter(user=user)
+        if user.role == User.Role.MOTARD:
+            # Le motard gère ses propres pings.
+            return qs.filter(user=user)
+        # Client (et autres rôles non opérateurs) : les pings des motards
+        # affectés à SES courses — c'est la base du suivi temps réel.
+        return qs.filter(ride__client=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

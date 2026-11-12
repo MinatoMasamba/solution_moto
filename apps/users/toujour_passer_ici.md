@@ -52,9 +52,13 @@ Il existe **deux chemins distincts** pour créer un compte motard, qui ne collec
 
 **Piège** : un motard inscrit via l'API n'aura ni adresse, ni documents, ni `application_status` cohérent (`pending` par défaut au niveau modèle, mais rien ne l'a réellement soumis à validation). Si on ajoute un jour une vérification qui suppose que tout `MotardProfile` a été validé via le flux web, il faut gérer ce cas.
 
-## 6. `application_status` n'est PAS encore un verrou métier
+## 6. `application_status` est désormais un verrou métier (depuis Claude_004)
 
-`MotardProfile.application_status` (`pending`/`approved`/`rejected`) est stocké et visible dans l'admin, mais **rien ne l'utilise pour bloquer quoi que ce soit** — ni la connexion, ni `RideDispatchService` (qui ne regarde que `subscription_status`, cf. section 1). Un motard `pending` peut donc déjà se connecter normalement. Si le produit veut réellement bloquer l'accès tant que le dossier n'est pas `approved`, il faut ajouter la vérification (probablement dans `RideDispatchService` et/ou à la connexion `ChauffeurLoginView`).
+`MotardProfile.application_status` (`pending`/`approved`/`rejected`) est utilisé par
+`RideDispatchService` : un motard dont le dossier n'est PAS `approved` ne peut ni voir
+les demandes de courses, ni en accepter (login toujours possible pour compléter son
+profil / payer son abonnement). La validation se fait via
+`POST /api/v1/motard-profiles/<id>/approve/` (réservé opérateur/staff) ou l'admin.
 
 ## 7. Auth web motard — Cartographie du Code (Où passer)
 
@@ -64,12 +68,14 @@ Il existe **deux chemins distincts** pour créer un compte motard, qui ne collec
 - **Templates** : `templates/chauffeur/chauffeur_auth/` — pages HTML autonomes (n'étendent pas `base.html`), stylées avec un runtime Tailwind CDN-free (`static/vendor/tailwindcss.js`) + Lucide (`static/vendor/lucide.js`), copiés depuis un autre projet et adaptés au branding Go-Mboka.
 - **Le numéro "WhatsApp" du formulaire d'inscription EST `User.phone_number`** (identifiant de connexion), pas un champ à part — attention si on veut un jour un vrai numéro de contact distinct.
 
-## 8. Angles morts connus (non traités)
+## 8. Angles morts — traités (depuis Claude_004, cf. agent_activity.txt)
 
-- Pas de rate-limiting sur `/chauffeur/inscription/`, `/chauffeur/connexion/` ni sur la demande de code de reset (un code à 6 chiffres sans limite de tentatives est brute-forçable en pratique).
-- `EMAIL_BACKEND` n'est pas configuré dans `config/settings/` → en prod, `send_mail(..., fail_silently=True)` échouera silencieusement tant qu'un backend SMTP n'est pas branché. Le code de reset est donc généré mais jamais réellement envoyé en l'état.
-- Validation fichiers uploadés (`photo_piece_identite`, `permis_conduire`) : taille vérifiée côté serveur, mais pas le type MIME réel (un fichier renommé pourrait passer).
-- Pas de tests automatisés (`tests.py`) pour `forms.py`/`views_web.py` — uniquement vérifié manuellement via `manage.py shell` + `django.test.Client`.
+- **Rate-limiting** : `auth/register/` et `auth/login/` (JWT) throttlés par IP (DRF AnonRateThrottle, 10/h et 15/min, cf. settings `DEFAULT_THROTTLE_RATES`) ; demande de code de reset limitée à 3/15 min par email et 5 tentatives de saisie avant invalidation du code (cache Django).
+- **EMAIL_BACKEND** : dev = console, prod = SMTP via env (`EMAIL_HOST`/`EMAIL_PORT`/`EMAIL_HOST_USER`/`EMAIL_HOST_PASSWORD`/`EMAIL_USE_TLS`) ; sans SMTP configuré, fallback console.
+- **Validation fichiers** : taille + magic bytes (JPEG/PNG/GIF/WebP/PDF/HEIC) sur `photo_piece_identite`, `permis_conduire`, `photo_chauffeur` (apps/users/forms.py `_check_document`) — un fichier renommé ne passe plus.
+- **Tests automatisés** : `manage.py test apps.payments apps.rides apps.users apps.geoloc` couvre provider Mobile Money, wallet (topup/webhook/débit), abonnements (pay/activation), lifecycle courses + notifications + verrous d'éligibilité, rate-limits reset, accès pings GPS.
+
+⚠️ Reste à noter : les documents uploadés ne sont pas rattachés à un flux de validation documentaire automatisée — la validation reste manuelle (DG approve).
 
 ---
 

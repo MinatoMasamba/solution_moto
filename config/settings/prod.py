@@ -23,3 +23,18 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Envoi réel des mails (codes de réinitialisation motard). SMTP configurable
+# via .env ; sans SMTP configuré, on retombe sur le backend console (silencieux
+# mais visible dans le log du serveur) plutôt qu'une levée d'exception.
+if env("EMAIL_HOST", default=""):  # noqa: F405
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # noqa: F405
+    EMAIL_HOST = env("EMAIL_HOST")  # noqa: F405
+    EMAIL_PORT = env.int("EMAIL_PORT", default=587)  # noqa: F405
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")  # noqa: F405
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")  # noqa: F405
+    EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)  # noqa: F405
+    EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)  # noqa: F405
+    DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Go-Mboka <no-reply@go-mboka.cd>")  # noqa: F405
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # noqa: F405

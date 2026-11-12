@@ -1,8 +1,18 @@
 from rest_framework import generics, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+class RegisterThrottle(AnonRateThrottle):
+    scope = "auth_register"
+
+
+class LoginThrottle(AnonRateThrottle):
+    scope = "auth_login"
 
 from django.utils import timezone
 
@@ -23,6 +33,7 @@ from .serializers import (
 class RegisterView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = RegisterSerializer
+    throttle_classes = [RegisterThrottle]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -37,6 +48,12 @@ class RegisterView(generics.CreateAPIView):
             },
             status=201,
         )
+
+
+class ThrottledTokenObtainPairView(TokenObtainPairView):
+    """Login JWT limité par IP (anti brute-force)."""
+
+    throttle_classes = [LoginThrottle]
 
 
 class MeView(APIView):

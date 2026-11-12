@@ -101,18 +101,35 @@ class ChauffeurRegistrationForm(forms.Form):
         return cleaned_data
 
     def clean_photo_piece_identite(self):
-        return self._check_size(self.cleaned_data["photo_piece_identite"], MAX_DOCUMENT_SIZE, "5 MB")
+        return self._check_document(self.cleaned_data["photo_piece_identite"], MAX_DOCUMENT_SIZE, "5 MB")
 
     def clean_permis_conduire(self):
-        return self._check_size(self.cleaned_data["permis_conduire"], MAX_DOCUMENT_SIZE, "5 MB")
+        return self._check_document(self.cleaned_data["permis_conduire"], MAX_DOCUMENT_SIZE, "5 MB")
 
     def clean_photo_chauffeur(self):
-        return self._check_size(self.cleaned_data["photo_chauffeur"], MAX_PHOTO_SIZE, "2 MB")
+        return self._check_document(self.cleaned_data["photo_chauffeur"], MAX_PHOTO_SIZE, "2 MB")
 
     @staticmethod
-    def _check_size(file_obj, max_size, label):
+    def _check_document(file_obj, max_size, label):
+        """Taille + type réel du contenu (magic bytes) — un fichier renommé ne
+        doit pas passer. Accepte les images et les PDF (scan de document)."""
         if file_obj.size > max_size:
             raise forms.ValidationError(f"Le fichier ne doit pas dépasser {label}.")
+
+        head = file_obj.read(16)
+        file_obj.seek(0)
+        if not head:
+            raise forms.ValidationError("Fichier vide ou illisible.")
+        jpeg = head[:2] == b"\xff\xd8"
+        png = head[:8] == b"\x89PNG\r\n\x1a\n"
+        gif = head[:6] in (b"GIF87a", b"GIF89a")
+        webp = head[:4] == b"RIFF" and head[8:12] == b"WEBP"
+        pdf = head[:5] == b"%PDF-"
+        heic = head[4:12] in (b"ftypheic", b"ftypheix", b"ftypmhe1", b"ftypmsf1")
+        if not any((jpeg, png, gif, webp, pdf, heic)):
+            raise forms.ValidationError(
+                "Type de fichier non autorisé. Formats acceptés : image (JPG, PNG, …) ou PDF."
+            )
         return file_obj
 
     def save(self):

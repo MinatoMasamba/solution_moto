@@ -20,6 +20,10 @@ from .forms import ChauffeurLoginForm, ChauffeurQuickRegistrationForm
 from .models import User
 
 RESET_CODE_TTL_SECONDS = 60 * 10
+# Anti brute-force : nb max de codes demandés par email et de tentatives de saisie.
+RESET_REQUEST_LIMIT = 3
+RESET_REQUEST_WINDOW = 15 * 60
+RESET_ATTEMPT_LIMIT = 5
 
 # Les deux vues rendent la même page (design « Auth Motard », onglets connexion / création).
 CHAUFFEUR_AUTH_TEMPLATE = "chauffeur/chauffeur_auth/chauffeur_login.html"
@@ -95,6 +99,14 @@ def _reset_cache_key(email):
     return f"chauffeur-password-reset:{email}"
 
 
+def _reset_request_key(email):
+    return f"chauffeur-password-reset-req:{email}"
+
+
+def _reset_attempts_key(email):
+    return f"chauffeur-password-reset-tries:{email}"
+
+
 def chauffeur_password_reset_request(request):
     if request.method != "POST":
         return JsonResponse({"ok": False, "error": "Méthode non autorisée."}, status=405)
@@ -106,6 +118,14 @@ def chauffeur_password_reset_request(request):
     email = (data.get("email") or "").strip().lower()
     if not email:
         return JsonResponse({"ok": False, "error": "Adresse email requise."}, status=400)
+
+    # Limite : 3 demandes de code par email et par quart d'heure.
+    recent = cache.get_or_set(_reset_request_key(email), 0, RESET_REQUEST_WINDOW)
+    if recent >= RESET_REQUEST_LIMIT:
+        return JsonResponse(
+            {"ok": False, "error": "Trop de demandes. Réessayez dans quelques minutes."}, status=429
+        )
+    cache.set(_reset_request_key(email), recent + 1, RESET_REQUEST_WINDOW)
 
     user = User.objects.filter(email__iexact=email).first()
     if user is not None:
@@ -143,7 +163,21 @@ def chauffeur_password_reset_confirm(request):
         return JsonResponse({"ok": False, "error": "Mot de passe trop court (min. 8 caractères)."}, status=400)
 
     cache_key = _reset_cache_key(email)
+    if cache.get(cache_key) is None:
+        return JsonResponse({"ok": False, "error": "Code invalide ou expiré."}, status=400)
+
+    # Limite : 5 tentatives de saisie du code par email, sinon le code est invalidé.
+    attempts_key = _reset_attempts_key(email)
+    attempts = cache.get_or_set(attempts_key, 0, RESET_CODE_TTL_SECONDS)
+    if attempts >= RESET_ATTEMPT_LIMIT:
+        cache.delete(cache_key)
+        cache.delete(attempts_key)
+        return JsonResponse(
+            {"ok": False, "error": "Trop de tentatives. Demandez un nouveau code."}, status=429
+        )
+
     if cache.get(cache_key) != code:
+        cache.set(attempts_key, attempts + 1, RESET_CODE_TTL_SECONDS)
         return JsonResponse({"ok": False, "error": "Code invalide ou expiré."}, status=400)
 
     user = User.objects.filter(email__iexact=email).first()
@@ -153,6 +187,7 @@ def chauffeur_password_reset_confirm(request):
     user.set_password(password)
     user.save(update_fields=["password"])
     cache.delete(cache_key)
+    cache.delete(attempts_key)
     return JsonResponse({"ok": True})
 
 # Client-specific views
